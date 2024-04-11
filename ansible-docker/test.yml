@@ -1,0 +1,39 @@
+---
+- name: deploy nginx on container
+  hosts: localhost
+  become: true
+  vars:
+    webroot: "/webroot/"
+  tasks:
+    - name: system packages present
+      ansible.builtin.apt:
+        name:
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: latest
+        update_cache: true
+
+    - name: Docker Module for Python
+      ansible.builtin.pip:
+        name: docker
+
+    - name: pull nginx image
+      community.docker.docker_image:
+        name: nginx  # Changed from httpd to nginx
+        source: pull
+        tag: latest
+
+    - name: webroot present
+      ansible.builtin.file:
+        path: "{{ webroot }}"
+        state: directory
+
+    # Task 5: create custom index.hmtl: uses the 'copy' module to create a custom 'index.hmtl' file inside the 'webroot' directory with the content 'Custom Web Page'
+    - name: custom index.html
+      ansible.builtin.copy:
+        dest: "{{ webroot }}index.html"
+        content: |
+          <!DOCTYPE html>
+          <html>
+            <head>

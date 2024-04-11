@@ -1,0 +1,56 @@
+---
+- name: deploy nginx on container
+  hosts: localhost
+  become: true
+  vars:
+    webroot: "/webroot/"
+  tasks:
+
+# Task 1: ensure system packages are present: uses the 'apt' module to ensure that the specified system packages ('python3-pip', 'virtualenv', 'python3-setuptools') are installed and up to date
+    - name: system packages present
+      ansible.builtin.apt:
+        name:
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: latest
+        update_cache: true
+
+# Task 2: install Docker Module for Python: uses the 'pip' module to install the Docker module for Python
+    - name: Docker Module for Python
+      ansible.builtin.pip:
+        name: docker
+
+# Task 3: pull Docker image: uses the 'docker_image' module from the 'community.docker' collection to pull the latest 'nginx' Docker image
+    - name: pull nginx image
+      community.docker.docker_image:
+        name: nginx 
+        source: pull
+        tag: latest
+
+# Task 4: Ensure webroot directory exists: uses the 'file' module to ensure that the 'webroot' directory specified in the variable section exists
+    - name: webroot present
+      ansible.builtin.file:
+        path: "{{ webroot }}"
+        state: directory
+
+ 
+# Task 6: uses the 'docker_container' module from the 'community.docker' collection to run a Docker container named 'webserver' bases on the 'nginx' image pulled in Task 3. It also maps port 8000 of the localhost to port 80 of the container and mounts the 'webroot' directory `/usr/local/apache2/htdocs/` inside the container
+    - name: run nginx container
+      community.docker.docker_container:
+        name: webserver
+        image: nginx  # Changed from httpd to nginx
+        state: started
+        detach: true
+        exposed_ports:
+          - 80
+        ports:
+          - 8000:80  # Changed port mapping to expose NGINX on port 8000
+        volumes: "{{ webroot }}:/usr/share/nginx/html/"  # Adjusted volume mount point
+
+# Task 7: install Apache2: uses the 'apt' module to ensure that the Apache2 package is installed on the local machine.
+    - name: install nginx
+      ansible.builtin.apt:
+        name: nginx  # Changed from apache2 to nginx
+        state: present  # If nginx is not installed, this will install it
+

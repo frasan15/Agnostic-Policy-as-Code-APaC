@@ -1,0 +1,62 @@
+---
+- name: deploy httpd on container
+  hosts: localhost
+  become: true
+  vars:
+    webroot: "/webroot/"
+  tasks:
+# Task 1: ensure system packages are present: uses the 'apt' module to ensure that the specified system packages ('python3-pip', 'virtualenv', 'python3-setuptools') are installed and up to date
+    - name: system packages present
+      ansible.builtin.apt:
+        name:
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: latest
+        update_cache: true
+
+# Task 2: install Docker Module for Python: uses the 'pip' module to install the Docker module for Python
+    - name: Docker Module for Python
+      ansible.builtin.pip:
+        name: docker
+
+# Task 3: pull Docker image: uses the 'docker_image' module from the 'community.docker' collection to pull the latest 'httpd' Docker image
+    - name: pull image
+      community.docker.docker_image:
+        name: httpd
+        source: pull
+        tag: latest
+
+# Task 4: Ensure webroot directory exists: uses the 'file' module to ensure that the 'webroot' directory specified in the variable section exists
+    - name: webroot present
+      ansible.builtin.file:
+        path: "{{ webroot }}"
+        state: directory
+
+# Task 5: create custom index.hmtl: uses the 'copy' module to create a custom 'index.hmtl' file inside the 'webroot' directory with the content 'Custom Web Page'
+    - name: custom index.html
+      ansible.builtin.copy:
+        dest: "{{ webroot }}index.html"
+        content: |
+          Custom Web Page
+
+# Task 6: uses the 'docker_container' module from the 'community.docker' collection to run a Docker container named 'webserver' bases on the 'httpd' image pulled in Task 3. It also maps port 8080 of the localhost to port 80 of the container and mounts the 'webroot' directory `/usr/local/apache2/htdocs/` inside the container
+    - name: run httpd container
+      community.docker.docker_container:
+        # thname: webserver
+        name: webserver
+        image: httpd
+        state: started
+        detach: true
+        exposed_ports:
+          - 80
+        ports:
+          - 8000:80
+        volumes: "{{ webroot }}:/usr/local/apache2/htdocs/"
+
+# Task 7: install Apache2: uses the 'apt' module to ensure that the Apache2 package is installed on the local machine.
+    - name: install apache2
+      ansible.builtin.apt:
+        name: apache2
+        state: present
+
