@@ -1,6 +1,6 @@
 ---
 - name: deploy nginx on container
-  hosts: localhost
+  hosts: all # write localhost if you only want to execute the playbook against the localhost
   become: true
   vars:
     webroot: "/webroot/"
