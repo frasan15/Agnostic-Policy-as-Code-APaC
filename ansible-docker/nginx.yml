@@ -46,7 +46,7 @@
           - 80
         ports:
           - 8000:80  # Changed port mapping to expose NGINX on port 8000
-        volumes: "{{ webroot }}:/usr/share/nginx/html/"  # Adjusted volume mount point
+        volumes: "{{ webroot }}:/usr/share/nginx/html"  # Adjusted volume mount point
 
 
    
