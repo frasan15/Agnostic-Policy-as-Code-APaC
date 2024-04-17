@@ -1,0 +1,60 @@
+---
+# This playbook installs nginx as a Docker container on remote hosts in the [webservers] group and mounts a volume
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install prerequisites
+      package:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg-agent
+          - software-properties-common
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Install Docker Engine
+      package:
+        name: docker-ce
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Start and enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+      when: ansible_os_family == 'Debian'
+
+    - name: Pull nginx Docker image
+      docker_image:
+        name: nginx
+        source: pull
+
+    - name: Create volume
+      docker_volume:
+        name: nginx-data
+        driver: local
+
+    - name: Run nginx Docker container
+      docker_container:
+        name: nginx
+        image: nginx
+        state: started
+        ports:
+          - "8000:80"  # Map container port 80 to host port 8080
+        volumes:
+          - "nginx-data:/usr/share/nginx/html:ro"
