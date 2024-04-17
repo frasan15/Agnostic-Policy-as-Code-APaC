@@ -38,8 +38,8 @@
     - name: set permissions for webroot directory
       ansible.builtin.file:
         path: "{{ webroot }}"
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
+        owner: "ubuntu"
+        group: "ubuntu"
         mode: "0755"
 
     # Task 6: run nginx container
