@@ -48,9 +48,6 @@
           - 8000:80  # Changed port mapping to expose NGINX on port 8000
         volumes: "{{ webroot }}:/usr/share/nginx/html/"  # Adjusted volume mount point
 
-# Task 7: install Apache2: uses the 'apt' module to ensure that the Apache2 package is installed on the local machine.
-    - name: install nginx
-      ansible.builtin.apt:
-        name: nginx  # Changed from apache2 to nginx
-        state: present  # If nginx is not installed, this will install it
+
+   
 
