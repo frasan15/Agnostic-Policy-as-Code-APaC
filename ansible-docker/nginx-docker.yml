@@ -55,6 +55,6 @@
         image: nginx
         state: started
         ports:
-          - "8000:80"  # Map container port 80 to host port 8080
+          - "8000:80"  # Map container port 80 to host port 8000
         volumes:
-          - "nginx-data:/usr/share/nginx/html:ro"
+          - "nginx-data:/usr/share/nginx/html:ro" #:ro means read-only

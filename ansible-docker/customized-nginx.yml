@@ -1,3 +1,5 @@
+# This playbook should be used to run customized webpage, which should be stored in /webroot/index.html
+
 ---
 - name: deploy nginx on container
   hosts: all # write localhost if you only want to execute the playbook against the localhost
