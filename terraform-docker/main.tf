@@ -37,7 +37,7 @@ resource "null_resource" "nginx_container" {
   # Use remote-exec provisioner to run NGINX container
   provisioner "remote-exec" {
     inline = [
-      "sudo docker run -d --name nginx_container -p 80:80 nginx"
+      "sudo docker run -d --name nginx_container -p 8000:80 nginx"
     ]
   }
 }
