@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "docker" {
-  host = "tcp://10.212.174.49:2376"
+  host = "http://10.212.174.49:2376"
 }
 
 # New resource to install Docker on the remote host
