@@ -17,7 +17,7 @@ resource "null_resource" "remote_provisioner" {
     type        = "ssh"
     host        = "10.212.174.49"
     user        = "ubuntu"
-    private_key = file("~/.ssh/id_rsa")  # Path to your SSH private key
+    private_key = file("home/ubuntu/.ssh/id_rsa")  # Path to your SSH private key
   }
 
   # Install Docker on the remote host
