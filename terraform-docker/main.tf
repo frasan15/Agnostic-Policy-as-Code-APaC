@@ -45,7 +45,8 @@ resource "docker_container" "nginx" {
 
   ports {
     internal = 80
-    external = 8000
+    external = 80
+    host = "10.212.174.49"
   }
 
   # Depend on the Docker image resource
