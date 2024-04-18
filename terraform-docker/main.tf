@@ -1,49 +1,43 @@
-terraform {
-  required_providers {
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "~> 3.0.1"
-    }
-  }
-}
+provider "null" {}
 
-provider "docker" {
-  # No configuration needed for the provider
-}
-
-# Specify the connection to the remote host
-resource "null_resource" "remote_provisioner" {
+resource "null_resource" "docker_installation" {
+  # Define connection details to the remote host
   connection {
     type        = "ssh"
     host        = "10.212.174.49"
     user        = "ubuntu"
-    private_key = file("/home/ubuntu/.ssh/id_rsa")  # Path to your SSH private key
+    private_key = file("/home/ubuntu/.ssh/id_rsa")  # Path to your private key
+    timeout     = "2m"
   }
 
-  # Install Docker on the remote host
+  # Check if Docker is installed, if not, download and install Docker
   provisioner "remote-exec" {
     inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y docker.io",
+      "if ! command -v docker &> /dev/null; then",
+      "  curl -fsSL https://get.docker.com -o get-docker.sh",
+      "  sudo sh get-docker.sh",
+      "  sudo usermod -aG docker $USER",  # Add current user to the docker group
+      "  sudo systemctl enable docker",
+      "  sudo systemctl start docker",
+      "fi"
     ]
   }
 }
 
-# Pull the nginx Docker image
-resource "docker_image" "nginx" {
-  name         = "nginx"
-  keep_locally = false
+resource "null_resource" "nginx_container" {
+  # Define connection details to the remote host
+  connection {
+    type        = "ssh"
+    host        = "10.212.174.49"
+    user        = "ubuntu"
+    private_key = file("/home/ubuntu/.ssh/id_rsa")  # Path to your private key
+    timeout     = "2m"
+  }
 
-  # Depend on the null_resource to ensure Docker is installed before attempting to pull the image
-  depends_on = [null_resource.remote_provisioner]
-}
-
-# Run the nginx container on the remote host
-resource "docker_container" "nginx" {
-  image         = docker_image.nginx.name
-  name          = var.container_name
-  network_mode  = "host"  # Bind to the host's network
-
-  # Depend on the Docker image resource
-  depends_on = [docker_image.nginx]
+  # Use remote-exec provisioner to run NGINX container
+  provisioner "remote-exec" {
+    inline = [
+      "sudo docker run -d --name nginx_container -p 80:80 nginx"
+    ]
+  }
 }
