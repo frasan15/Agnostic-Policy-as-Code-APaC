@@ -7,7 +7,9 @@ terraform {
   }
 }
 
-provider "docker" {}
+provider "docker" {
+  host = "http://10.212.174.49:2375"
+}
 
 resource "docker_image" "nginx" {
   name         = "nginx"
