@@ -37,9 +37,9 @@ resource "openstack_compute_instance_v2" "web_server" {
   flavor_name     = "gx1.2c4r"
   image_id        = "db1bc18e-81e3-477e-9067-eecaa459ec33"
   network {
-    uuid = openstack_networking_network_v2.web_server_network.id
+    uuid = data.openstack_networking_network_v2.web_server_network.id
   }
-  security_groups = [openstack_networking_secgroup_v2.web_server_secgroup.name]
+  security_groups = [data.openstack_networking_secgroup_v2.web_server_secgroup.name]
   # Customize additional instance configuration as needed
 
   # Example: Use cloud-init to configure the web server
