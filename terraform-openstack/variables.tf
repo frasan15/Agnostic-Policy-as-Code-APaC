@@ -1,0 +1,3 @@
+variable "openstack_password"{
+    
+}
