@@ -40,7 +40,7 @@ resource "docker_image" "nginx" {
 
 # Run the nginx container
 resource "docker_container" "nginx" {
-  image = docker_image.nginx.latest
+  image = docker_image.nginx.name
   name  = var.container_name
 
   ports {
