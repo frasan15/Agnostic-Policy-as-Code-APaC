@@ -1,27 +1,43 @@
-terraform {
-  required_providers {
-    docker = {
-      source = "kreuzwerker/docker"
-      version = "2.18.0" // Specify the version you want to use
-    }
+provider "null" {}
+
+resource "null_resource" "docker_provisioner" {
+  # Define connection details to the remote host
+  connection {
+    type        = "ssh"
+    host        = "10.212.174.49"
+    user        = "ubuntu"
+    private_key = file("/home/ubuntu/.ssh/id_rsa")  # Path to your private key
+    timeout     = "2m"
+  }
+
+  # Use remote-exec provisioner to install Docker
+  provisioner "remote-exec" {
+    inline = [
+      "curl -fsSL https://get.docker.com -o get-docker.sh",
+      "sudo sh get-docker.sh",
+      "sudo usermod -aG docker $USER",  # Add current user to the docker group
+      "sudo systemctl enable docker",
+      "sudo systemctl start docker"
+    ]
   }
 }
 
-# Execute the SSH command to install Docker
-resource "null_resource" "install_docker" {
- 
+resource "null_resource" "nginx_container" {
+  depends_on = [null_resource.docker_provisioner]
 
-  provisioner "local-exec" {
-    command = "ssh user@10.212.174.49 'sudo apt-get update && sudo apt-get install -y docker-ce'"
+  # Define connection details to the remote host
+  connection {
+    type        = "ssh"
+    host        = "10.212.174.49"
+    user        = "ubuntu"
+    private_key = file("/home/ubuntu/.ssh/id_rsa")  # Path to your private key
+    timeout     = "2m"
   }
-}
 
-# Create a Docker container (you can customize this part as needed)
-resource "docker_container" "my_container" {
-  name  = "my-docker-container"
-  image = "nginx:latest"
-  ports {
-    internal = 80
-    external = 8000
+  # Use remote-exec provisioner to run NGINX container
+  provisioner "remote-exec" {
+    inline = [
+      "sudo docker run -d --name nginx_container -p 80:80 nginx"
+    ]
   }
 }
