@@ -7,11 +7,7 @@ terraform {
   }
 }
 
-provider "docker" {
-  host = "http://10.212.174.49:2376"
-}
-
-# New resource to install Docker on the remote host
+# Execute the SSH command to install Docker
 resource "null_resource" "install_docker" {
   triggers = {
     always_run = "${timestamp()}"
@@ -22,15 +18,12 @@ resource "null_resource" "install_docker" {
   }
 }
 
-resource "docker_image" "nginx" {
-  name = "nginx:latest"
-}
-
-resource "docker_container" "nginx" {
-  name  = "nginx_container"
-  image = docker_image.nginx.latest
+# Create a Docker container (you can customize this part as needed)
+resource "docker_container" "my_container" {
+  name  = "my-docker-container"
+  image = "nginx:latest"
   ports {
     internal = 80
-    external = 80
+    external = 8000
   }
 }
