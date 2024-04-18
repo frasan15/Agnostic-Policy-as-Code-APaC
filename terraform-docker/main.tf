@@ -8,21 +8,46 @@ terraform {
 }
 
 provider "docker" {
-  host = "http://10.212.174.49:2375"
+  # No configuration needed for the provider
 }
 
+# Specify the connection to the remote host
+resource "null_resource" "remote_provisioner" {
+  connection {
+    type        = "ssh"
+    host        = "10.212.174.49"
+    user        = "ubuntu"
+    private_key = file("~/.ssh/id_rsa")  # Path to your SSH private key
+  }
+
+  # Install Docker on the remote host
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y docker.io",
+    ]
+  }
+}
+
+# Pull the nginx Docker image
 resource "docker_image" "nginx" {
   name         = "nginx"
   keep_locally = false
+
+  # Depend on the null_resource to ensure Docker is installed before attempting to pull the image
+  depends_on = [null_resource.remote_provisioner]
 }
 
+# Run the nginx container
 resource "docker_container" "nginx" {
-  image = docker_image.nginx.image_id
+  image = docker_image.nginx.latest
   name  = var.container_name
 
   ports {
     internal = 80
     external = 8000
   }
-}
 
+  # Depend on the Docker image resource
+  depends_on = [docker_image.nginx]
+}
