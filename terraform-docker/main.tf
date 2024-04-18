@@ -38,16 +38,11 @@ resource "docker_image" "nginx" {
   depends_on = [null_resource.remote_provisioner]
 }
 
-# Run the nginx container
+# Run the nginx container on the remote host
 resource "docker_container" "nginx" {
-  image = docker_image.nginx.name
-  name  = var.container_name
-
-  ports {
-    internal = 80
-    external = 80
-    host = "10.212.174.49"
-  }
+  image         = docker_image.nginx.name
+  name          = var.container_name
+  network_mode  = "host"  # Bind to the host's network
 
   # Depend on the Docker image resource
   depends_on = [docker_image.nginx]
