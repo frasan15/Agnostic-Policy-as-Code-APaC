@@ -18,21 +18,6 @@ provider "openstack" {
   region      = "SkyHiGh"
 }
 
-# Define an instance flavor
-resource "openstack_compute_flavor_v2" "web_server_flavor" {
-  name     = "gx1.2c4r"
-  ram      = 4096  # RAM in MB
-  vcpus    = 2     # Number of virtual CPUs
-  disk     = 40    # Disk size in GB
-}
-
-# Define an image for the web server
-resource "openstack_compute_image_v2" "web_server_image" {
-  name = "Ubuntu Server 22.04 LTS (Jammy Jellyfish) amd64"
-  # Specify the image ID or customize as needed
-  image_id = "db1bc18e-81e3-477e-9067-eecaa459ec33"
-}
-
 # Define a network for the web server
 data "openstack_networking_network_v2" "web_server_network" {
   name = "MySecondNetwork"
@@ -49,8 +34,8 @@ data "openstack_networking_secgroup_v2" "web_server_secgroup" {
 # Create a web server instance
 resource "openstack_compute_instance_v2" "web_server" {
   name            = "web_server"
-  flavor_name     = openstack_compute_flavor_v2.web_server_flavor.name
-  image_id        = openstack_compute_image_v2.web_server_image.id
+  flavor_name     = gx1.2c4r
+  image_id        = "db1bc18e-81e3-477e-9067-eecaa459ec33"
   network {
     uuid = openstack_networking_network_v2.web_server_network.id
   }
