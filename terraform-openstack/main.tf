@@ -21,12 +21,6 @@ provider "openstack" {
   region      = "SkyHiGh"
 }
 
-# Define a key pair for the web server
-resource "openstack_compute_keypair_v2" "test-keypair" {
-  name = "MySecondKey"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCYDh6gZ6qOjaPcRy492ply6PngBhUeRMNM4PSl1CQgwlOLNncoXd5PyBTHIggJxqcn+pizbjoxdrulvsFD5v/GcLGLEXQptzud4kYhic2L/8tCwrLPJdOlhgMqpTiBzVc2khSeRert/7Nt1XhzSJA0pRWZYBVUrddtetWKAilbmnRKv68aXrZuhAX1oXS/0LRIR63dypeUQ80WapQ3wvKurYTYvVQDUNkUxim+RcrGcd6k/nIMeDDcJafPqulVmh60ekHC0TGgh85WLCK0yxFMY2t4rMDlHRvd1k3SQTjmaZB4xlO6iFB+XryWZ2QG8fbVQrsCTlZB0yaNJg2ZQAVD"
-}
-
 # Create a web server instance
 resource "openstack_compute_instance_v2" "web_server" {
   name            = "web_server"
@@ -36,5 +30,5 @@ resource "openstack_compute_instance_v2" "web_server" {
     name = "MySecondNetwork"
   }
   security_groups = ["default"]
-  key_pair = openstack_compute_keypair_v2.test-keypair
+  key_pair = "MySecondKey"
 }
