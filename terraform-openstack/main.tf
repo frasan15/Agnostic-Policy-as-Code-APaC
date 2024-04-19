@@ -40,22 +40,7 @@ resource "openstack_compute_instance_v2" "web_server" {
   security_groups = ["default"]
   key_pair = "MySecondKey"
 
-    # Provisioners to install and configure Apache web server
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y apache2",
-      "echo '<html><head><title>Welcome to My Custom Web Server</title></head><body><h1>Hello, world!</h1><p>This is a custom web server running on port 80.</p></body></html>' | sudo tee /var/www/html/index.html",
-      "sudo systemctl restart apache2"
-    ]
 
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"  # Adjust the username based on your VM's operating system
-      private_key = file("/home/ubuntu/.ssh/id_rsa")  # Adjust the path to your private key file
-      host        = self.network[0].fixed_ip_v4  # Use the fixed IP address of the instance
-    }
-  }
 
 }
 
