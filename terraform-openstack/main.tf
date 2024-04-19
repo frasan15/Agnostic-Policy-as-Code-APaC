@@ -41,9 +41,9 @@ resource "openstack_compute_instance_v2" "web_server" {
   key_pair = "MySecondKey"
 
   # Example: Use cloud-init to configure the web server
-  user_data = <<-EOF
+  #user_data = <<-EOF
     #include /var/lib/cloud/seed/nocloud-net/user-data
-  EOF
+  #EOF
 }
 
 resource "openstack_compute_floatingip_associate_v2" "myip" {
