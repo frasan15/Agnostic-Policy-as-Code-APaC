@@ -36,6 +36,14 @@ resource "openstack_compute_instance_v2" "web_server" {
   }
   security_groups = ["default"]
   key_pair = "MySecondKey"
+
+  # Example: Use cloud-init to configure the web server
+  user_data = <<-EOF
+              #!/bin/bash
+              # Your cloud-init script to configure the web server
+              echo "Hello, World! This is a custom web server." > /var/www/html/index.html
+              # Add more configuration as needed
+              EOF
 }
 
 resource "openstack_compute_floatingip_associate_v2" "myip" {
