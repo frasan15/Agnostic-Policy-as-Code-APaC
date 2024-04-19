@@ -22,7 +22,7 @@ provider "openstack" {
 }
 
 # Generate a floating ip
-data "openstack_networking_floatingip_v2" "floatip1"{
+data "openstack_networking_floatingip_v2" "myip"{
   pool = "ntnu-internal"
 }
 
