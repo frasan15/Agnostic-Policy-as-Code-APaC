@@ -57,7 +57,7 @@ resource "openstack_compute_instance_v2" "web_server" {
       type        = "ssh"
       user        = "ubuntu"  # Adjust the username based on your VM's operating system
       private_key = file("/home/ubuntu/.ssh/id_rsa")  # Adjust the path to your private key file
-      host        = self.network[0].fixed_ip_v4  # Use the fixed IP address of the instance
+      host        = openstack_networking_floatingip_v2.myip.address  # Use the fixed IP address of the instance
     }
   }
 
