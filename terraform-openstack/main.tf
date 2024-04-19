@@ -39,5 +39,5 @@ resource "openstack_compute_instance_v2" "web_server" {
 }
 
 resource "openstack_compute_floatingip_associate_v2" "myip" {
-  floating_ip = openstack_networking_floatingip_v2.myip.address
+  floating_ip = data.openstack_networking_floatingip_v2.myip.address
 }
