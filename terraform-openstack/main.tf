@@ -21,6 +21,11 @@ provider "openstack" {
   region      = "SkyHiGh"
 }
 
+# Generate a floating ip
+data "openstack_networking_floatingip_v2" "floatip1"{
+  pool = "ntnu-internal"
+}
+
 # Create a web server instance
 resource "openstack_compute_instance_v2" "web_server" {
   name            = "web_server"
@@ -31,4 +36,8 @@ resource "openstack_compute_instance_v2" "web_server" {
   }
   security_groups = ["default"]
   key_pair = "MySecondKey"
+}
+
+resource "openstack_compute_floatingip_associate_v2" "myip" {
+  floating_ip = openstack_networking_floatingip_v2.myip.address
 }
