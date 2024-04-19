@@ -29,12 +29,6 @@ resource "openstack_networking_floatingip_v2" "myip"{
   pool = "ntnu-internal"
 }
 
-resource "openstack_compute_floatingip_associate_v2" "myip" {
-  floating_ip = openstack_networking_floatingip_v2.myip.address
-  instance_id = openstack_compute_instance_v2.web_server.id # this is the id of the instance to assoicate the floating ip with
-  fixed_ip = openstack_compute_instance_v2.web_server.network.0.fixed_ip_v4 # the fixed ip address of the instance. This ensures that the floating IP is associated with the correct interface on the instance
-}
-
 # Create a web server instance
 resource "openstack_compute_instance_v2" "web_server" {
   name            = "web_server"
@@ -58,10 +52,15 @@ resource "openstack_compute_instance_v2" "web_server" {
     connection {
       type        = "ssh"
       user        = "ubuntu"  # Adjust the username based on your VM's operating system
-      private_key = file("/home/ubuntu/.ssh/id_rsa")  # Adjust the path to your private key file
-      host        = openstack_compute_floatingip_associate_v2.myip.floating_ip  # Use the fixed IP address of the instance
+      private_key = file(var.private_key_path)  # Adjust the path to your private key file
+      host        = self.network[0].fixed_ip_v4  # Use the fixed IP address of the instance
     }
   }
 
 }
 
+resource "openstack_compute_floatingip_associate_v2" "myip" {
+  floating_ip = openstack_networking_floatingip_v2.myip.address
+  instance_id = openstack_compute_instance_v2.web_server.id # this is the id of the instance to assoicate the floating ip with
+  fixed_ip = openstack_compute_instance_v2.web_server.network.0.fixed_ip_v4 # the fixed ip address of the instance. This ensures that the floating IP is associated with the correct interface on the instance
+}
