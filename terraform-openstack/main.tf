@@ -21,14 +21,33 @@ provider "openstack" {
   region      = "SkyHiGh"
 }
 
+# Define a network for the web server
+data "openstack_networking_network_v2" "web_server_network" {
+  name = "MySecondNetwork"
+  # Specify network details or customize as needed
+}
+
+# Define a security group for the web server
+data "openstack_networking_secgroup_v2" "web_server_secgroup" {
+  name        = "default"
+  description = "defaut security group"
+  # Define security group rules as needed
+}
+
+# Define a key pair for the web server
+resource "openstack_compute_keypair_v2" "test-keypair" {
+  name = "MySecondKey"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCYDh6gZ6qOjaPcRy492ply6PngBhUeRMNM4PSl1CQgwlOLNncoXd5PyBTHIggJxqcn+pizbjoxdrulvsFD5v/GcLGLEXQptzud4kYhic2L/8tCwrLPJdOlhgMqpTiBzVc2khSeRert/7Nt1XhzSJA0pRWZYBVUrddtetWKAilbmnRKv68aXrZuhAX1oXS/0LRIR63dypeUQ80WapQ3wvKurYTYvVQDUNkUxim+RcrGcd6k/nIMeDDcJafPqulVmh60ekHC0TGgh85WLCK0yxFMY2t4rMDlHRvd1k3SQTjmaZB4xlO6iFB+XryWZ2QG8fbVQrsCTlZB0yaNJg2ZQAVD"
+}
+
 # Create a web server instance
 resource "openstack_compute_instance_v2" "web_server" {
   name            = "web_server"
   flavor_name     = "gx1.2c4r"
   image_id        = "db1bc18e-81e3-477e-9067-eecaa459ec33"
   network {
-    name = "MySecondNetwork"
+    uuid = data.openstack_networking_network_v2.web_server_network.id
   }
-  security_groups = ["default"]
-  # Customize additional instance configuration as needed
+  security_groups = [data.openstack_networking_secgroup_v2.web_server_secgroup.name]
+  key_pair = openstack_compute_keypair_v2.test-keypair
 }
