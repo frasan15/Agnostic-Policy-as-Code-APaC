@@ -29,6 +29,12 @@ resource "openstack_networking_floatingip_v2" "myip"{
   pool = "ntnu-internal"
 }
 
+resource "openstack_compute_floatingip_associate_v2" "myip" {
+  floating_ip = openstack_networking_floatingip_v2.myip.address
+  instance_id = openstack_compute_instance_v2.web_server.id # this is the id of the instance to assoicate the floating ip with
+  fixed_ip = openstack_compute_instance_v2.web_server.network.0.fixed_ip_v4 # the fixed ip address of the instance. This ensures that the floating IP is associated with the correct interface on the instance
+}
+
 # Create a web server instance
 resource "openstack_compute_instance_v2" "web_server" {
   name            = "web_server"
@@ -59,8 +65,3 @@ resource "openstack_compute_instance_v2" "web_server" {
 
 }
 
-resource "openstack_compute_floatingip_associate_v2" "myip" {
-  floating_ip = openstack_networking_floatingip_v2.myip.address
-  instance_id = openstack_compute_instance_v2.web_server.id # this is the id of the instance to assoicate the floating ip with
-  fixed_ip = openstack_compute_instance_v2.web_server.network.0.fixed_ip_v4 # the fixed ip address of the instance. This ensures that the floating IP is associated with the correct interface on the instance
-}
