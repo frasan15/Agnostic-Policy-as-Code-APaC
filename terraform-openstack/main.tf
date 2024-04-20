@@ -12,10 +12,6 @@ terraform {
   }
 }
 
-data "template_file" "user_data" {
-  template = file("/home/ubuntu/Verification-and-Validation-of-IaC/terraform-openstack/scripts/add-ssh.yml")
-}
-
 # Configure the OpenStack Provider
 provider "openstack" {
   user_name   = "fransant"
@@ -43,7 +39,6 @@ resource "openstack_compute_instance_v2" "web_server" {
   }
   security_groups = ["default"]
   key_pair = "MySecondKey"
-  user_data = data.template_file.user_data.rendered
 
 }
 
