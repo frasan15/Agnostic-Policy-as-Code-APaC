@@ -13,7 +13,7 @@ terraform {
 }
 
 data "template_file" "user_data" {
-  template = file("../scripts/add-ssh.yml")
+  template = file("/home/ubuntu/Verification-and-Validation-of-IaC/terraform-openstack/scripts/add-ssh.yml")
 }
 
 # Configure the OpenStack Provider
