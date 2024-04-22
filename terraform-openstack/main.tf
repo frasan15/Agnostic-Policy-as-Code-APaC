@@ -33,7 +33,7 @@ resource "openstack_networking_floatingip_v2" "myip"{
 resource "openstack_compute_instance_v2" "web_server" {
   name            = "web_server"
   flavor_name     = "gx1.2c4r"
-  image_id        = "a25ca330-f006-4db8-beaa-7bb2648f8fa1" # empty vm: "db1bc18e-81e3-477e-9067-eecaa459ec33"
+  image_id        = "db1bc18e-81e3-477e-9067-eecaa459ec33"
   network {
     name = "MySecondNetwork"
   }
@@ -48,21 +48,3 @@ resource "openstack_compute_floatingip_associate_v2" "myip" {
   fixed_ip = openstack_compute_instance_v2.web_server.network.0.fixed_ip_v4 # the fixed ip address of the instance. This ensures that the floating IP is associated with the correct interface on the instance
 }
 
-# Connect to the machine using remote-exec provisioner
-resource "null_resource" "remote_exec" {
-  depends_on = [openstack_compute_floatingip_associate_v2.myip]
-  
-  provisioner "remote-exec" {
-    inline = [
-      "echo 'Connected to the instance!'"
-      # You can add more commands here to perform operations on the instance
-    ]
-
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"  # Adjust the username based on your VM's operating system
-      private_key = file("/home/ubuntu/.ssh/id_rsa")  # Adjust the path to your private key file
-      host        = openstack_networking_floatingip_v2.myip.address  # Use the floating IP address of the instance
-    }
-  }
-}
