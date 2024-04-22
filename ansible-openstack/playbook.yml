@@ -1,15 +1,16 @@
-- hosts: localhost
+- name: Provision an instance on OpenStack
+  hosts: localhost
+    environment:
+    OS_AUTH_URL: "{{ lookup('env', 'OS_AUTH_URL') }}"
+    OS_USERNAME: "{{ lookup('env', 'OS_USERNAME') }}"
+    OS_PASSWORD: "{{ lookup('env', 'OS_PASSWORD') }}"
+    OS_PROJECT_NAME: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
+    OS_USER_DOMAIN_NAME: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
   tasks:
   - name: Deploy an instance
     openstack.cloud.server:
       state: present
       name: webserver
-      auth:
-        auth_url: "{{ lookup('env', 'OS_AUTH_URL') }}"
-        username: "{{ lookup('env', 'OS_USERNAME') }}"
-        password: "{{ lookup('env', 'OS_PASSWORD') }}"
-        project_name: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
-        domain_name: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
       image: db1bc18e-81e3-477e-9067-eecaa459ec33
       key_name: MySecondKey
       timeout: 200
