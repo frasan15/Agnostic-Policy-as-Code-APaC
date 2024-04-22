@@ -24,6 +24,10 @@ provider "openstack" {
   region      = "SkyHiGh"
 }
 
+data "template_file" "user_data" {
+  template = file ("/home/ubuntu/Verification-and-Validation-of-IaC/terraform-openstack/scripts/add-ssh.yml")
+}
+
 # Generate a floating ip
 resource "openstack_networking_floatingip_v2" "myip"{
   pool = "ntnu-internal"
@@ -39,7 +43,7 @@ resource "openstack_compute_instance_v2" "web_server" {
   }
   security_groups = ["default"]
   key_pair = "MySecondKey"
-
+  user_data = data.template_file.user_data.rendered
 }
 
 resource "openstack_compute_floatingip_associate_v2" "myip" {
