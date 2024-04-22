@@ -4,8 +4,7 @@
   - name: Deploy an instance
     openstack.cloud.server:
       state: present
-      auth:
-        cloud: mycloud
+      cloud: mycloud
       name: webserver
       image: db1bc18e-81e3-477e-9067-eecaa459ec33
       key_name: MySecondKey
