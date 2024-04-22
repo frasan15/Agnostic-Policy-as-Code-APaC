@@ -1,11 +1,11 @@
 - name: Provision an instance on OpenStack
   hosts: localhost
     environment:
-    OS_AUTH_URL: "{{ lookup('env', 'OS_AUTH_URL') }}"
-    OS_USERNAME: "{{ lookup('env', 'OS_USERNAME') }}"
-    OS_PASSWORD: "{{ lookup('env', 'OS_PASSWORD') }}"
-    OS_PROJECT_NAME: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
-    OS_USER_DOMAIN_NAME: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
+      OS_AUTH_URL: "{{ lookup('env', 'OS_AUTH_URL') }}"
+      OS_USERNAME: "{{ lookup('env', 'OS_USERNAME') }}"
+      OS_PASSWORD: "{{ lookup('env', 'OS_PASSWORD') }}"
+      OS_PROJECT_NAME: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
+      OS_USER_DOMAIN_NAME: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
   tasks:
   - name: Deploy an instance
     openstack.cloud.server:
