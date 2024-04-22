@@ -1,8 +1,9 @@
 clouds:
   mycloud:
     auth:
-      OS_AUTH_URL: "{{ lookup('env', 'OS_AUTH_URL') }}"
-      OS_USERNAME: "{{ lookup('env', 'OS_USERNAME') }}"
-      OS_PASSWORD: "{{ lookup('env', 'OS_PASSWORD') }}"
-      OS_PROJECT_NAME: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
-      OS_USER_DOMAIN_NAME: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
+      auth_url: "https://api.skyhigh.iik.nt"
+      username: "fransant"
+      password: "password"
+      project_name: "TTM4905_V24_fransant"
+      domain_name: "NTNU"
+
