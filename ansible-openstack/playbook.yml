@@ -7,7 +7,7 @@
       image: db1bc18e-81e3-477e-9067-eecaa459ec33
       key_name: MySecondKey
       timeout: 200
-      flavour: gx1.2c4r
+      flavor: gx1.2c4r
       network: MySecondNetwork
       security_groups: default
       wait: true
