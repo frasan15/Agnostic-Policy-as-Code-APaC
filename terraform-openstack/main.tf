@@ -24,10 +24,6 @@ provider "openstack" {
   region      = "SkyHiGh"
 }
 
-data "template_file" "user_data" {
-  template = file ("/home/ubuntu/Verification-and-Validation-of-IaC/terraform-openstack/scripts/add-ssh.yml")
-}
-
 # Generate a floating ip
 resource "openstack_networking_floatingip_v2" "myip"{
   pool = "ntnu-internal"
@@ -43,30 +39,11 @@ resource "openstack_compute_instance_v2" "web_server" {
   }
   security_groups = ["default"]
   key_pair = "MySecondKey"
-  user_data = data.template_file.user_data.rendered
+
 }
 
 resource "openstack_compute_floatingip_associate_v2" "myip" {
   floating_ip = openstack_networking_floatingip_v2.myip.address
   instance_id = openstack_compute_instance_v2.web_server.id # this is the id of the instance to assoicate the floating ip with
   fixed_ip = openstack_compute_instance_v2.web_server.network.0.fixed_ip_v4 # the fixed ip address of the instance. This ensures that the floating IP is associated with the correct interface on the instance
-}
-
-# Connect to the machine using remote-exec provisioner
-resource "null_resource" "remote_exec" {
-  depends_on = [openstack_compute_floatingip_associate_v2.myip]
-  
-  provisioner "remote-exec" {
-    inline = [
-      "echo 'Connected to the instance!'"
-      # You can add more commands here to perform operations on the instance
-    ]
-
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"  # Adjust the username based on your VM's operating system
-      private_key = file("/home/ubuntu/.ssh/id_rsa")  # Adjust the path to your private key file
-      host        = openstack_networking_floatingip_v2.myip.address  # Use the floating IP address of the instance
-    }
-  }
 }
