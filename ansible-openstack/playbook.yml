@@ -1,6 +1,11 @@
 - name: Provision an instance on OpenStack
   hosts: localhost
   tasks:
+  - name: Delete previous instance
+    openstack.cloud.server:
+      name: webserver
+      state: absent
+      
   - name: Deploy an instance
     openstack.cloud.server:
       state: present
@@ -18,5 +23,4 @@
   - name: Floating ip allocation 
     openstack.cloud.floating_ip:
       server: webserver
-      wait: true
   
