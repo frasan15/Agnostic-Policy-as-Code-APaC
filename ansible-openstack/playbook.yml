@@ -1,0 +1,20 @@
+- hosts: all
+  become: yes
+  tasks:
+  - name: Deploy an instance
+    openstack.cloud.server:
+      state: present
+      name: webserver
+      image: db1bc18e-81e3-477e-9067-eecaa459ec33
+      key_name: MySecondKey
+      timeout: 200
+      flavour: gx1.2c4r
+      network: MySecondNetwork
+      security_groups: default
+      wait: true
+
+  - name: Floating ip allocation 
+    openstack.cloud.floating_ip:
+      server: webserver
+      wait: true
+  
