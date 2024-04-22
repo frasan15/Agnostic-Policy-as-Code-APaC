@@ -33,7 +33,7 @@ resource "openstack_networking_floatingip_v2" "myip"{
 resource "openstack_compute_instance_v2" "web_server" {
   name            = "web_server"
   flavor_name     = "gx1.2c4r"
-  image_id        = "db1bc18e-81e3-477e-9067-eecaa459ec33"
+  image_id        = "a25ca330-f006-4db8-beaa-7bb2648f8fa1" # empty vm: "db1bc18e-81e3-477e-9067-eecaa459ec33"
   network {
     name = "MySecondNetwork"
   }
