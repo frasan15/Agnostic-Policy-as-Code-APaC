@@ -1,5 +1,4 @@
-- hosts: all
-  become: yes
+- hosts: localhost
   tasks:
   - name: Deploy an instance
     openstack.cloud.server:
