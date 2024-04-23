@@ -35,7 +35,7 @@
     openstack.cloud.server:
       state: absent
       name: webserver
-    when: instance is defined and instance|success
+    when: instance is defined and not instance.failed
 
 
   
