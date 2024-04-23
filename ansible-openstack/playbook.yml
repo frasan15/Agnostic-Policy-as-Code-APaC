@@ -41,7 +41,10 @@
   hosts: localhost
   tags: ['destroy']
   tasks: 
-  - name: Destroy an instance
+    - name: Debug global_instance
+      debug:
+        var: global_instance
+    - name: Destroy an instance
     openstack.cloud.server:
       state: absent
       name: webserver
