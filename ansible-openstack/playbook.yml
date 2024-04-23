@@ -1,6 +1,6 @@
-#- name: Provision an instance on OpenStack # for some reason the floating ip is assigned automatically with this task
- # hosts: localhost
-#  tasks:
+- name: Provision an instance on OpenStack # for some reason the floating ip is assigned automatically with this task
+  hosts: localhost
+  tasks:
  # - name: Deploy an instance
   #  openstack.cloud.server:
    #   state: present
