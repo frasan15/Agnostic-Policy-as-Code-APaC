@@ -1,0 +1,2 @@
+# instance_vars.yml
+global_instance: "{{ instance }}"
