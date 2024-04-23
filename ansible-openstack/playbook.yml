@@ -45,9 +45,9 @@
       debug:
         var: global_instance
     - name: Destroy an instance
-    openstack.cloud.server:
-      state: absent
-      name: webserver
+      openstack.cloud.server:
+        state: absent
+        name: webserver
     when: global_instance is defined and not global_instance.failed
 
 
