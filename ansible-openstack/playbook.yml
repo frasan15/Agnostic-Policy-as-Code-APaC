@@ -1,18 +1,18 @@
-- name: Provision an instance on OpenStack # for some reason the floating ip is assigned automatically with this task
-  hosts: localhost
-  tasks:
-  - name: Deploy an instance
-    openstack.cloud.server:
-      state: present
-      #cloud: mycloud
-      name: webserver
-      image: db1bc18e-81e3-477e-9067-eecaa459ec33
-      key_name: MySecondKey
-      timeout: 200
-      flavor: gx1.2c4r
-      network: MySecondNetwork
-      security_groups: default
-    register: instance
+#- name: Provision an instance on OpenStack # for some reason the floating ip is assigned automatically with this task
+ # hosts: localhost
+#  tasks:
+ # - name: Deploy an instance
+  #  openstack.cloud.server:
+   #   state: present
+    #  #cloud: mycloud
+     # name: webserver
+      #image: db1bc18e-81e3-477e-9067-eecaa459ec33
+     # key_name: MySecondKey
+  #    timeout: 200
+   #   flavor: gx1.2c4r
+    #  network: MySecondNetwork
+     # security_groups: default
+  #  register: instance
 
     # When you register the result of a task using the register keyword, you create a variable that holds 
     # information about the task's execution, including its output. In your playbook, the register: instance 
@@ -31,11 +31,11 @@
     # The instance|success condition checks whether the "Deploy an instance" task was successful. 
     # It's a shorthand way of checking if the task completed successfully (i.e., instance.failed is false).
 
-  #- name: Destroy an instance
-   # openstack.cloud.server:
-    #  state: absent
-     # name: webserver
-    #when: instance is defined and not instance.failed
+  - name: Destroy an instance
+    openstack.cloud.server:
+      state: absent
+      name: webserver
+    when: instance is defined and not instance.failed
 
 
   
