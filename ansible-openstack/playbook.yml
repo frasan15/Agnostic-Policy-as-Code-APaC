@@ -14,6 +14,10 @@
       network: MySecondNetwork
       security_groups: default
     register: instance
+  - name: Set instance fact
+    set_fact:
+      global_instance: "{{ instance }}"
+    when: instance is defined and not instance.failed
 
     # When you register the result of a task using the register keyword, you create a variable that holds 
     # information about the task's execution, including its output. In your playbook, the register: instance 
@@ -41,7 +45,7 @@
     openstack.cloud.server:
       state: absent
       name: webserver
-    when: instance is defined and not instance.failed
+    when: global_instance is defined and not global_instance.failed
 
 
   
