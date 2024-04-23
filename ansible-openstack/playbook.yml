@@ -20,7 +20,7 @@
     when: instance is defined and not instance.failed
   - name: Debug instance
     debug:
-      var: instance
+      var: global_instance
 
     # When you register the result of a task using the register keyword, you create a variable that holds 
     # information about the task's execution, including its output. In your playbook, the register: instance 
