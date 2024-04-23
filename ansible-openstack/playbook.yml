@@ -14,5 +14,28 @@
       security_groups: default
     register: instance
 
+    # When you register the result of a task using the register keyword, you create a variable that holds 
+    # information about the task's execution, including its output. In your playbook, the register: instance 
+    # line in the "Deploy an instance" task stores the result of that task in a variable named instance.
+
+    # When you use register, you create a variable that contains various attributes, including:
+    # instance.stdout: Standard output of the task.
+    # instance.stderr: Standard error of the task.
+    # instance.rc: Return code of the task.
+    # instance.changed: Whether the task made any changes.
+    # instance.failed: Whether the task failed.
+
+    # The instance variable is defined only after the task "Deploy an instance" has been executed. 
+    # So, in the subsequent task "Destroy the instance", instance is defined checks if the instance variable exists.
+    # If it does, it means the "Deploy an instance" task has been executed.
+    # The instance|success condition checks whether the "Deploy an instance" task was successful. 
+    # It's a shorthand way of checking if the task completed successfully (i.e., instance.failed is false).
+
+  - name: Destroy an instance
+    openstack.cloud.server:
+      state: absent
+      name: webserver
+    when: instance is defined and instance|success
+
 
   
