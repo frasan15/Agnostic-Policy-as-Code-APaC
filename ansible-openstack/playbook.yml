@@ -19,17 +19,17 @@
         network: MySecondNetwork
         security_groups: default
       register: instance
-    - include_vars: instance_vars.yml
-    - name: Debug global_instance
-      debug:
-        var: global_instance
-    - name: Set instance fact
-      set_fact:
-        global_instance: "{{ instance }}"
-      when: instance is defined and not instance.failed
-    - name: Debug global_instance again
-      debug:
-        var: global_instance
+    #- include_vars: instance_vars.yml
+    #- name: Debug global_instance
+     # debug:
+      #  var: global_instance
+    #- name: Set instance fact
+     # set_fact:
+      #  global_instance: "{{ instance }}"
+      #when: instance is defined and not instance.failed
+    #- name: Debug global_instance again
+     # debug:
+      #  var: global_instance
 
 # to run this: ansible-playbook playbook.yml --tags "deploy"
 
@@ -56,10 +56,10 @@
   hosts: localhost
   tags: ['destroy']
   tasks: 
-    - include_vars: instance_vars.yml
-    - name: Debug global_instance
-      debug:
-        var: global_instance
+    #- include_vars: instance_vars.yml
+    #- name: Debug global_instance
+     # debug:
+      #  var: global_instance
     - name: Destroy an instance
       openstack.cloud.server:
         state: absent
