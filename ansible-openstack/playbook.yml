@@ -3,7 +3,8 @@
   tags: ['deploy']
   tasks:
   - name: Decrypt OpenStack Password
-    command: "openssl enc -d -aes-256-cbc -salt -pbkdf2 -in encrypted_password.enc -out decrypted_password.txt"
+    command: 
+      "openssl enc -d -aes-256-cbc -salt -pbkdf2 -in encrypted_password.enc -out decrypted_password.txt"
   - name: Set environment variable for OpenStack password
     environment:
       OS_PASSWORD: "{{ lookup('file', 'decrypted_password.txt') }}"
