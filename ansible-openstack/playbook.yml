@@ -3,7 +3,7 @@
   tags: ['deploy']
   tasks:
     - name: Decrypt OpenStack Password
-      script: decrypt_password.sh
+      shell: "openssl enc -d -aes-256-cbc -salt -pbkdf2 -in encrypted_password.enc -out decrypted_password.txt"
       environment:
         OS_PASSWORD: "{{ lookup('file', 'decrypted_password.txt') }}"
     - name: Deploy an instance
