@@ -2,10 +2,6 @@
   hosts: localhost
   tags: ['deploy']
   tasks:
-    
-    - name: Set environment variable for OpenStack password
-      environment:
-        OS_PASSWORD: "{{ lookup('file', 'decrypted_password.txt') }}"
     - name: Deploy an instance
       openstack.cloud.server:
         state: present
