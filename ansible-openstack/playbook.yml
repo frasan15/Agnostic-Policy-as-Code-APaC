@@ -4,7 +4,6 @@
   tasks:
     - name: Decrypt OpenStack Password
       script: decrypt_password.sh
-    - name: Set environment variable for OpenStack password
       environment:
         OS_PASSWORD: "{{ lookup('file', 'decrypted_password.txt') }}"
     - name: Deploy an instance
