@@ -17,6 +17,7 @@ pbex = PlaybookExecutor(
     inventory=inventory,
     variable_manager=variable_manager,
     loader=loader,
+    passwords={}
 )
 
 # Run the playbook
