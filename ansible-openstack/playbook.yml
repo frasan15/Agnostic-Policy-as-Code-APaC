@@ -11,6 +11,9 @@
     OS_AUTH_URL: "{{ lookup('env', 'OS_AUTH_URL') }}"
     OS_REGION_NAME: "{{ lookup('env', 'OS_REGION_NAME') }}"
   tasks:
+  - name: Debug first
+    debug:
+      var: OS_USERNAME
   - name: Deploy an instance
     openstack.cloud.server:
       state: present
