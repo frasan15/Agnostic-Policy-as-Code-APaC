@@ -3,7 +3,7 @@ from ansible.inventory.manager import InventoryManager
 from ansible.parsing.dataloader import DataLoader
 from ansible.vars.manager import VariableManager
 from ansible import context
-from ansible.utils.collection import ImmutableDict
+from ansible.module_utils.common.collections import ImmutableDict
 
 # Set the path to your playbook
 playbook_path = '/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack/playbook.yml'
