@@ -29,6 +29,32 @@
 
 # to run this: ansible-playbook playbook.yml --tags "deploy"
 
+- name: Retrieve network and security group information
+  hosts: localhost
+  tasks:
+  - name: Get network details
+    openstack.cloud.list:
+      resource: network
+      filters:
+        name: MySecondNetwork
+    register: network_details
+
+  - name: Get security group details
+    openstack.cloud.list:
+      resource: security_group
+      filters:
+        name: default
+    register: security_group_details
+
+  - name: Print network details
+    debug:
+      msg: "{{ network_details }}"
+
+  - name: Print security group details
+    debug:
+      msg: "{{ security_group_details }}"
+
+
 
     # When you register the result of a task using the register keyword, you create a variable that holds 
     # information about the task's execution, including its output. In your playbook, the register: instance 
