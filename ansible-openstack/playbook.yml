@@ -38,9 +38,18 @@
       name: MySecondNetwork
     register: network_details
 
+  - name: Get security group details
+    openstack.cloud.security_group_rule_info:
+      security_group: default
+    register: security_group_details
+
   - name: Print network details
     debug:
       msg: "{{ network_details }}"
+
+  - name: Print security group details
+    debug:
+      msg: "{{ security_group_details }}"
 
 
     # When you register the result of a task using the register keyword, you create a variable that holds 
