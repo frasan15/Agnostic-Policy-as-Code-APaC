@@ -1,0 +1,9 @@
+# Create a file called openstack.yml, add the following content and run
+# $> ansible-inventory --list -vvv -i openstack.yml
+plugin: openstack.cloud.openstack
+
+all_projects: false
+fail_on_errors: true
+strict: true
+
+# I actually didn't use this file at the end

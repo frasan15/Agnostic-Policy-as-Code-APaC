@@ -1,0 +1,7 @@
+clouds:
+  mycloud:
+    auth:
+      auth_url: "https://api.skyhigh.iik.ntnu.no:5000"
+      username: "fransant"
+      project_name: "TTM4905_V24_fransant"
+      domain_name: "NTNU"
