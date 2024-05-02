@@ -15,7 +15,7 @@ playbook_path = '/home/ubuntu/Verification-and-Validation-of-IaC/ansible-opensta
 #context.CLIARGS['verbosity'] = 2
 
 # Initialize Ansible context
-context.CLIARGS = {'verbosity': 2}  # Set verbosity level directly
+context.CLIARGS['verbosity'] = 2  # Set verbosity level directly
 
 # Load data
 loader = DataLoader()
