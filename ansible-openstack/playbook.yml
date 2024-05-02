@@ -31,6 +31,7 @@
 
 - name: Retrieve network and security group information
   hosts: localhost
+  tags: ['information_details']
   tasks:
   - name: Get network details
     openstack.cloud.list:
