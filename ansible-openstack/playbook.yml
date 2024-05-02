@@ -13,7 +13,7 @@
   tasks:
   - name: Debug first
     debug:
-      var: OS_USERNAME
+      msg: "OS_USERNAME: {{ lookup('env', 'OS_USERNAME') }}, OS_PASSWORD: {{ lookup('env', 'OS_PASSWORD') }}, OS_PROJECT_NAME: {{ lookup('env', 'OS_PROJECT_NAME') }}"
   - name: Deploy an instance
     openstack.cloud.server:
       state: present
