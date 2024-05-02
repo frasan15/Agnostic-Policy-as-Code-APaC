@@ -8,7 +8,7 @@ from ansible import context
 playbook_path = '/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack/playbook.yml'
 
 # Initialize Ansible context
-context.CLIARGS = {'syntax': False}
+context.CLIARGS['syntax'] = False
 
 # Initialize Ansible context
 loader = DataLoader()
