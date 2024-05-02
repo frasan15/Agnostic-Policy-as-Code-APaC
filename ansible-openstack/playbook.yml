@@ -1,6 +1,15 @@
 - name: Provision an instance on OpenStack # for some reason the floating ip is assigned automatically with this task
   hosts: localhost
   tags: ['deploy']
+  environment:
+    OS_USERNAME: "{{ lookup('env', 'OS_USERNAME') }}"
+    OS_PASSWORD: "{{ lookup('env', 'OS_PASSWORD') }}"
+    OS_PROJECT_NAME: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
+    OS_PROJECT_DOMAIN_ID: "{{ lookup('env', 'OS_PROJECT_DOMAIN_ID') }}"
+    OS_USER_DOMAIN_NAME: "{{ lookup('env', 'OS_USER_DOMAIN_NAME') }}"
+    OS_PROJECT_ID: "{{ lookup('env', 'OS_PROJECT_ID') }}"
+    OS_AUTH_URL: "{{ lookup('env', 'OS_AUTH_URL') }}"
+    OS_REGION_NAME: "{{ lookup('env', 'OS_REGION_NAME') }}"
   tasks:
   - name: Deploy an instance
     openstack.cloud.server:
