@@ -34,27 +34,13 @@
   tags: ['information_details']
   tasks:
   - name: Get network details
-    openstack.cloud.list:
-      resource: network
-      filters:
-        name: MySecondNetwork
+    openstack.cloud.networks_info:
+      name: MySecondNetwork
     register: network_details
-
-  - name: Get security group details
-    openstack.cloud.list:
-      resource: security_group
-      filters:
-        name: default
-    register: security_group_details
 
   - name: Print network details
     debug:
       msg: "{{ network_details }}"
-
-  - name: Print security group details
-    debug:
-      msg: "{{ security_group_details }}"
-
 
 
     # When you register the result of a task using the register keyword, you create a variable that holds 
