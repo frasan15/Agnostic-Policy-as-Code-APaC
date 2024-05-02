@@ -2,9 +2,13 @@ from ansible.executor.playbook_executor import PlaybookExecutor
 from ansible.inventory.manager import InventoryManager
 from ansible.parsing.dataloader import DataLoader
 from ansible.vars.manager import VariableManager
+from ansible import context
 
 # Set the path to your playbook
 playbook_path = '/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack/playbook.yml'
+
+# Initialize Ansible context
+context.CLIARGS = {'syntax': False}
 
 # Initialize Ansible context
 loader = DataLoader()
