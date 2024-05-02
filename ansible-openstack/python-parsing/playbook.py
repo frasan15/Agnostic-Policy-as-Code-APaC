@@ -8,11 +8,11 @@ from ansible.vars.manager import VariableManager
 playbook_path = '/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack/playbook.yml'
 
 # Initialize Ansible context
-context.CLIARGS = {}
+#context.CLIARGS = {}
 
 # You can then set specific command-line arguments as needed
 # For example, to set the verbosity level to 2:
-context.CLIARGS['verbosity'] = 2
+#context.CLIARGS['verbosity'] = 2
 
 # Load data
 loader = DataLoader()
