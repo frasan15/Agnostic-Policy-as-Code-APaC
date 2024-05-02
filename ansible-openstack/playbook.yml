@@ -1,5 +1,5 @@
 - name: Provision an instance on OpenStack # for some reason the floating ip is assigned automatically with this task
-  hosts: localhost
+  hosts: all
   tags: ['deploy']
   tasks:
   - name: Deploy an instance
