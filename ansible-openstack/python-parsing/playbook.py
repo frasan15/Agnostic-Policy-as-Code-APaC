@@ -12,16 +12,16 @@ context.CLIARGS = {}
 
 # Load data
 loader = DataLoader()
-# inventory = InventoryManager(loader=loader, sources=['localhost'])
-# variable_manager = VariableManager(loader=loader, inventory=inventory)
+inventory = InventoryManager(loader=loader, sources=['localhost'])
+variable_manager = VariableManager(loader=loader, inventory=inventory)
 
 # Create a playbook executor
 pbex = PlaybookExecutor(
     playbooks=[playbook_path],
-    #inventory=inventory,
-    #variable_manager=variable_manager,
+    inventory=inventory,
+    variable_manager=variable_manager,
     loader=loader,
-    #passwords={},
+    passwords={},
 )
 
 # Run the playbook
