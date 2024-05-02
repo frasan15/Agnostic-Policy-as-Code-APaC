@@ -3,12 +3,14 @@ from ansible.inventory.manager import InventoryManager
 from ansible.parsing.dataloader import DataLoader
 from ansible.vars.manager import VariableManager
 from ansible import context
+from ansible import ImmutableDict
 
 # Set the path to your playbook
 playbook_path = '/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack/playbook.yml'
 
 # Initialize Ansible context
-context.CLIARGS['syntax'] = False
+context.CLIARGS = ImmutableDict(connection='smart', module_path=['/to/mymodules', '/usr/share/ansible'], forks=10, become=None,
+                                    become_method=None, become_user=None, check=False, diff=False, verbosity=0)
 
 # Initialize Ansible context
 loader = DataLoader()
