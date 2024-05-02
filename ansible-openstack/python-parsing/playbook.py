@@ -1,3 +1,5 @@
+# The following code is able to run the Ansible Playbook from this Python script
+
 import ansible_runner
 r = ansible_runner.run(private_data_dir='/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack', playbook='/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack/playbook.yml')
 print("{}: {}".format(r.status, r.rc))
