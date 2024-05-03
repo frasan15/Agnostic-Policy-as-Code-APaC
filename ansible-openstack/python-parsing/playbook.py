@@ -8,9 +8,9 @@ stdout_objects = []  # Initialize an empty list to store stdout objects
 for each_host_event in r.events:
     if each_host_event['event'] == "runner_on_ok":
         if 'stdout' in each_host_event:
-            stdout_value = each_host_event['stdout']
+            stdout_value = each_host_event['stdout'].strip()  # Strip leading and trailing whitespace
             print("value:", stdout_value)
-            if stdout_value.startswith(" ok: [localhost]"):
+            if stdout_value.startswith("ok: [localhost]"):  # Remove space after ":"
                 # Extract the object and remove the last '}'
                 object_start_index = stdout_value.find("{")
                 object_end_index = stdout_value.rfind("}")
