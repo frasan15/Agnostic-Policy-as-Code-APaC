@@ -10,7 +10,7 @@ for each_host_event in r.events:
         if 'stdout' in each_host_event:
             stdout_value = each_host_event['stdout'].strip()  # Strip leading and trailing whitespace
             print("value:", stdout_value)
-            stdout_objects.append(json.loads(object_str))
+            stdout_objects.append(json.loads(stdout_value))
             if stdout_value == "ok: [localhost]":
                 print("Done")
             if stdout_value.startswith("ok: [localhost]"):  # Remove space after ":"
