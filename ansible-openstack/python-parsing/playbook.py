@@ -2,15 +2,6 @@
 
 import json
 import ansible_runner
-
-my_string = "Hello, world!"
-
-# Check if the string starts with "Hello"
-if my_string.startswith("Hello"):
-    print("The string starts with 'Hello'")
-else:
-    print("The string does not start with 'Hello'")
-
 r = ansible_runner.run(private_data_dir='/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack', playbook='/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack/playbook.yml')
 
 stdout_objects = []  # Initialize an empty list to store stdout objects
@@ -21,7 +12,7 @@ for each_host_event in r.events:
             stdout_value = each_host_event['stdout']
             print(stdout_value)
             print(type(stdout_value))
-            print(stdout_value.startswith("o"))
+            print(stdout_value.startswith('o'))
             if stdout_value.startswith("ok: [localhost] =>"):
                 print("i am here again")
                 # Extract the object and remove the last '}'
