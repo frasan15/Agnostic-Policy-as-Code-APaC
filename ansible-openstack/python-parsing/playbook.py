@@ -21,7 +21,7 @@ for each_host_event in r.events:
                 # Extract the object and remove the last '}'
                 object_start_index = clean_stdout_value.find("{")
                 object_end_index = clean_stdout_value.rfind("}")
-                object_str = clean_stdout_value[object_start_index:object_end_index]
+                object_str = clean_stdout_value[object_start_index+1:object_end_index]
                 print("json formatted: ", object_str)
                 print("object start index: ", object_start_index)
                 print("object end index", object_end_index)
