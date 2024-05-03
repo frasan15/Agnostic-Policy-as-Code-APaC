@@ -13,7 +13,7 @@ for each_host_event in r.events:
             print(stdout_value.startswith("'\x1b[0;32mok:"))
             print(repr(stdout_value))
             print(stdout_value[:2])
-            if stdout_value.repr().startswith("ok: [localhost] =>"):
+            if repr(stdout_value).startswith("ok: [localhost] =>"):
                 print("i am here again")
                 # Extract the object and remove the last '}'
                 object_start_index = stdout_value.find("{")
