@@ -6,6 +6,9 @@ print("this is the format: {}: {}".format(r.status, r.rc))
 # successful: 0
 for each_host_event in r.events:
     print(each_host_event['event'])
-    print("{}".format(each_host_event['stdout']))
+    if 'stdout' in each_host_event:
+        print(each_host_event['stdout'])
+    else:
+        print("No stdout for this event")
 print("Final status:")
 print(r.stdout)
