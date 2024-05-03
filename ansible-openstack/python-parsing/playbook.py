@@ -21,10 +21,11 @@ for each_host_event in r.events:
                 # Extract the object and remove the first '{' and the last '}'
                 object_start_index = clean_stdout_value.find("{")
                 object_end_index = clean_stdout_value.rfind("}")
-                object_str = clean_stdout_value[object_start_index+1:object_end_index].strip()
-                print("json formatted: ", object_str) # here you can see that the object is no longer green
-                print("Repr cleaned value ", repr(object_str))
-                stdout_objects.append(json.loads(object_str)) # this line doesn't work yet, since there's still some issue with converting the string into json
+                object_str = clean_stdout_value[object_start_index+1:object_end_index]
+                new_object_str = object_str.replace('\r', '').replace('\n', '')
+                print("json formatted: ", new_object_str) # here you can see that the object is no longer green
+                print("Repr cleaned value ", repr(new_object_str))
+                stdout_objects.append(json.loads(new_object_str)) # this line doesn't work yet, since there's still some issue with converting the string into json
 
 
 # Print each object in stdout_objects
