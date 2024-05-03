@@ -2,7 +2,11 @@
 
 import json
 import ansible_runner
+import re
 r = ansible_runner.run(private_data_dir='/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack', playbook='/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack/playbook.yml')
+
+# Define the pattern to match
+pattern = r"^ok: \[localhost\] =>.*$"
 
 stdout_objects = []  # Initialize an empty list to store stdout objects
 for each_host_event in r.events:
@@ -10,8 +14,7 @@ for each_host_event in r.events:
         if 'stdout' in each_host_event:
             print("i am here")
             stdout_value = each_host_event['stdout']
-            print(str(stdout_value).startswith("ok"))
-            print(str(stdout_value))
+            print(re.match(pattern, stdout_value))
             if (stdout_value).startswith("ok: [localhost] =>"):
                 print("i am here again")
                 # Extract the object and remove the last '}'
