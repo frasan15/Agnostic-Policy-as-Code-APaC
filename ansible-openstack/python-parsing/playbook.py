@@ -10,7 +10,7 @@ for each_host_event in r.events:
         if 'stdout' in each_host_event:
             print("i am here")
             stdout_value = each_host_event['stdout']
-            print(stdout_value.startswith(" '\x1b[0;32mok: [localho"))
+            print(stdout_value.startswith("'\x1b[0;32mok: [localho"))
             print(repr(stdout_value))
             print(stdout_value[:2])
             if stdout_value.startswith("ok: [localhost] =>"):
