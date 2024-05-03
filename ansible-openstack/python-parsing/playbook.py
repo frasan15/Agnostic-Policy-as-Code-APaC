@@ -10,13 +10,17 @@ for each_host_event in r.events:
         if 'stdout' in each_host_event:
             stdout_value = each_host_event['stdout'].strip()  # Strip leading and trailing whitespace
             print("value:", stdout_value)
-            if stdout_value:  # Check if stdout_value is not empty
-                try:
-                    stdout_objects.append(json.loads(stdout_value))
-                except json.JSONDecodeError as e:
-                    print(f"Error decoding JSON: {e}")
+            stdout_objects.append(stdout_value)
+            if stdout_value == "ok: [localhost]":
+                print("Done")
+            if stdout_value.startswith("ok: [localhost]"):  # Remove space after ":"
+                # Extract the object and remove the last '}'
+                object_start_index = stdout_value.find("{")
+                object_end_index = stdout_value.rfind("}")
+                object_str = stdout_value[object_start_index:object_end_index]
+                stdout_objects.append(json.loads(object_str))
 
-# Now stdout_objects contains the objects extracted from the stdout values
+# Now stdout_objects contains the objects extracted from the second kind of stdout values
 
 # Print each object in stdout_objects
 for obj in stdout_objects:
