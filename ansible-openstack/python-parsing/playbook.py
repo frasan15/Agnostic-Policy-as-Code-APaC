@@ -5,6 +5,6 @@ r = ansible_runner.run(private_data_dir='/home/ubuntu/Verification-and-Validatio
 print("this is the format: {}: {}".format(r.status, r.rc))
 # successful: 0
 for each_host_event in r.events:
-    print(each_host_event['event'])
+    print(each_host_event)
 print("Final status:")
 print(r.stdout)
