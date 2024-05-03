@@ -11,10 +11,10 @@ for each_host_event in r.events:
     if each_host_event['event'] == "runner_on_ok":
         if 'stdout' in each_host_event:
             stdout_value = each_host_event['stdout'].strip()  # Strip leading and trailing whitespace
-            print("value:", stdout_value)
+            #print("value:", stdout_value)
             # Remove ANSI escape codes from the string
             clean_stdout_value = re.sub(r'\x1b\[[0-9;]*m', '', stdout_value)
-            print("Cleaned value: ", clean_stdout_value)
+            #print("Cleaned value: ", clean_stdout_value)
 
             #print(clean_stdout_value.startswith("ok: [localhost]"))
             if clean_stdout_value.startswith("ok: [localhost] =>"):  # Remove space after ":"
@@ -25,7 +25,7 @@ for each_host_event in r.events:
                 print("json formatted: ", object_str)
                 print("object start index: ", object_start_index)
                 print("object end index", object_end_index)
-                #stdout_objects.append(json.loads(object_str))
+                stdout_objects.append(json.loads(object_str))
 
 # Now stdout_objects contains the objects extracted from the second kind of stdout values
 
