@@ -21,7 +21,7 @@ for each_host_event in r.events:
             # Remove ANSI escape codes from the string
             clean_stdout_value = re.sub(r'\x1b\[[0-9;]*m', '', stdout_value)
             print(repr(stdout_value))
-            print(repr(clean_stdout_value))
+            print("Cleaned value: ", repr(clean_stdout_value))
             print(stdout_value.startswith("b[0;32mok: [localhost]"))
             if stdout_value.startswith("ok: [localhost]"):  # Remove space after ":"
                 # Extract the object and remove the last '}'
