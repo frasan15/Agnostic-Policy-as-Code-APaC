@@ -25,7 +25,7 @@ for each_host_event in r.events:
             print(clean_stdout_value[7])
             print(clean_stdout_value[8])
 
-            print(stdout_value.startswith("ok:[localhost]"))
+            print(clean_stdout_value.startswith("ok: [localhost]"))
             if stdout_value.startswith("ok: [localhost]"):  # Remove space after ":"
                 # Extract the object and remove the last '}'
                 object_start_index = stdout_value.find("{")
