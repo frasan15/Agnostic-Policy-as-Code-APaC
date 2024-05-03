@@ -10,7 +10,7 @@ for each_host_event in r.events:
         if 'stdout' in each_host_event:
             stdout_value = each_host_event['stdout'].strip()  # Strip leading and trailing whitespace
             print("value:", stdout_value)
-            print(stdout_value.find("b"))
+            print(stdout_value.find("2"))
             print(stdout_value.startswith("b[0;32mok: [localhost]"))
             if stdout_value.startswith("ok: [localhost]"):  # Remove space after ":"
                 # Extract the object and remove the last '}'
