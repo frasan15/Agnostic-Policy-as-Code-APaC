@@ -10,9 +10,9 @@ for each_host_event in r.events:
         if 'stdout' in each_host_event:
             print("i am here")
             stdout_value = each_host_event['stdout']
-            #print("{}", stdout_value)
+            print("{}", stdout_value)
             if stdout_value.startswith("ok: [localhost] =>"):
-                #print("i am here again")
+                print("i am here again")
                 # Extract the object and remove the last '}'
                 object_start_index = stdout_value.find("{")
                 object_end_index = stdout_value.rfind("}")
