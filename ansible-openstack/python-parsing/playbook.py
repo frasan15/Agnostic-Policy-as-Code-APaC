@@ -8,6 +8,7 @@ stdout_objects = []  # Initialize an empty list to store stdout objects
 for each_host_event in r.events:
     if each_host_event['event'] == "runner_on_ok":
         if 'stdout' in each_host_event:
+            print("i am here")
             stdout_value = each_host_event['stdout']
             if stdout_value.startswith("ok:[localhost] =>"):
                 # Extract the object and remove the last '}'
