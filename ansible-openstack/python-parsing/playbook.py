@@ -24,4 +24,5 @@ for each_host_event in r.events:
 
 # Print each object in stdout_objects
 for obj in stdout_objects:
+    print(type(obj))
     print("object: ", obj)
