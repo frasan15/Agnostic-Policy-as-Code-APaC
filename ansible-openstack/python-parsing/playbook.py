@@ -14,7 +14,7 @@ for each_host_event in r.events:
             print(stdout_value.find("3"))
             print(stdout_value.find(";"))
             print(stdout_value.find("0"))
-            print(stdout_value.find(" "))
+            #print(stdout_value.find(" "))
             print(stdout_value[0])
             print(stdout_value.startswith("b[0;32mok: [localhost]"))
             if stdout_value.startswith("ok: [localhost]"):  # Remove space after ":"
