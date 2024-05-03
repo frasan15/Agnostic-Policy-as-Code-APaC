@@ -23,6 +23,8 @@ for each_host_event in r.events:
                 object_end_index = clean_stdout_value.rfind("}")
                 object_str = clean_stdout_value[object_start_index:object_end_index]
                 print("json formatted: ", object_str)
+                print("object start index: ", object_start_index)
+                print("object end index", object_end_index)
                 #stdout_objects.append(json.loads(object_str))
 
 # Now stdout_objects contains the objects extracted from the second kind of stdout values
