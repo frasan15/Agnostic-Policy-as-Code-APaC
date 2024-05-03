@@ -11,6 +11,7 @@ for each_host_event in r.events:
             print("i am here")
             stdout_value = each_host_event['stdout']
             print(stdout_value)
+            print(type(stdout_value))
             print(stdout_value.startswith("o"))
             if stdout_value.startswith("ok: [localhost] =>"):
                 print("i am here again")
