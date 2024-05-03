@@ -8,9 +8,9 @@ stdout_objects = []  # Initialize an empty list to store stdout objects
 import re
 
 for each_host_event in r.events:
-    if each_host_event['event'] == "runner_on_ok":
-        if 'stdout' in each_host_event:
-            stdout_value = each_host_event['stdout'].strip()  # Strip leading and trailing whitespace
+    if each_host_event['event'] == "runner_on_ok": # take only events marked with "runner_on_ok" since the information about network and security group are stored in such events
+        if 'stdout' in each_host_event: # check if such event has got the stdout field
+            stdout_value = each_host_event['stdout']  # Strip leading and trailing whitespace
             #print("value:", stdout_value)
             # Remove ANSI escape codes from the string
             clean_stdout_value = re.sub(r'\x1b\[[0-9;]*m', '', stdout_value)
