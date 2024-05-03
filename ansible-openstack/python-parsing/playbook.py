@@ -11,9 +11,11 @@ for each_host_event in r.events:
             stdout_value = each_host_event['stdout']
             print("value:", stdout_value)
             
-            # Extracting the JSON part
+            # Find the start and end indices of the JSON part
             json_start_index = stdout_value.find('{')
             json_end_index = stdout_value.rfind('}') + 1
+            
+            # Extract the JSON part
             json_str = stdout_value[json_start_index:json_end_index]
 
             try:
