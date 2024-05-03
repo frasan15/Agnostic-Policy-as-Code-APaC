@@ -1,18 +1,18 @@
-# The following code is able to run the Ansible Playbook from this Python script
-
-import json
 import ansible_runner
+import json
+
 r = ansible_runner.run(private_data_dir='/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack', playbook='/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack/playbook.yml')
+print("this is the format: {}: {}".format(r.status, r.rc))
+# successful: 0
 
 stdout_objects = []  # Initialize an empty list to store stdout objects
+
 for each_host_event in r.events:
     if each_host_event['event'] == "runner_on_ok":
         if 'stdout' in each_host_event:
-            print("i am here")
             stdout_value = each_host_event['stdout']
-            print(stdout_value[:len("ok: [localhost] =>")] == "ok: [localhost] =>")
-            if (stdout_value).startswith("ok: [localhost] =>"):
-                print("i am here again")
+            print(stdout_value)
+            if stdout_value.startswith("ok:[localhost] =>"):
                 # Extract the object and remove the last '}'
                 object_start_index = stdout_value.find("{")
                 object_end_index = stdout_value.rfind("}")
@@ -23,4 +23,4 @@ for each_host_event in r.events:
 
 # Print each object in stdout_objects
 for obj in stdout_objects:
-    print(obj)
+    print("object: ", obj)
