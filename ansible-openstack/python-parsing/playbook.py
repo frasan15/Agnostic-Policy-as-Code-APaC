@@ -23,7 +23,8 @@ for each_host_event in r.events:
                 #object_end_index = clean_stdout_value.rfind("}")
                 #object_str = clean_stdout_value[object_start_index+1:object_end_index]
                 #new_object_str = object_str.replace('\r', '').replace('\n', '').replace(' ', '')
-                #print("json formatted: ", new_object_str) # here you can see that the object is no longer green
+                print("json formatted: ", clean_stdout_value) # here you can see that the object is no longer green
+
                 stdout_objects.append(json.loads(clean_stdout_value)) # this line doesn't work yet, since there's still some issue with converting the string into json
 
 
