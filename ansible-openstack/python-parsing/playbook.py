@@ -14,18 +14,15 @@ for each_host_event in r.events:
             # Remove ANSI escape codes from the string -> this escape code makes the json to look green and modify the length of the string causing a lot of issues
             clean_stdout_value = re.sub(r'\x1b\[[0-9;]*m', '', stdout_value)
             #print("Cleaned value: ", clean_stdout_value)
-            
-
             #print(clean_stdout_value.startswith("ok: [localhost]"))
+            
             if clean_stdout_value.startswith("ok: [localhost] =>"):  # These are the only values where the information about network and security group are stored
-                # Extract the object and remove the first '{' and the last '}'
+                # Extract the object and keep both the first '{' and the last '}' since they are needed to represent a json object
+                # The characters '\n' and ' ' are needed as well o represent the json object (you see them with repr())
                 object_start_index = clean_stdout_value.find("{")
-                #object_end_index = clean_stdout_value.rfind("}")
                 object_str = clean_stdout_value[object_start_index:]
-                #new_object_str = object_str.replace('\r', '').replace('\n', '').replace(' ', '')
                 print("json formatted: ", object_str) # here you can see that the object is no longer green
-
-                stdout_objects.append(json.loads(object_str)) # this line doesn't work yet, since there's still some issue with converting the string into json
+                stdout_objects.append(json.loads(object_str))
 
 
 # Print each object in stdout_objects
