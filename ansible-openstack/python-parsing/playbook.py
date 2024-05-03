@@ -2,8 +2,6 @@ import ansible_runner
 import json
 
 r = ansible_runner.run(private_data_dir='/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack', playbook='/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack/playbook.yml')
-print("this is the format: {}: {}".format(r.status, r.rc))
-# successful: 0
 
 stdout_objects = []  # Initialize an empty list to store stdout objects
 
@@ -11,7 +9,7 @@ for each_host_event in r.events:
     if each_host_event['event'] == "runner_on_ok":
         if 'stdout' in each_host_event:
             stdout_value = each_host_event['stdout']
-            print(stdout_value)
+            print("value: ", stdout_value)
             if stdout_value.startswith("ok:[localhost] =>"):
                 # Extract the object and remove the last '}'
                 object_start_index = stdout_value.find("{")
