@@ -8,22 +8,17 @@ stdout_objects = []  # Initialize an empty list to store stdout objects
 for each_host_event in r.events:
     if each_host_event['event'] == "runner_on_ok":
         if 'stdout' in each_host_event:
-            stdout_value = each_host_event['stdout']
+            stdout_value = each_host_event['stdout'].strip()  # Strip leading and trailing whitespace
             print("value:", stdout_value)
-            
-            # Find the start and end indices of the JSON part
-            json_start_index = stdout_value.find('{')
-            json_end_index = stdout_value.rfind('}') + 1
-            
-            # Extract the JSON part
-            json_str = stdout_value[json_start_index:json_end_index]
+            print(stdout_value.find("o"))
+            if stdout_value.startswith("ok: [localhost]"):  # Remove space after ":"
+                # Extract the object and remove the last '}'
+                object_start_index = stdout_value.find("{")
+                object_end_index = stdout_value.rfind("}")
+                object_str = stdout_value[object_start_index:object_end_index]
+                stdout_objects.append(json.loads(object_str))
 
-            try:
-                stdout_objects.append(json.loads(json_str))
-            except json.JSONDecodeError as e:
-                print(f"Error decoding JSON: {e}")
-
-# Now stdout_objects contains the objects extracted from the stdout values
+# Now stdout_objects contains the objects extracted from the second kind of stdout values
 
 # Print each object in stdout_objects
 for obj in stdout_objects:
