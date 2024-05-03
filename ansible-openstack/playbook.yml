@@ -1,20 +1,20 @@
-- name: Provision an instance on OpenStack # for some reason the floating ip is assigned automatically with this task
-  hosts: localhost
-  tags: ['deploy']
-  tasks:
-# Remember to restart the vm if you change any environment variables
-  - name: Deploy an instance
-    openstack.cloud.server:
-      state: present
-      #cloud: mycloud
-      name: webserver
-      image: db1bc18e-81e3-477e-9067-eecaa459ec33
-      key_name: MySecondKey
-      timeout: 200
-      flavor: gx1.2c4r
-      network: MySecondNetwork
-      security_groups: default
-    register: instance
+#- name: Provision an instance on OpenStack # for some reason the floating ip is assigned automatically with this task
+#  hosts: localhost
+#  tags: ['deploy']
+#  tasks:
+## Remember to restart the vm if you change any environment variables
+#  - name: Deploy an instance
+#    openstack.cloud.server:
+#      state: present
+#      #cloud: mycloud
+#      name: webserver
+#      image: db1bc18e-81e3-477e-9067-eecaa459ec33
+#      key_name: MySecondKey
+#      timeout: 200
+#      flavor: gx1.2c4r
+#      network: MySecondNetwork
+#      security_groups: default
+#    register: instance
  # - include_vars: instance-vars.yml
  # - name: Debug global_instance
  #   debug:
@@ -70,19 +70,19 @@
     # It's a shorthand way of checking if the task completed successfully (i.e., instance.failed is false).
 
 
-- name: Destroy the instance on OpenStack
-  hosts: localhost
-  tags: ['destroy']
-  tasks: 
+#- name: Destroy the instance on OpenStack
+#  hosts: localhost
+#  tags: ['destroy']
+#  tasks: 
 #    - include_vars: instance-vars.yml
 #    - name: Debug global_instance
 #      debug:
 #        var: global_instance
-    - name: Destroy an instance
-      openstack.cloud.server:
-        state: absent
-        name: webserver
-      # when: global_instance is defined and not global_instance.failed
+#    - name: Destroy an instance
+#      openstack.cloud.server:
+#        state: absent
+#        name: webserver
+#      # when: global_instance is defined and not global_instance.failed
       # The above line is needed to check whether the instance exists before trying to delete it, however as said
       # below the global instance variable is not defined, thus this should be fixed. Without this line this play
       # fullfils his tasks and successfully deletes the vm
