@@ -2,6 +2,15 @@
 
 import json
 import ansible_runner
+
+my_string = "Hello, world!"
+
+# Check if the string starts with "Hello"
+if my_string.startswith("Hello"):
+    print("The string starts with 'Hello'")
+else:
+    print("The string does not start with 'Hello'")
+
 r = ansible_runner.run(private_data_dir='/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack', playbook='/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack/playbook.yml')
 
 stdout_objects = []  # Initialize an empty list to store stdout objects
