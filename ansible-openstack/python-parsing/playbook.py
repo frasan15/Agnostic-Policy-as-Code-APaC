@@ -16,13 +16,14 @@ for each_host_event in r.events:
             clean_stdout_value = re.sub(r'\x1b\[[0-9;]*m', '', stdout_value)
             print("Cleaned value: ", clean_stdout_value)
 
-            print(clean_stdout_value.startswith("ok: [localhost]"))
-            if stdout_value.startswith("ok: [localhost]"):  # Remove space after ":"
+            #print(clean_stdout_value.startswith("ok: [localhost]"))
+            if clean_stdout_value.startswith("ok: [localhost] =>"):  # Remove space after ":"
                 # Extract the object and remove the last '}'
-                object_start_index = stdout_value.find("{")
-                object_end_index = stdout_value.rfind("}")
-                object_str = stdout_value[object_start_index:object_end_index]
-                stdout_objects.append(json.loads(object_str))
+                object_start_index = clean_stdout_value.find("{")
+                object_end_index = clean_stdout_value.rfind("}")
+                object_str = clean_stdout_value[object_start_index:object_end_index]
+                print("json formatted: ", object_str)
+                #stdout_objects.append(json.loads(object_str))
 
 # Now stdout_objects contains the objects extracted from the second kind of stdout values
 
