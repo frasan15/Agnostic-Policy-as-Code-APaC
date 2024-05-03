@@ -5,6 +5,8 @@ r = ansible_runner.run(private_data_dir='/home/ubuntu/Verification-and-Validatio
 
 stdout_objects = []  # Initialize an empty list to store stdout objects
 
+import re
+
 for each_host_event in r.events:
     if each_host_event['event'] == "runner_on_ok":
         if 'stdout' in each_host_event:
@@ -16,7 +18,10 @@ for each_host_event in r.events:
             print(stdout_value.find("0"))
             print(stdout_value.find("["))
             print(stdout_value.find("msg"))
+            # Remove ANSI escape codes from the string
+            clean_stdout_value = re.sub(r'\x1b\[[0-9;]*m', '', stdout_value)
             print(repr(stdout_value))
+            print(repr(clean_stdout_value))
             print(stdout_value.startswith("b[0;32mok: [localhost]"))
             if stdout_value.startswith("ok: [localhost]"):  # Remove space after ":"
                 # Extract the object and remove the last '}'
