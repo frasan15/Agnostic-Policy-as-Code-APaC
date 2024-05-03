@@ -7,4 +7,4 @@ print("this is the format: {}: {}".format(r.status, r.rc))
 for each_host_event in r.events:
     print(each_host_event['event'])
 print("Final status:")
-print(r.stats)
+print(r.stdout)
