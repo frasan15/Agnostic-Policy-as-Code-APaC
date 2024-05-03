@@ -11,7 +11,7 @@ for each_host_event in r.events:
             print("i am here")
             stdout_value = each_host_event['stdout']
             print(stdout_value)
-            print(stdout_value.startswith[:7])
+            print(stdout_value[:7])
             if stdout_value.startswith("ok: [localhost] =>"):
                 print("i am here again")
                 # Extract the object and remove the last '}'
