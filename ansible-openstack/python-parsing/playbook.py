@@ -47,13 +47,12 @@ for obj in stdout_objects:
 # Print the resulting dictionary
 print(result_dict)
 
-data_dict = json.loads(result_dict)
 
 # Initialize a list to store the final results
 final_results = []
 
 # Iterate over each server
-for server in data_dict['servers']:
+for server in result_dict['servers']:
     server_name = server['name']
     server_security_groups = server['security_groups']
     
@@ -65,7 +64,7 @@ for server in data_dict['servers']:
         security_group_name = security_group['name']
         
         # Find the corresponding security group in the list of security groups
-        for sg in data_dict['security_groups']:
+        for sg in result_dict['security_groups']:
             if sg['name'] == security_group_name:
                 security_group_rules = sg['security_group_rules']
                 
