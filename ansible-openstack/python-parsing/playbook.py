@@ -52,6 +52,8 @@ for obj in stdout_objects:
 # The following operations allow to create the generic json object and to store inside the name of the servers
 # and the exposed ports for each of them
 
+final_results = []
+
 # Iterate over each server
 for server in result_dict['servers']:
     server_name = server['name']
@@ -83,8 +85,12 @@ for server in result_dict['servers']:
     
     # Create the result object for the current server
     result_object = {
-        'name': server_name,
-        'exposed_ports': exposed_ports
+        'servers':[
+            {
+                'name': server_name,
+                'exposed_ports': exposed_ports
+            }
+        ]
     }
 
 # Print the final results
