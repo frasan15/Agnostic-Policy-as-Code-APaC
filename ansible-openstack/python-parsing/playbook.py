@@ -70,11 +70,12 @@ for server in result_dict['servers']:
                 
                 # Iterate over each security group rule
                 for rule in security_group_rules:
-                    print("ODDIOOOOO", security_group_rules)
                     port_range_min = rule['port_range_min']
                     port_range_max = rule['port_range_max']
+                    print(port_range_max is None)
                     
                     # Add each port in the range to the exposed ports list
+
                     exposed_ports.extend(range(port_range_min, port_range_max + 1))
     
     # Remove duplicates and sort the exposed ports list
