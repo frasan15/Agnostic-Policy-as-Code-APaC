@@ -47,10 +47,6 @@ for obj in stdout_objects:
 # Print the resulting dictionary
 #print(result_dict)
 
-
-# Initialize a list to store the final results
-final_results = []
-
 # Iterate over each server
 for server in result_dict['servers']:
     server_name = server['name']
@@ -86,9 +82,6 @@ for server in result_dict['servers']:
         'name': server_name,
         'exposed_ports': exposed_ports
     }
-    
-    # Append the result object to the final results list
-    final_results.append(result_object)
 
 # Print the final results
-print(json.dumps(final_results, indent=4))
+print(json.dumps(result_object, indent=4))
