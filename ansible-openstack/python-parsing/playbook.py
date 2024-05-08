@@ -1,4 +1,4 @@
-import ansible_runner
+import ansible_runner # type: ignore
 import json
 import re
 
