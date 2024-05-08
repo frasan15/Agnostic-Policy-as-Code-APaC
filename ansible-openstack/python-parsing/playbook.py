@@ -72,6 +72,7 @@ for server in result_dict['servers']:
                 for rule in security_group_rules:
                     port_range_min = rule['port_range_min']
                     port_range_max = rule['port_range_max']
+                    print(type(port_range_max))
                     
                     # Add each port in the range to the exposed ports list
                     exposed_ports.extend(range(port_range_min, port_range_max + 1))
