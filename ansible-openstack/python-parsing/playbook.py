@@ -45,7 +45,7 @@ for obj in stdout_objects:
             # however, we will need to convert into a json before creating the generic json file
             
 # Print the resulting dictionary
-print(result_dict)
+#print(result_dict)
 
 
 # Initialize a list to store the final results
@@ -70,7 +70,7 @@ for server in result_dict['servers']:
                 
                 # Iterate over each security group rule
                 for rule in security_group_rules:
-                    print(security_group_rules)
+                    print("ODDIOOOOO", security_group_rules)
                     port_range_min = rule['port_range_min']
                     port_range_max = rule['port_range_max']
                     
