@@ -29,6 +29,18 @@
 
 # to run this: ansible-playbook playbook.yml --tags "deploy"
 
+- name: Creation of a security group rule
+  hosts: localhost
+  tags: ['security_group']
+  tasks:
+  - name: Create a new security group rule
+    openstack.cloud.security_group_rule:
+    security_group: port80_exposed
+    protocol: tcp
+    port_range_min: 80
+    port_range_max: 80
+    remote_ip_prefix: 0.0.0.0/0
+
 - name: Retrieve network and security group information
   hosts: localhost
   tags: ['information_details']
@@ -40,7 +52,7 @@
 
   - name: Get security group details
     openstack.cloud.security_group_rule_info:
-      security_group: default
+      security_group: port80_exposed
     register: security_group_details
 
   - name: Get information about server
