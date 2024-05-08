@@ -26,5 +26,23 @@ for each_host_event in r.events:
 
 
 # Print each object in stdout_objects
+#for obj in stdout_objects:
+ #   print("object: ", obj)
+
+
+result_dict = {}
+# Iterate over each object in stdout_objects
 for obj in stdout_objects:
-    print("object: ", obj)
+    # Check if the object contains a 'msg' key and 'failed' key within the 'msg' dictionary
+    if 'msg' in obj and 'failed' in obj['msg']:
+        msg_keys = list(obj['msg'].keys())  # Get all keys in the 'msg' dictionary
+        failed_index = msg_keys.index('failed')  # Find the index of 'failed' key
+        if failed_index < len(msg_keys) - 1:  # Ensure there's a key after 'failed'
+            next_key = msg_keys[failed_index + 1]  # Get the key following 'failed'
+            result_dict[next_key] = obj['msg']  # Store the entire object as the value
+            # take in mind that obj['msg'] is no longer a json object
+            # this is useful since we still need to process this object in Python
+            # however, we will need to convert into a json before creating the generic json file
+            
+# Print the resulting dictionary
+print(result_dict)

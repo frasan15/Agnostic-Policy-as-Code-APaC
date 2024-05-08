@@ -55,6 +55,8 @@
       name: MySecondNetwork
     register: network_details
 
+# security_group and security_group_info modules handle security groups
+# whereas security_group_rule and security_group_rule_info modules handle security groups' rules (thus, in this case the security group should already be existing)
   - name: Get security group details
     openstack.cloud.security_group_info:
       name: port80_exposed
