@@ -46,3 +46,48 @@ for obj in stdout_objects:
             
 # Print the resulting dictionary
 print(result_dict)
+
+data_dict = json.loads(result_dict)
+
+# Initialize a list to store the final results
+final_results = []
+
+# Iterate over each server
+for server in data_dict['servers']:
+    server_name = server['name']
+    server_security_groups = server['security_groups']
+    
+    # Initialize a list to store the exposed ports
+    exposed_ports = []
+    
+    # Iterate over each security group of the server
+    for security_group in server_security_groups:
+        security_group_name = security_group['name']
+        
+        # Find the corresponding security group in the list of security groups
+        for sg in data_dict['security_groups']:
+            if sg['name'] == security_group_name:
+                security_group_rules = sg['security_group_rules']
+                
+                # Iterate over each security group rule
+                for rule in security_group_rules:
+                    port_range_min = rule['port_range_min']
+                    port_range_max = rule['port_range_max']
+                    
+                    # Add each port in the range to the exposed ports list
+                    exposed_ports.extend(range(port_range_min, port_range_max + 1))
+    
+    # Remove duplicates and sort the exposed ports list
+    exposed_ports = sorted(list(set(exposed_ports)))
+    
+    # Create the result object for the current server
+    result_object = {
+        'name': server_name,
+        'exposed_ports': exposed_ports
+    }
+    
+    # Append the result object to the final results list
+    final_results.append(result_object)
+
+# Print the final results
+print(json.dumps(final_results, indent=4))
