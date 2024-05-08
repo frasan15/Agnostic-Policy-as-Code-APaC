@@ -75,7 +75,7 @@ for server in result_dict['servers']:
                     print(port_range_max is None)
                     
                     # Add each port in the range to the exposed ports list; only if the port range is not None
-                    if port_range_max is None & port_range_min is None:
+                    if port_range_max is not None & port_range_min is not None:
                         exposed_ports.extend(range(port_range_min, port_range_max + 1))
     
     # Remove duplicates and sort the exposed ports list
