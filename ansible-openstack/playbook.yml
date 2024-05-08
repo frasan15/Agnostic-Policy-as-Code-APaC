@@ -34,12 +34,17 @@
   tags: ['security_group']
   tasks:
   - name: Create a new security group rule
-    openstack.cloud.security_group_rule:
-      security_group: port80_exposed
-      protocol: tcp
-      port_range_min: 80
-      port_range_max: 80
-      remote_ip_prefix: 0.0.0.0/0
+    openstack.cloud.security_group:
+      state: present
+      name: port80_exposed
+      security_group_rules:
+        - ether_type: IPv4
+          direction: ingress
+          description: expose port 80
+          port_range_max: 80
+          port_range_min: 80
+          protocol: tcp
+          remote_ip_prefix: 0.0.0.0/0
 
 - name: Retrieve network and security group information
   hosts: localhost
