@@ -1,6 +1,7 @@
 import ansible_runner # type: ignore
 import json
 import re
+import os
 
 r = ansible_runner.run(private_data_dir='/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack', playbook='/home/ubuntu/Verification-and-Validation-of-IaC/ansible-openstack/playbook.yml')
 
@@ -47,10 +48,14 @@ for obj in stdout_objects:
 # Print the resulting dictionary
 #print(result_dict)
 
+
+# The following operations allow to create the generic json object and to store inside the name of the servers
+# and the exposed ports for each of them
+
 # Iterate over each server
 for server in result_dict['servers']:
     server_name = server['name']
-    server_security_groups = server['security_groups']
+    server_security_groups = server['security_groups'] # get the name of the security group implement in the current server
     
     # Initialize a list to store the exposed ports
     exposed_ports = []
@@ -62,13 +67,12 @@ for server in result_dict['servers']:
         # Find the corresponding security group in the list of security groups
         for sg in result_dict['security_groups']:
             if sg['name'] == security_group_name:
-                security_group_rules = sg['security_group_rules']
+                security_group_rules = sg['security_group_rules'] # get the security group rules of the current security group
                 
-                # Iterate over each security group rule
+                # Iterate over each security group rule and port range min and max
                 for rule in security_group_rules:
                     port_range_min = rule['port_range_min']
                     port_range_max = rule['port_range_max']
-                    print(port_range_max)
                     
                     # Add each port in the range to the exposed ports list; only if the port range is not None
                     if port_range_max is not None and port_range_min is not None:
