@@ -17,8 +17,8 @@ for each_host_event in r.events:
             #print(clean_stdout_value.startswith("ok: [localhost]"))
             
             if clean_stdout_value.startswith("ok: [localhost] =>"):  # These are the only values where the information about network and security group are stored
-                # Extract the object and keep both the first '{' and the last '}' since they are needed to represent a json object
-                # The characters '\n' and ' ' are needed as well o represent the json object (you see them with repr())
+                # Extract the object, by removing the 'ok: [localhost] =>' part and keep both the first '{' and the last '}' since they are needed to represent a json object
+                # The characters '\n' and ' ' are needed as well to represent the json object (you see them with repr())
                 object_start_index = clean_stdout_value.find("{")
                 object_str = clean_stdout_value[object_start_index:]
                 print("json formatted: ", object_str) # here you can see that the object is no longer green
