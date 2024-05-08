@@ -57,7 +57,7 @@
 
   - name: Get security group details
     openstack.cloud.security_group_info:
-      security_group: port80_exposed
+      name: port80_exposed
     register: security_group_details
 
   - name: Get information about server
