@@ -38,8 +38,8 @@ for obj in stdout_objects:
         msg_keys = list(obj['msg'].keys())  # Get all keys in the 'msg' dictionary
         failed_index = msg_keys.index('failed')  # Find the index of 'failed' key
         if failed_index < len(msg_keys) - 1:  # Ensure there's a key after 'failed'
-            next_key = msg_keys[failed_index + 1]  # Get the key following 'failed' -> we do this since the key after the key 'failed' represent the information related to the object itself
-            result_dict[next_key] = obj['msg']  # Store the entire object as the value
+            next_key = msg_keys[failed_index + 1]  # Get the key following 'failed' -> we do this since the key after the key 'failed' represent the information related to the object itself. DRAWBACK: this implementation is extremely hard-coded, so not really good.
+            result_dict[next_key] = obj['msg'][next_key]  # Store the entire object as the value
             # take in mind that obj['msg'] is no longer a json object
             # this is useful since we still need to process this object in Python
             # however, we will need to convert into a json before creating the generic json file
