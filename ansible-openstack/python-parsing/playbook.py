@@ -52,6 +52,7 @@ print(result_dict)
 # needed for each server: name of the server and number of exposed ports
 final_results = {}
 final_results["servers"] = []
+final_results["subnets"] = []
 
 # The following operations allow to populate the servers array
 
@@ -90,13 +91,13 @@ for server in result_dict['servers']:
     print("keys: ", network_name)
     subnets_list_ids = [] # initialize list of server's subnets
 
-    for network in result_dict['networks']:
-        if network['name'] == network_name:
+    for network in result_dict['networks']: # look for any correspondence comparing the network_name found in the server object and every network name in the networks object
+        if network['name'] == network_name: 
             network_id = network['id']
-            for subnet in network['subnet_ids']:
+            for subnet in network['subnet_ids']: # fetch all the subnets belonging to such network
                 subnets_list_ids.append(subnet)
     
-    # Create the result object for the current server
+    # Create the result object for the current server, storing name, exposed ports and list of subnets ids
     result_object = {
             'name': server_name,
             'exposed_ports': exposed_ports,
@@ -105,6 +106,18 @@ for server in result_dict['servers']:
 
     # Append the result object to the final results list, in the servers array
     final_results["servers"].append(result_object)
+
+# List all the subnets and store them into final_result object
+for subnet in network[subnets_list_ids]:
+    result_object_2 = {
+        'id': subnet['id'],
+        'name': subnet['name'],
+        'network_id': subnet['network_id'],
+        'allocation_pools': subnet['allocation_pools'],
+        'cidr': subnet['cidr']
+    }
+
+    final_results['subnets'].append(result_object_2)
 
 # Print the final results
 print(json.dumps(final_results, indent=4))
