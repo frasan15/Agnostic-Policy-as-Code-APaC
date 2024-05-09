@@ -41,12 +41,12 @@
 # security_group and security_group_info modules handle security groups
 # whereas security_group_rule and security_group_rule_info modules handle security groups' rules (thus, in this case the security group should already be existing)
   - name: Get security group details
-    openstack.cloud.security_group_info:
+    openstack.cloud.security_group_info: # print each security group
     register: security_group_details
 
   - name: Get information about server
     openstack.cloud.server_info:
-      #name: MyThirdServer
+      #name: MyThirdServer #print each server
     register: server_details
   
   - name: Get information about subnet
