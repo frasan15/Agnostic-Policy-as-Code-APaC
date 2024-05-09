@@ -53,8 +53,7 @@ for obj in stdout_objects:
 # and the exposed ports for each of them
 
 final_results = {}
-key = "servers"
-final_results[key] = []
+final_results["servers"] = []
 
 # Iterate over each server
 for server in result_dict['servers']:
@@ -93,7 +92,7 @@ for server in result_dict['servers']:
     }
 
     # Append the result object to the final results list
-    final_results[key].append(result_object)
+    final_results["servers"].append(result_object)
 
 # Print the final results
 print(json.dumps(final_results, indent=4))
