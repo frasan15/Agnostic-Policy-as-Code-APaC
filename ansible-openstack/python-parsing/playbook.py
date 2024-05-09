@@ -106,6 +106,6 @@ json_file_path = os.path.join(current_dir, "result_object.json")
 
 # Write data to the JSON file
 with open(json_file_path, 'w') as json_file:
-    json.dump(result_object, json_file, indent=4)
+    json.dump(final_results, json_file, indent=4)
 
 print("JSON file has been generated and saved at:", json_file_path)
