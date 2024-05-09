@@ -48,12 +48,12 @@ for obj in stdout_objects:
 # Print the resulting dictionary
 #print(result_dict)
 
-
-# The following operations allow to create the generic json object and to store inside the name of the servers
-# and the exposed ports for each of them
-
+# Create the generic JSON object and initialize the servers array, which will be containing all the information
+# needed for each server: name of the server and number of exposed ports
 final_results = {}
 final_results["servers"] = []
+
+# The following operations allow to populate the servers array
 
 # Iterate over each server
 for server in result_dict['servers']:
@@ -85,13 +85,12 @@ for server in result_dict['servers']:
     exposed_ports = sorted(list(set(exposed_ports)))
     
     # Create the result object for the current server
-    # TODO: here below I should not hard-code the creation of servers object, instead I should create it at the beginning.
     result_object = {
             'name': server_name,
             'exposed_ports': exposed_ports
     }
 
-    # Append the result object to the final results list
+    # Append the result object to the final results list, in the servers array
     final_results["servers"].append(result_object)
 
 # Print the final results
