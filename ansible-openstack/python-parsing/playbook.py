@@ -96,6 +96,10 @@ for server in result_dict['servers']:
 # Print the final results
 #print(json.dumps(final_results, indent=4))
 
+for server in result_dict['servers']:
+    network_name = server['addresses']
+    print("NETWORK NAME: ", network_name)
+
 # Get the directory of the current Python script
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
