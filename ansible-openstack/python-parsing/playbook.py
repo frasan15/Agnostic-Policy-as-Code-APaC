@@ -83,39 +83,31 @@ for server in result_dict['servers']:
     
     # Remove duplicates and sort the exposed ports list
     exposed_ports = sorted(list(set(exposed_ports)))
+
+    # Fetch network name which the server belongs to
+    keys = server['addresses'].keys()
+    network_name = list(keys)[0] # name of the network, I need it to retrieve information about the corresponding subnet
+    print("keys: ", network_name)
+    subnets_list_ids = [] # initialize list of server's subnets
+
+    for network in result_dict['networks']:
+        if network['name'] == network_name:
+            network_id = network['id']
+            for subnet in network['subnet_ids']:
+                subnets_list_ids.append(subnet)
     
     # Create the result object for the current server
     result_object = {
             'name': server_name,
-            'exposed_ports': exposed_ports
+            'exposed_ports': exposed_ports,
+            'subnets': subnets_list_ids
     }
 
     # Append the result object to the final results list, in the servers array
     final_results["servers"].append(result_object)
 
 # Print the final results
-#print(json.dumps(final_results, indent=4))
-
-for server in result_dict['servers']:
-    keys = server['addresses'].keys()
-    network_name = list(keys)[0] # name of the network, I need it to retrieve information about the corresponding subnet
-    print("keys: ", network_name)
-    subnets_list = []
-
-    for network in result_dict['networks']:
-        if network['name'] == network_name:
-            network_id = network['id']
-            for subnet in network['subnet_ids']:
-                subnets_list.append(subnet)
-    
-    result_object_2 = {
-        'name': network_name,
-        'id': network_id,
-        'subnets': subnets_list
-    }
-
-    print("RESULT: ", json.dumps(result_object_2, indent=4))
-
+print(json.dumps(final_results, indent=4))
 
 
 # Get the directory of the current Python script
