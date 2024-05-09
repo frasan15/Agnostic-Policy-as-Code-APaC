@@ -108,7 +108,7 @@ for server in result_dict['servers']:
     final_results["servers"].append(result_object)
 
 # List all the subnets and store them into final_result object
-for subnet in network[subnets_list_ids]:
+for subnet in result_dict['subnets']:
     result_object_2 = {
         'id': subnet['id'],
         'name': subnet['name'],
