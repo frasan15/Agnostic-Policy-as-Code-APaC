@@ -86,16 +86,15 @@ for server in result_dict['servers']:
     # Create the result object for the current server
     # TODO: here below I should not hard-code the creation of servers object, instead I should create it at the beginning.
     result_object = {
-        'servers':[
-            {
-                'name': server_name,
-                'exposed_ports': exposed_ports
-            }
-        ]
+            'name': server_name,
+            'exposed_ports': exposed_ports
     }
 
+    # Append the result object to the final results list
+    final_results.append(result_object)
+
 # Print the final results
-print(json.dumps(result_object, indent=4))
+print(json.dumps(final_results, indent=4))
 
 # Get the directory of the current Python script
 current_dir = os.path.dirname(os.path.abspath(__file__))
