@@ -86,12 +86,8 @@ for server in result_dict['servers']:
     # Create the result object for the current server
     # TODO: here below I should not hard-code the creation of servers object, instead I should create it at the beginning.
     result_object = {
-        'servers':[
-            {
-                'name': server_name,
-                'exposed_ports': exposed_ports
-            }
-        ]
+        'name': server_name,
+        'exposed_ports': exposed_ports
     }
 
 # Print the final results
