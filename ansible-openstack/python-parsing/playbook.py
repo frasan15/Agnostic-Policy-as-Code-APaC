@@ -99,6 +99,8 @@ for server in result_dict['servers']:
 for server in result_dict['servers']:
     network_name = server['addresses']
     print("NETWORK NAME: ", network_name)
+    keys = server['addresses'].keys()
+    print("KEYS: ", keys)
 
 # Get the directory of the current Python script
 current_dir = os.path.dirname(os.path.abspath(__file__))
