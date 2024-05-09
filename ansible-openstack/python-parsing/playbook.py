@@ -38,7 +38,6 @@ for obj in stdout_objects:
     if 'msg' in obj and 'failed' in obj['msg']:
         msg_keys = list(obj['msg'].keys())  # Get all keys in the 'msg' dictionary
         failed_index = msg_keys.index('failed')  # Find the index of 'failed' key
-        print("FAILED INDEX:", failed_index)
         if failed_index < len(msg_keys) - 1:  # Ensure there's a key after 'failed'
             next_key = msg_keys[failed_index + 1]  # Get the key following 'failed' -> we do this since the key after the key 'failed' represent the information related to the object itself. DRAWBACK: this implementation is extremely hard-coded, so not really good.
             result_dict[next_key] = obj['msg'][next_key]  # Store the entire object as the value
@@ -99,7 +98,7 @@ for server in result_dict['servers']:
 
 for server in result_dict['servers']:
     network_name = server['addresses']
-    print("NETWORK NAME: ", network_name)
+    print("NETWORK NAME: ", network_name[0])
 
 # Get the directory of the current Python script
 current_dir = os.path.dirname(os.path.abspath(__file__))
