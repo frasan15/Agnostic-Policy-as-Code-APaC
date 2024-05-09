@@ -49,5 +49,6 @@ resource "openstack_compute_floatingip_associate_v2" "myip" {
 }
 
 data "openstack_networking_network_v2" "existing_network" {
+  
 }
 
