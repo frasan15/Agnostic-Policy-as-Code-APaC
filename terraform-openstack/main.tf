@@ -41,7 +41,7 @@ resource "openstack_compute_instance_v2" "web_server" {
   key_pair = "MySecondKey"
 
   provisioner "local-exec" {
-    command = "echo '${self.id}' >> server_ids.txt"
+    command = "echo '${self.id}' >> server_instance_id.txt; echo '' >> server_instance_id.txt"
   }
 
 }
