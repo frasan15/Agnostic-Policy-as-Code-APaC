@@ -120,7 +120,7 @@ for subnet in result_dict['subnets']:
     final_results['subnets'].append(result_object_2)
 
 # Print the final results
-print(json.dumps(final_results, indent=4))
+# print(json.dumps(final_results, indent=4))
 
 
 # Get the directory of the current Python script
@@ -133,4 +133,4 @@ json_file_path = os.path.join(current_dir, "result_object.json")
 with open(json_file_path, 'w') as json_file:
     json.dump(final_results, json_file, indent=4)
 
-#print("JSON file has been generated and saved at:", json_file_path)
+print("JSON file has been generated and saved at:", json_file_path)
