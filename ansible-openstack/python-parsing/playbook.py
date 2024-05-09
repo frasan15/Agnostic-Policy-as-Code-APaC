@@ -46,7 +46,7 @@ for obj in stdout_objects:
             # however, we will need to convert into a json before creating the generic json file
             
 # Print the resulting dictionary
-#print(result_dict)
+print(result_dict)
 
 # Create the generic JSON object and initialize the servers array, which will be containing all the information
 # needed for each server: name of the server and number of exposed ports
@@ -94,7 +94,7 @@ for server in result_dict['servers']:
     final_results["servers"].append(result_object)
 
 # Print the final results
-print(json.dumps(final_results, indent=4))
+#print(json.dumps(final_results, indent=4))
 
 # Get the directory of the current Python script
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -106,4 +106,4 @@ json_file_path = os.path.join(current_dir, "result_object.json")
 with open(json_file_path, 'w') as json_file:
     json.dump(final_results, json_file, indent=4)
 
-print("JSON file has been generated and saved at:", json_file_path)
+#print("JSON file has been generated and saved at:", json_file_path)
