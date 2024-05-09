@@ -101,6 +101,7 @@ for server in result_dict['servers']:
     print("NETWORK NAME: ", network_name)
     keys = server['addresses'].keys()
     print("KEYS: ", keys)
+    print("STILL KEYS: ", list(keys)[0])
 
 # Get the directory of the current Python script
 current_dir = os.path.dirname(os.path.abspath(__file__))
