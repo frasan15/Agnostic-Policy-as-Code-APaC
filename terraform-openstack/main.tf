@@ -31,7 +31,7 @@ resource "openstack_networking_floatingip_v2" "myip"{
 
 # Create a web server instance
 resource "openstack_compute_instance_v2" "web_server" {
-  name            = "web_server"
+  name            = var.server_name
   flavor_name     = "gx1.2c4r"
   image_id        = "db1bc18e-81e3-477e-9067-eecaa459ec33"
   network {
