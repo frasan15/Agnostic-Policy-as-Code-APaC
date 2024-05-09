@@ -52,3 +52,6 @@ data "openstack_networking_network_v2" "existing_network" {
   name = "MySecondNetwork"
 }
 
+data "openstack_compute_instance_v2" "instance" {
+  id = "9733b23b-26d6-4078-8666-5e65da9e3cea"
+}
