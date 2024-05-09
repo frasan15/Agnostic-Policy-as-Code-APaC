@@ -46,7 +46,7 @@
 
   - name: Get information about server
     openstack.cloud.server_info:
-      name: MyThirdServer
+      #name: MyThirdServer
     register: server_details
   
   - name: Get information about subnet
