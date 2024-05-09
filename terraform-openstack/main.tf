@@ -40,6 +40,8 @@ resource "openstack_compute_instance_v2" "web_server" {
   security_groups = [var.security_groups]
   key_pair = "MySecondKey"
 
+# The following provisioner writes into the file server_ids.txt the id of the newly created server (N.B. I will use this file as a list of all the server's ids created)
+# TODO: fix the \n problem
   provisioner "local-exec" {
     command = "echo '\n' >> server_ids.txt; echo '${self.id}' >> server_ids.txt"
   }
@@ -52,13 +54,12 @@ data "local_file" "server_ids_file" {
   filename   = "server_ids.txt"
 }
 
+# Store the ids' list inside server_instance_ids
 locals {
   server_instance_ids = split("\n", data.local_file.server_ids_file.content)
 }
 
-output "server_instance_ids" {
-  value = local.server_instance_ids
-}
+
 #data "openstack_compute_instance_v2" "instance" {
 #  name = "MyThirdServer"
 #}
