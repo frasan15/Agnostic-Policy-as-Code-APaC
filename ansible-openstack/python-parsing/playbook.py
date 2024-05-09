@@ -98,7 +98,7 @@ for server in result_dict['servers']:
 
 for server in result_dict['servers']:
     keys = server['addresses'].keys()
-    network_name = list(keys)[0]
+    network_name = list(keys)[0] # name of the network, I need it to retrieve information about the corresponding subnet
     print("keys: ", network_name)
 
 # Get the directory of the current Python script
