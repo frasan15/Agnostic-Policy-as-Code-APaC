@@ -49,8 +49,8 @@ resource "openstack_compute_floatingip_associate_v2" "myip" {
 }
 
 data "openstack_networking_network_v2" "existing_networks" {
-  count = length(openstack_networking_network_v2.existing_network_ids)
-  id    = openstack_networking_network_v2.existing_network_ids[count.index]
+  count = length(data.openstack_networking_network_v2.existing_network_ids)
+  id    = data.openstack_networking_network_v2.existing_network_ids[count.index]
 }
 
 data "openstack_networking_network_v2" "existing_network_ids" {}
