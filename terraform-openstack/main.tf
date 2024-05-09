@@ -49,11 +49,17 @@ resource "openstack_compute_floatingip_associate_v2" "myip" {
 }
 
 data "openstack_networking_network_v2" "existing_networks" {
-  count = length(data.openstack_networking_network_v2.existing_network_ids)
-  id    = data.openstack_networking_network_v2.existing_network_ids[count.index]
+  # No filtering criteria specified, fetching all networks
 }
 
-data "openstack_networking_network_v2" "existing_network_ids" {}
+output "networks" {
+  value = [for network in data.openstack_networking_network_v2.existing_networks : {
+    name = network.name
+    id   = network.id
+    # Add more attributes as needed
+  }]
+}
+
 
 
 data "openstack_compute_instance_v2" "instance" {
