@@ -48,3 +48,6 @@ resource "openstack_compute_floatingip_associate_v2" "myip" {
   fixed_ip = openstack_compute_instance_v2.web_server.network.0.fixed_ip_v4 # the fixed ip address of the instance. This ensures that the floating IP is associated with the correct interface on the instance
 }
 
+data "openstack_networking_network_v2" "existing_network" {
+}
+
