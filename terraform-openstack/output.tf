@@ -1,5 +1,5 @@
-output "network_info" {
-    value = data.openstack_networking_network_v2.existing_network
+output "networks" {
+  value = data.openstack_networking_network_v2.existing_networks[*].name
 }
 
 output "server_info" {
