@@ -49,6 +49,7 @@ resource "openstack_compute_instance_v2" "web_server" {
 # Read server instance IDs from the file
 locals {
   server_instance_ids = split("\n", file("server_ids.txt"))
+  depends_on = [openstack_compute_instance_v2.web_server]
 }
 
 output "server_instance_ids" {
