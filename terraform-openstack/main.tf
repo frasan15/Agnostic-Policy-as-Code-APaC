@@ -35,24 +35,16 @@ resource "openstack_compute_instance_v2" "web_server" {
   flavor_name     = "gx1.2c4r"
   image_id        = "db1bc18e-81e3-477e-9067-eecaa459ec33"
   network {
-    name = "MySecondNetwork"
+    name = var.network_name
   }
-  security_groups = ["default"]
+  security_groups = [var.security_groups]
   key_pair = "MySecondKey"
 
 }
 
-resource "openstack_compute_floatingip_associate_v2" "myip" {
-  floating_ip = openstack_networking_floatingip_v2.myip.address
-  instance_id = openstack_compute_instance_v2.web_server.id # this is the id of the instance to assoicate the floating ip with
-  fixed_ip = openstack_compute_instance_v2.web_server.network.0.fixed_ip_v4 # the fixed ip address of the instance. This ensures that the floating IP is associated with the correct interface on the instance
-}
 
-data "openstack_networking_network_v2" "existing_networks" {
-  # No filtering criteria specified, fetching all networks
-}
 
 
 data "openstack_compute_instance_v2" "instance" {
-  id = "9733b23b-26d6-4078-8666-5e65da9e3cea"
+  id = "MyThirdServer"
 }
