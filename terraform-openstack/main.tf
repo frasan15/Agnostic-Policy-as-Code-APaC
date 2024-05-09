@@ -40,13 +40,18 @@ resource "openstack_compute_instance_v2" "web_server" {
   security_groups = [var.security_groups]
   key_pair = "MySecondKey"
 
+  provisioner "local-exec" {
+    command = "echo '${self.id}' >> server_ids.txt"
+  }
+
 }
 
+# Read server instance IDs from the file
 locals {
-  servers_list = [var.server_name, var.server_name_existing]
+  server_instance_ids = split("\n", file("server_ids.txt"))
 }
 
 
-data "openstack_compute_instance_v2" "instance" {
-  name = "MyThirdServer"
-}
+#data "openstack_compute_instance_v2" "instance" {
+#  name = "MyThirdServer"
+#}
