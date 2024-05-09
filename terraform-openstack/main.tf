@@ -49,7 +49,7 @@ resource "openstack_compute_floatingip_associate_v2" "myip" {
 }
 
 data "openstack_networking_network_v2" "existing_network" {
-
+  name = "MySecondNetwork"
 }
 
 data "openstack_compute_instance_v2" "instance" {
