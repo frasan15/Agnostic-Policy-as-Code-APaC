@@ -51,7 +51,9 @@ locals {
   server_instance_ids = split("\n", file("server_ids.txt"))
 }
 
-
+output "server_instance_ids" {
+  value = locals.server_instance_ids
+}
 #data "openstack_compute_instance_v2" "instance" {
 #  name = "MyThirdServer"
 #}
