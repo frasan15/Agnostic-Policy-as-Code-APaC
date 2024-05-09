@@ -10,5 +10,5 @@ allow if { # allow is true if...
 
 violation contains server.name if { # a server is in the violation set if...
 	server := input.servers[_]
-	server.exposed_ports[_] == 80 # it contains the insecure "http" protocol.
+	server.exposed_ports[_] == 22 # it contains the insecure "http" protocol.
 }
