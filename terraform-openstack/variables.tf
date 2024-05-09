@@ -26,11 +26,6 @@ variable "security_groups" {
     default = "default"
 }
 
-variable "servers_list" {
-    description = "list containing each server defined in OpenStack"
-    type = list(string)
-    default = ["${var.server_name}", "${var.server_name_existing}"]
-}
 
 # write all the needed network name, server name, etc. in general all the information needed to retrieve the data you need
 # create a variable as an array containing all these parameters

@@ -42,7 +42,9 @@ resource "openstack_compute_instance_v2" "web_server" {
 
 }
 
-
+locals {
+  servers_list = [var.server_name, var.server_name_existing]
+}
 
 
 data "openstack_compute_instance_v2" "instance" {
