@@ -20,3 +20,7 @@ output "network_info" {
 output "security_group_info" {
   value = local.secgroup_info
 }
+
+output "subnet_info" {
+  value = openstack_networking_subnet_v2.subnet_1
+}
