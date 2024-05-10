@@ -1,23 +1,41 @@
-import subprocess
+from python_terraform import Terraform
 
-# Define the Terraform command to execute
-terraform_command = ["sudo", "terraform", "apply"]
+# Initialize Terraform
+tf = Terraform(working_dir='/home/ubuntu/Verification-and-Validation-of-IaC/terraform-openstack')
 
-# Run the Terraform command
-try:
-    # Execute the Terraform command
-    process = subprocess.Popen(terraform_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+# Run 'terraform init'
+init_result = tf.init()
 
-    # Wait for the process to complete and get the output
-    stdout, stderr = process.communicate()
+# Check if 'terraform init' was successful
+if init_result[0] != 0:
+    print("Error initializing Terraform:")
+    print(init_result[1])
+    exit(1)
 
-    # Check if there were any errors
-    if process.returncode != 0:
-        print("Error executing Terraform command:")
-        print(stderr.decode("utf-8"))
-    else:
-        print("Terraform command executed successfully:")
-        print(stdout.decode("utf-8"))
+# Run 'terraform plan'
+plan_result = tf.plan()
 
-except Exception as e:
-    print("An error occurred:", e)
+# Check if 'terraform plan' was successful
+if plan_result[0] != 0:
+    print("Error running Terraform plan:")
+    print(plan_result[1])
+    exit(1)
+
+# Parse the plan output
+plan_output = tf.show()
+
+# Print the plan output
+print("Terraform Plan:")
+print(plan_output)
+
+# Apply the plan
+apply_result = tf.apply(skip_plan=True)
+
+# Check if 'terraform apply' was successful
+if apply_result[0] != 0:
+    print("Error applying Terraform plan:")
+    print(apply_result[1])
+    exit(1)
+
+# Output successful message
+print("Terraform apply successful.")
