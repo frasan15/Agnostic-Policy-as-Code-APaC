@@ -18,5 +18,5 @@ output "network_info" {
 }
 
 output "security_group_info" {
-  value = data.openstack_networking_secgroup_v2.secgroup
+  value = local.secgroup_info
 }

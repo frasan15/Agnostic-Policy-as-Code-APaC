@@ -45,6 +45,24 @@ resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_1" {
   security_group_id = openstack_networking_secgroup_v2.secgroup_1.id
 }
 
+locals {
+  secgroup_info = {
+    name        = openstack_networking_secgroup_v2.secgroup_1.name
+    description = openstack_networking_secgroup_v2.secgroup_1.description
+    id = openstack_networking_secgroup_v2.secgroup_1.id
+    rules = [
+      for rule in openstack_networking_secgroup_rule_v2.secgroup_rule_1 : {
+        direction       = rule.direction
+        ethertype       = rule.ethertype
+        protocol        = rule.protocol
+        port_range_min  = rule.port_range_min
+        port_range_max  = rule.port_range_max
+        remote_ip_prefix = rule.remote_ip_prefix
+      }
+    ]
+  }
+}
+
 # Create a web server instance
 resource "openstack_compute_instance_v2" "web_server" {
   depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1 ]
@@ -107,7 +125,7 @@ data "openstack_networking_network_v2" "network" {
   name = var.network_name
 }
 
-data "openstack_networking_secgroup_rule_v2" "secgroup" {
+data "openstack_networking_secgroup_v2" "secgroup" {
   depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1 ]
   name = var.security_groups
 }
