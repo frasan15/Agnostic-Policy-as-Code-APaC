@@ -10,5 +10,5 @@ output "server_info" {
 
 # Output the server instance IDs
 output "server_info_2" {
-    value = data.openstack_compute_instance_v2.server_info_2s
+    value = data.openstack_compute_instance_v2.server_info_2
 }
