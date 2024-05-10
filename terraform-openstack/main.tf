@@ -54,21 +54,22 @@ data "local_file" "server_ids_file" {
   filename   = "server_ids.txt"
 }
 
-# Store the ids' list inside server_instance_ids
+# Store the ids' list inside server_instance_ids 
+# Filter out values == ""
 locals {
   server_instance_ids = [for id in split("\n", data.local_file.server_ids_file.content) : id if id != ""]
 }
 
 
-#resource "null_resource" "delete_file" {
-#  triggers = {
-#    always_run = "${timestamp()}"
-#  }
+resource "null_resource" "delete_file" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
-#  provisioner "local-exec" {
-#    command = "rm -f server_ids.txt"
-#  }
-#}
+  provisioner "local-exec" {
+    command = "rm -f server_ids.txt"
+  }
+}
 
 #data "openstack_compute_instance_v2" "instance" {
 #  name = "MyThirdServer"
