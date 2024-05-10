@@ -85,6 +85,7 @@ locals {
 
 
 data "openstack_compute_instance_v2" "server_info" {
+  depends_on = [ local.server_info_map ]
   for_each = {
     for key, value in local.server_info_map :
     key => value != "" ? value : null // Include only non-empty values
