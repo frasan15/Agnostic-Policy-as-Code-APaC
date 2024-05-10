@@ -89,3 +89,7 @@ data "openstack_compute_instance_v2" "server_info_2" {
 data "openstack_networking_network_v2" "network" {
   name = "MySecondNetwork"
 }
+
+data "openstack_networking_secgroup_v2" "secgroup" {
+  name = "default"
+}

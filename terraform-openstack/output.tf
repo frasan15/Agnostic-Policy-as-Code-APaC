@@ -16,3 +16,7 @@ output "server_info_2" {
 output "network_info" {
   value = data.openstack_networking_network_v2.network
 }
+
+output "security_group_info" {
+  value = data.openstack_networking_secgroup_v2.secgroup
+}
