@@ -56,8 +56,9 @@ data "local_file" "server_ids_file" {
 
 # Store the ids' list inside server_instance_ids
 locals {
-  server_instance_ids = split("\n", data.local_file.server_ids_file.content)
+  server_instance_ids = [for id in split("\n", data.local_file.server_ids_file.content) : id if id != ""]
 }
+
 
 #resource "null_resource" "delete_file" {
 #  triggers = {
