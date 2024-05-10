@@ -35,6 +35,8 @@ resource "openstack_networking_secgroup_v2" "secgroup_1" {
   description = "Expose port 22"
 }
 
+# Specifically, you define the rules hereby
+# If you want to define other rules, then you have the define other resources like the one below
 resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_1" {
   direction         = "ingress"
   ethertype         = "IPv4"
@@ -45,16 +47,9 @@ resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_1" {
   security_group_id = openstack_networking_secgroup_v2.secgroup_1.id
 }
 
-resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_2" {
-  direction         = "ingress"
-  ethertype         = "IPv4"
-  protocol          = "tcp"
-  port_range_min    = 80
-  port_range_max    = 80
-  remote_ip_prefix  = "0.0.0.0/0"
-  security_group_id = openstack_networking_secgroup_v2.secgroup_1.id
-}
-
+# Define all the information needed for the subnet here below
+# This is needed since Terraform-OpenStack registry does not provide any function to retrieve such info
+# about subnets
 locals {
   depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1 ]
   secgroup_info = {
@@ -69,14 +64,6 @@ locals {
         port_range_min  = openstack_networking_secgroup_rule_v2.secgroup_rule_1.port_range_min
         port_range_max  = openstack_networking_secgroup_rule_v2.secgroup_rule_1.port_range_max
         remote_ip_prefix = openstack_networking_secgroup_rule_v2.secgroup_rule_1.remote_ip_prefix
-      },
-      {
-        direction       = openstack_networking_secgroup_rule_v2.secgroup_rule_2.direction
-        ethertype       = openstack_networking_secgroup_rule_v2.secgroup_rule_2.ethertype
-        protocol        = openstack_networking_secgroup_rule_v2.secgroup_rule_2.protocol
-        port_range_min  = openstack_networking_secgroup_rule_v2.secgroup_rule_2.port_range_min
-        port_range_max  = openstack_networking_secgroup_rule_v2.secgroup_rule_2.port_range_max
-        remote_ip_prefix = openstack_networking_secgroup_rule_v2.secgroup_rule_2.remote_ip_prefix 
       }
     ]
   }
@@ -102,6 +89,7 @@ resource "openstack_compute_instance_v2" "web_server" {
 
 }
 
+# Define a floating ip
 resource "openstack_compute_floatingip_associate_v2" "myip" {
   depends_on = [ openstack_compute_instance_v2.web_server ]
   floating_ip = openstack_networking_floatingip_v2.myip.address
