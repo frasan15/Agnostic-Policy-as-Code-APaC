@@ -64,7 +64,7 @@ locals {
 resource "null_resource" "delete_file" {
 
   provisioner "local-exec" {
-    command = "rm -f server_ids.txt"
+    command = "echo '' > server_ids.txt"
   }
 }
 
