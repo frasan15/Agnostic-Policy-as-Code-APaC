@@ -86,6 +86,6 @@ data "openstack_compute_instance_v2" "server_info_2" {
   id = "9733b23b-26d6-4078-8666-5e65da9e3cea"
 }
 
-data "openstack_networking_floatingip_v2" "floatingip_1" {
-  address = openstack_compute_instance_v2.web_server.access_ip_v4
+data "openstack_networking_network_v2" "network" {
+  name = "MySecondNetwork"
 }
