@@ -85,14 +85,18 @@ locals {
   
   // Map the static keys to values present in local.server_instance_ids
   server_info_map = {
-    for key in local.static_server_instance_keys : key => local.server_instance_ids[key]
+    for idx, key in local.static_server_instance_keys : key => coalesce(local.server_instance_ids[idx], "")
   }
 }
 
 data "openstack_compute_instance_v2" "server_info" {
-  for_each = local.server_info_map
+  for_each = {
+    for key, value in local.server_info_map :
+    key => value != "" ? value : null // Include only non-empty values
+  }
 
-  id = local.server_info_map[each.key]
+  id = each.value
 }
+
 
 
