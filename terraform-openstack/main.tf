@@ -81,3 +81,7 @@ resource "null_resource" "delete_file" {
 data "openstack_compute_instance_v2" "server_info" {
   id = openstack_compute_instance_v2.web_server.id
 }
+
+data "openstack_compute_instance_v2" "server_info_2" {
+  id = "9733b23b-26d6-4078-8666-5e65da9e3cea"
+}
