@@ -68,8 +68,18 @@ resource "null_resource" "delete_file" {
   }
 }
 
-data "openstack_compute_instance_v2" "server_info" {
-  count = length(local.server_instance_ids)
+# Fetch information about each server instance
+locals {
+  server_info = [
+    for id in local.server_instance_ids : {
+      id = id
+      instance_data = data.openstack_compute_instance_v2.server_info[id]
+    }
+  ]
+}
 
-  id = local.server_instance_ids[count.index]
+data "openstack_compute_instance_v2" "server_info" {
+  for_each = toset(local.server_instance_ids)
+
+  id = each.value
 }
