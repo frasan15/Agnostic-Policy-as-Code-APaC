@@ -62,9 +62,6 @@ locals {
 
 
 resource "null_resource" "delete_file" {
-  triggers = {
-    always_run = "${timestamp()}"
-  }
 
   provisioner "local-exec" {
     command = "rm -f server_ids.txt"
