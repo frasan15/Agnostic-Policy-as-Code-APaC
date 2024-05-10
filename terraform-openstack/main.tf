@@ -54,11 +54,6 @@ data "local_file" "server_ids_file" {
   filename   = "server_ids.txt"
 }
 
-locals {
-  // Initial definition of server_instance_ids
-  server_instance_ids = [""] * 1
-}
-
 # Store the ids' list inside server_instance_ids, splitting them by \n character
 # Filter out values == ""
 locals {
@@ -73,18 +68,7 @@ resource "null_resource" "delete_file" {
   }
 }
 
-# Fetch information about each server instance
-locals {
-  server_info_map = {
-    for id in local.server_instance_ids : id => id
-  }
-}
 
 data "openstack_compute_instance_v2" "server_info" {
-  for_each = local.server_info_map
-
-  id = each.key
+  id = openstack_compute_instance_v2.web_server.id
 }
-
-
-
