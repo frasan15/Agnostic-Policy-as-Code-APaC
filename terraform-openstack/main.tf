@@ -62,7 +62,7 @@ locals {
 
 
 resource "null_resource" "delete_file" {
-
+  depends_on = [ local.server_instance_ids ]
   provisioner "local-exec" {
     command = "echo '' > server_ids.txt"
   }
