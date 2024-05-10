@@ -45,6 +45,16 @@ resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_1" {
   security_group_id = openstack_networking_secgroup_v2.secgroup_1.id
 }
 
+resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_2" {
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  protocol          = "tcp"
+  port_range_min    = 80
+  port_range_max    = 80
+  remote_ip_prefix  = "0.0.0.0/0"
+  security_group_id = openstack_networking_secgroup_v2.secgroup_1.id
+}
+
 locals {
   depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1 ]
   secgroup_info = {
@@ -59,6 +69,14 @@ locals {
         port_range_min  = openstack_networking_secgroup_rule_v2.secgroup_rule_1.port_range_min
         port_range_max  = openstack_networking_secgroup_rule_v2.secgroup_rule_1.port_range_max
         remote_ip_prefix = openstack_networking_secgroup_rule_v2.secgroup_rule_1.remote_ip_prefix
+      },
+      {
+        direction       = openstack_networking_secgroup_rule_v2.secgroup_rule_2.direction
+        ethertype       = openstack_networking_secgroup_rule_v2.secgroup_rule_2.ethertype
+        protocol        = openstack_networking_secgroup_rule_v2.secgroup_rule_2.protocol
+        port_range_min  = openstack_networking_secgroup_rule_v2.secgroup_rule_2.port_range_min
+        port_range_max  = openstack_networking_secgroup_rule_v2.secgroup_rule_2.port_range_max
+        remote_ip_prefix = openstack_networking_secgroup_rule_v2.secgroup_rule_2.remote_ip_prefix 
       }
     ]
   }
