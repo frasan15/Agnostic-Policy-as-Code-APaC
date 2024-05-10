@@ -22,5 +22,5 @@ output "security_group_info" {
 }
 
 output "subnet_info" {
-  value = openstack_networking_subnet_v2.subnet_1
+  value = data.openstack_networking_subnet_v2.subnet_1
 }
