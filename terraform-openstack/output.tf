@@ -12,3 +12,7 @@ output "server_info" {
 output "server_info_2" {
     value = data.openstack_compute_instance_v2.server_info_2
 }
+
+output "floatingip_info" {
+  value = data.openstack_networking_floatingip_v2.floatingip_1
+}
