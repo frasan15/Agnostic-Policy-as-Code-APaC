@@ -1,7 +1,7 @@
 import subprocess
 
 # Define the Terraform command to execute
-terraform_command = ["terraform", "init"]
+terraform_command = ["terraform", "apply"]
 
 # Run the Terraform command
 try:
