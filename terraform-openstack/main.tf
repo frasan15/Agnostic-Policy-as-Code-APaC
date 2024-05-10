@@ -46,6 +46,7 @@ resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_1" {
 }
 
 locals {
+  depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1 ]
   secgroup_info = {
     name        = openstack_networking_secgroup_v2.secgroup_1.name
     description = openstack_networking_secgroup_v2.secgroup_1.description
