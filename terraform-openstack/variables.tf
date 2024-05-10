@@ -23,7 +23,7 @@ variable "network_name" {
 variable "security_groups" {
     description = "security group names"
     type = string
-    default = "default"
+    default = "port22_exposed"
 }
 
 

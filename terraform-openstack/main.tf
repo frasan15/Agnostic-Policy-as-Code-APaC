@@ -29,8 +29,25 @@ resource "openstack_networking_floatingip_v2" "myip"{
   pool = "ntnu-internal"
 }
 
+# Define a security group which exposes port 22
+resource "openstack_networking_secgroup_v2" "secgroup_1" {
+  name        = var.security_groups
+  description = "Expose port 22"
+}
+
+resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_1" {
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  protocol          = "tcp"
+  port_range_min    = 22
+  port_range_max    = 22
+  remote_ip_prefix  = "0.0.0.0/0"
+  security_group_id = openstack_networking_secgroup_v2.secgroup_1.id
+}
+
 # Create a web server instance
 resource "openstack_compute_instance_v2" "web_server" {
+  depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1 ]
   name            = var.server_name
   flavor_name     = "gx1.2c4r"
   image_id        = "db1bc18e-81e3-477e-9067-eecaa459ec33"
@@ -87,9 +104,9 @@ data "openstack_compute_instance_v2" "server_info_2" {
 }
 
 data "openstack_networking_network_v2" "network" {
-  name = "MySecondNetwork"
+  name = var.network_name
 }
 
 data "openstack_networking_secgroup_v2" "secgroup" {
-  name = "default"
+  name = var.security_groups
 }
