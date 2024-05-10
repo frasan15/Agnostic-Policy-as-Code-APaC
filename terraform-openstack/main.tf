@@ -70,16 +70,14 @@ resource "null_resource" "delete_file" {
 
 # Fetch information about each server instance
 locals {
-  server_info = [
-    for id in local.server_instance_ids : {
-      id = id
-      instance_data = data.openstack_compute_instance_v2.server_info[id]
-    }
-  ]
+  server_info_map = {
+    for id in local.server_instance_ids : id => id
+  }
 }
 
 data "openstack_compute_instance_v2" "server_info" {
-  for_each = toset(local.server_instance_ids)
+  for_each = local.server_info_map
 
-  id = each.value
+  id = each.key
 }
+
