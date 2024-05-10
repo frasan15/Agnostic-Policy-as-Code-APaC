@@ -79,7 +79,8 @@ locals {
   // Map the static keys to values present in local.server_instance_ids
   server_info_map = {
     for idx, key in local.static_server_instance_keys :
-    key => idx < length(local.server_instance_ids) ? local.server_instance_ids[idx] : ""
+    key => idx < length(local.server_instance_ids) ? local.server_instance_ids[idx] : null
+    if idx < length(local.server_instance_ids) // Only include if the condition is satisfied
   }
 }
 
