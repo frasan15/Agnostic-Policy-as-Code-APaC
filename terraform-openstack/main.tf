@@ -52,13 +52,13 @@ locals {
     description = openstack_networking_secgroup_v2.secgroup_1.description
     id = openstack_networking_secgroup_v2.secgroup_1.id
     rules = [
-      for rule in openstack_networking_secgroup_rule_v2.secgroup_rule_1 : {
-        direction       = rule.direction
-        ethertype       = rule.ethertype
-        protocol        = rule.protocol
-        port_range_min  = rule.port_range_min
-        port_range_max  = rule.port_range_max
-        remote_ip_prefix = rule.remote_ip_prefix
+      {
+        direction       = openstack_networking_secgroup_rule_v2.secgroup_rule_1.direction
+        ethertype       = openstack_networking_secgroup_rule_v2.secgroup_rule_1.ethertype
+        protocol        = openstack_networking_secgroup_rule_v2.secgroup_rule_1.protocol
+        port_range_min  = openstack_networking_secgroup_rule_v2.secgroup_rule_1.port_range_min
+        port_range_max  = openstack_networking_secgroup_rule_v2.secgroup_rule_1.port_range_max
+        remote_ip_prefix = openstack_networking_secgroup_rule_v2.secgroup_rule_1.remote_ip_prefix
       }
     ]
   }
