@@ -68,7 +68,9 @@ resource "null_resource" "delete_file" {
   }
 }
 
-
+# I fetch information about web server newly created
+# N.B. If you need to fetch information from other server as well, you need to use the same code asking for the
+# corresponding server's id
 data "openstack_compute_instance_v2" "server_info" {
   id = openstack_compute_instance_v2.web_server.id
 }
