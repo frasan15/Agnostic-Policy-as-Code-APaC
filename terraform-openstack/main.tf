@@ -68,6 +68,8 @@ resource "null_resource" "delete_file" {
   }
 }
 
-#data "openstack_compute_instance_v2" "instance" {
-#  name = "MyThirdServer"
-#}
+data "openstack_compute_instance_v2" "server_info" {
+  count = length(local.server_instance_ids)
+
+  id = local.server_instance_ids[count.index]
+}
