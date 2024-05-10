@@ -26,6 +26,12 @@ variable "security_groups" {
     default = "port22_exposed"
 }
 
+variable "subnet_id" {
+    description = "id subnet. N.B. this is just a semplification, I will be fetching this value in the main when I will be implementing the real infrastructure"
+    type = string
+    default = "cc518030-1241-4d1a-ba60-ffd73772647c"
+}
+
 
 # write all the needed network name, server name, etc. in general all the information needed to retrieve the data you need
 # create a variable as an array containing all these parameters

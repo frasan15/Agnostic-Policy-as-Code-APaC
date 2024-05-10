@@ -148,3 +148,7 @@ data "openstack_networking_secgroup_v2" "secgroup" {
   depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1 ]
   name = var.security_groups
 }
+
+data "openstack_networking_subnet_v2" "subnet_1" {
+  subnet_id = var.subnet_id
+}
