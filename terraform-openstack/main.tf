@@ -69,6 +69,7 @@ resource "null_resource" "delete_file" {
 }
 
 locals {
+  depends_on = [local.server_instance_ids]
   // Define static keys for server_info_map
   static_server_instance_keys = [
     "server1",
@@ -80,6 +81,7 @@ locals {
     for idx, key in local.static_server_instance_keys : key => coalesce(local.server_instance_ids[idx], "")
   }
 }
+
 
 data "openstack_compute_instance_v2" "server_info" {
   for_each = {
