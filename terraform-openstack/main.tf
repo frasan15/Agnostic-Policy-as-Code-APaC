@@ -54,6 +54,11 @@ data "local_file" "server_ids_file" {
   filename   = "server_ids.txt"
 }
 
+locals {
+  // Initial definition of server_instance_ids
+  server_instance_ids = [""] * 1
+}
+
 # Store the ids' list inside server_instance_ids, splitting them by \n character
 # Filter out values == ""
 locals {
@@ -68,31 +73,17 @@ resource "null_resource" "delete_file" {
   }
 }
 
+# Fetch information about each server instance
 locals {
-  depends_on = [local.server_instance_ids]
-  // Define static keys for server_info_map
-  static_server_instance_keys = [
-    "server1",
-    "server2"
-  ]
-  
-  // Map the static keys to values present in local.server_instance_ids
   server_info_map = {
-    for idx, key in local.static_server_instance_keys :
-    key => idx < length(local.server_instance_ids) ? local.server_instance_ids[idx] : null
-    if idx < length(local.server_instance_ids) // Only include if the condition is satisfied
+    for id in local.server_instance_ids : id => id
   }
 }
 
-
 data "openstack_compute_instance_v2" "server_info" {
-  depends_on = [ local.server_info_map ]
-  for_each = {
-    for key, value in local.server_info_map :
-    key => value != "" ? value : null // Include only non-empty values
-  }
+  for_each = local.server_info_map
 
-  id = each.value
+  id = each.key
 }
 
 
