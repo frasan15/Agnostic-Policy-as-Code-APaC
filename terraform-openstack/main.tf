@@ -54,13 +54,13 @@ data "local_file" "server_ids_file" {
   filename   = "server_ids.txt"
 }
 
-# Store the ids' list inside server_instance_ids 
+# Store the ids' list inside server_instance_ids, splitting them by \n character
 # Filter out values == ""
 locals {
   server_instance_ids = [for id in split("\n", data.local_file.server_ids_file.content) : id if id != ""]
 }
 
-
+# After catching all the ids, the file server_ids.txt is resetted
 resource "null_resource" "delete_file" {
   depends_on = [ local.server_instance_ids ]
   provisioner "local-exec" {
