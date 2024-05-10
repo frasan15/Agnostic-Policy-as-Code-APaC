@@ -72,15 +72,7 @@ locals {
   // Define static keys for server_info_map
   static_server_instance_keys = [
     "server1",
-    "server2",
-    "server3",
-    "server4",
-    "server5",
-    "server6",
-    "server7",
-    "server8",
-    "server9",
-    "server10",
+    "server2"
   ]
   
   // Map the static keys to values present in local.server_instance_ids
