@@ -68,18 +68,31 @@ resource "null_resource" "delete_file" {
   }
 }
 
-# Define a map with static keys and apply-time results
 locals {
+  // Define static keys for server_info_map
+  static_server_instance_keys = [
+    "server1",
+    "server2",
+    "server3",
+    "server4",
+    "server5",
+    "server6",
+    "server7",
+    "server8",
+    "server9",
+    "server10",
+  ]
+  
+  // Map the static keys to values present in local.server_instance_ids
   server_info_map = {
-    for id in local.server_instance_ids : id => data.openstack_compute_instance_v2.server_info[id]
+    for key in local.static_server_instance_keys : key => local.server_instance_ids[key]
   }
 }
 
-# Fetch information about each server instance
 data "openstack_compute_instance_v2" "server_info" {
   for_each = local.server_info_map
 
-  id = each.key
+  id = local.server_info_map[each.key]
 }
 
 
