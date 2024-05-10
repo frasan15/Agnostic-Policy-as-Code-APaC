@@ -79,7 +79,7 @@ locals {
 data "openstack_compute_instance_v2" "server_info" {
   for_each = local.server_info_map
 
-  name = each.key
+  id = each.key
 }
 
 
