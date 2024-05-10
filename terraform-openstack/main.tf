@@ -59,6 +59,16 @@ locals {
   server_instance_ids = split("\n", data.local_file.server_ids_file.content)
 }
 
+#resource "null_resource" "delete_file" {
+#  triggers = {
+#    always_run = "${timestamp()}"
+#  }
+
+#  provisioner "local-exec" {
+#    command = "rm -f server_ids.txt"
+#  }
+#}
+
 #data "openstack_compute_instance_v2" "instance" {
 #  name = "MyThirdServer"
 #}
