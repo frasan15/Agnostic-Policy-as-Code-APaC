@@ -31,42 +31,66 @@ try:
         #print("SECOND: ", second_o)
         print("MINE: ", mine)
 
-        # Remove unnecessary characters
+        # Remove unnecessary (and problematic) characters
         terraform_output = mine.replace(" = ", ":")
-        terraform_output = terraform_output.replace("toset([])", "[]")
-        terraform_output = terraform_output.replace("tolist([])", "[]")
         terraform_output = terraform_output.replace("tomap({})", "{}")
-        terraform_output = terraform_output.replace("tostring(null)", "null")
-        terraform_output = terraform_output.replace("tobool(null)", "null")
+        terraform_output = terraform_output.replace("tostring(null)", "None")
+        terraform_output = terraform_output.replace("tobool(null)", "None")
+        terraform_output = terraform_output.replace("null", "None")
         terraform_output = terraform_output.replace("/* of string */", "")
         terraform_output = terraform_output.replace("false", "False")
         terraform_output = terraform_output.replace("true", "True")
+        terraform_output = terraform_output.replace("])", "]")
+
+        # You need to change the following everytime you change the infrastructure
         terraform_output = terraform_output.replace("network_info", '"network_info"')
         terraform_output = terraform_output.replace("security_group_info", '"security_group_info"')
-        terraform_output = terraform_output.replace("server_info", '"server_info"')
         terraform_output = terraform_output.replace("server_info_2", '"server_info_2"')
+        terraform_output = terraform_output.replace("server_info:", '"server_info":')
         terraform_output = terraform_output.replace("server_instance_ids", '"server_instance_ids"')
         terraform_output = terraform_output.replace("subnet_info", '"subnet_info"')
 
-        # Replace '=' with ':' and wrap keys in double quotes
-        terraform_output = terraform_output.replace("\n", ",\n").replace(" = ", ":")
-        terraform_output = "{" + terraform_output + "}"
-
-        print("TATATATT: ", terraform_output)
-
         # Split the data into lines
-        #lines = terraform_output.split('\n')
+        lines = terraform_output.split('\n')
 
-        # Remove trailing comma for the first three lines
-        #modified_lines = [line.rstrip(',') if index < 3 else line for index, line in enumerate(lines)]
+        # Initialize a list to store modified lines
+        modified_lines = []
+
+        # Iterate through the lines
+        for line in lines:
+            # Flag to determine whether the current lines needs a comma at the end of itself
+            comma_needed = True
+
+            # Remove unnecessary characters
+            if "tolist(" or "toset(" in line:
+                 line = line.replace("tolist([", "[")
+                 line = line.replace("toset([", "[")
+                 line = line.replace("tolist(", "")
+                 line = line.replace("toset(", "")
+                 line = line.replace("])", "]")
+                 line = line.replace(")", "")
+
+            # If the line contains one of these characters then it does not need a comma
+            if line.strip().endswith('{') or line == "" or line.strip().endswith(',') or line.strip().endswith("["):     
+                comma_needed = False
+
+            # Add comma to lines which need it
+            if comma_needed:
+                line += ','
+
+            # Append the modified line to the list
+            modified_lines.append(line)
 
         # Join the modified lines back into a string
-        #modified_data = '\n'.join(modified_lines)
+        modified_data = '\n'.join(modified_lines)
 
-        #print("MODIFIED: ", modified_data)
+        # this is needed to represent the object
+        modified_data = "{" + modified_data + "}"
+
+        print("MODIFIED DATA: ", modified_data)
 
         # Convert string to dictionary
-        terraform_dict = eval(terraform_output)
+        terraform_dict = eval(modified_data)
 
         # Print the dictionary
         print("DICTIONARY: ", terraform_dict)
