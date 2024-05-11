@@ -49,18 +49,30 @@ try:
         print("TATATATT: ", terraform_output)
 
         # Split the data into lines
-        lines = terraform_output.split('\n')
+        #lines = terraform_output.split('\n')
 
         # Remove trailing comma for the first three lines
-        modified_lines = [line.rstrip(',') if index < 3 else line for index, line in enumerate(lines)]
+        #modified_lines = [line.rstrip(',') if index < 3 else line for index, line in enumerate(lines)]
 
         # Join the modified lines back into a string
-        modified_data = '\n'.join(modified_lines)
+        #modified_data = '\n'.join(modified_lines)
 
-        print("MODIFIED: ", modified_data)
+        #print("MODIFIED: ", modified_data)
+
+        # Transformation
+        transformed_variable = {
+            "network_info": terraform_output["network_info"],
+            "security_group_info": terraform_output["security_group_info"],
+            "server_info": terraform_output["server_info"],
+            "server_info_2": terraform_output["server_info_2"],
+            "server_instance_ids": terraform_output["server_instance_ids"],
+            "subnet_info": terraform_output["subnet_info"]
+        }
+
+        print("PAPAPAPAP: ", transformed_variable)
 
         # Convert string to dictionary
-        terraform_dict = eval(terraform_output)
+        terraform_dict = eval(transformed_variable)
 
         # Print the dictionary
         print("DICTIONARY: ", terraform_dict)
