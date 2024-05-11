@@ -1,4 +1,5 @@
 import subprocess
+import ast
 
 # Define the Terraform command to execute
 terraform_command = ["sudo", "terraform", "apply"]
@@ -49,7 +50,7 @@ try:
         print("TATATATT: ", terraform_output)
 
         # Convert string to dictionary
-        terraform_dict = eval(terraform_output)
+        terraform_dict = ast.literal_eval(terraform_output)
 
         # Print the dictionary
         print("DICTIONARY: ", terraform_dict)
