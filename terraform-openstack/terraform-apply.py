@@ -1,5 +1,4 @@
 import subprocess
-import ast
 
 # Define the Terraform command to execute
 terraform_command = ["sudo", "terraform", "apply"]
@@ -49,8 +48,19 @@ try:
 
         print("TATATATT: ", terraform_output)
 
+        # Split the data into lines
+        lines = terraform_output.split('\n')
+
+        # Remove trailing comma for the first three lines
+        modified_lines = [line.rstrip(',') if index < 3 else line for index, line in enumerate(lines)]
+
+        # Join the modified lines back into a string
+        modified_data = '\n'.join(modified_lines)
+
+        print("MODIFIED: ", modified_data)
+
         # Convert string to dictionary
-        terraform_dict = ast.literal_eval(terraform_output)
+        terraform_dict = eval(terraform_output)
 
         # Print the dictionary
         print("DICTIONARY: ", terraform_dict)
