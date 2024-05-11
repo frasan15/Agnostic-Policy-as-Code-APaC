@@ -23,8 +23,10 @@ try:
         print("Terraform command executed successfully:")
         result = stdout.decode("utf-8")
         # Split the string by "Outputs:" and get the content after it
-        outputs_section = result.split("Outputs:")[1].strip()
-        print(outputs_section)
+        outputs_section = result.split("Outputs:")[0]
+        second_o = result.split("Outputs:")[1]
+        print("FIRST: ", outputs_section)
+        print("SECOND: ", second_o)
 
 except Exception as e:
     print("An error occurred:", e)
