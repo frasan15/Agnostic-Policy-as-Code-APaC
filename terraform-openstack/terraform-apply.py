@@ -40,6 +40,8 @@ try:
         terraform_output = terraform_output.replace("/* of string */", "")
         terraform_output = terraform_output.replace("false", "False")
         terraform_output = terraform_output.replace("true", "True")
+        terraform_output = terraform_output.replace('"True"', "True")
+        terraform_output = terraform_output.replace('"False"', "False")
         terraform_output = terraform_output.replace("])", "]")
 
         # You need to change the following everytime you change the infrastructure
