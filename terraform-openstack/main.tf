@@ -12,18 +12,6 @@ terraform {
   }
 }
 
-# Configure the OpenStack Provider
-provider "openstack" {
-  user_name   = "fransant"
-  project_domain_id = "cb782810849b4ce8bce7f078cc193b19"
-  user_domain_name = "NTNU"
-  tenant_id   = "630a1bb146cd455f9dcea286cf2347a6"
-  tenant_name = "TTM4905_V24_fransant"
-  password    = var.openstack_password
-  auth_url    = "https://api.skyhigh.iik.ntnu.no:5000"
-  region      = "SkyHiGh"
-}
-
 # Generate a floating ip
 resource "openstack_networking_floatingip_v2" "myip"{
   pool = "ntnu-internal"
