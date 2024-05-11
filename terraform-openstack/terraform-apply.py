@@ -46,6 +46,8 @@ try:
         terraform_output = terraform_output.replace("\n", ",\n").replace(" = ", ":")
         terraform_output = "{" + terraform_output + "}"
 
+        print("TATATATT: ", terraform_output)
+
         # Convert string to dictionary
         terraform_dict = eval(terraform_output)
 
