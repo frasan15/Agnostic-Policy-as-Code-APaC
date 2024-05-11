@@ -41,12 +41,12 @@ try:
         terraform_output = terraform_output.replace("/* of string */", "")
         terraform_output = terraform_output.replace("false", "False")
         terraform_output = terraform_output.replace("true", "True")
-        terraform_output = terraform_output.replace("network_info", "'network_info'")
-        terraform_output = terraform_output.replace("security_group_info", "'security_group_info'")
-        terraform_output = terraform_output.replace("server_info", "'server_info'")
-        terraform_output = terraform_output.replace("server_info_2", "'server_info_2'")
-        terraform_output = terraform_output.replace("server_instance_ids", "'server_instance_ids'")
-        terraform_output = terraform_output.replace("subnet_info", "'subnet_info'")
+        terraform_output = terraform_output.replace("network_info", '"network_info"')
+        terraform_output = terraform_output.replace("security_group_info", '"security_group_info"')
+        terraform_output = terraform_output.replace("server_info", '"server_info"')
+        terraform_output = terraform_output.replace("server_info_2", '"server_info_2"')
+        terraform_output = terraform_output.replace("server_instance_ids", '"server_instance_ids"')
+        terraform_output = terraform_output.replace("subnet_info", '"subnet_info"')
 
         # Replace '=' with ':' and wrap keys in double quotes
         terraform_output = terraform_output.replace("\n", ",\n").replace(" = ", ":")
