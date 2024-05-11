@@ -1,136 +1,137 @@
 {
-  "network_info": {
-    "admin_state_up": True,
-    "all_tags": [],
-    "availability_zone_hints": [],
-    "description": "",
-    "dns_domain": "",
-    "external": False,
-    "id": "b881b3ee-5795-4f8e-b951-19b61a957972",
-    "matching_subnet_cidr": None,
-    "mtu": 9000,
-    "name": "MySecondNetwork",
-    "network_id": None,
-    "region": "SkyHiGh",
-    "segments": [],
-    "shared": False,
-    "status": None,
-    "subnets": [
-      "cc518030-1241-4d1a-ba60-ffd73772647c"
-    ],
-    "tags": None,
-    "tenant_id": "630a1bb146cd455f9dcea286cf2347a6",
-    "transparent_vlan": False
-  },
-  "security_group_info": {
-    "description": "Expose port 22",
-    "id": "50f58a2f-59b7-4e75-81be-354b26ea118b",
-    "name": "port22_exposed",
-    "rules": [
-      {
-        "direction": "ingress",
-        "ethertype": "IPv4",
-        "port_range_max": 22,
-        "port_range_min": 22,
-        "protocol": "tcp",
-        "remote_ip_prefix": "0.0.0.0/0"
-      }
-    ]
-  },
-  "server_info": {
-    "access_ip_v4": "192.168.110.21",
-    "access_ip_v6": "",
-    "availability_zone": "nova",
-    "created": "2024-05-11 16:44:02 +0000 UTC",
-    "flavor_id": "931a16c5-fa1e-4f51-8298-86364b72eb48",
-    "flavor_name": "gx1.2c4r",
-    "id": "8d048ffb-6cee-42e9-b71e-b399047a4bcf",
-    "image_id": "db1bc18e-81e3-477e-9067-eecaa459ec33",
-    "image_name": "Ubuntu Server 22.04 LTS (Jammy Jellyfish amd64",
-    "key_pair": "MySecondKey",
-    "metadata": {},
-    "name": "web_server",
-    "network": [
-      {
-        "fixed_ip_v4": "192.168.110.21",
-        "fixed_ip_v6": "",
-        "mac": "fa:16:3e:9c:e3:fd",
-        "name": "MySecondNetwork",
-        "port": "",
-        "uuid": ""
-      }
-    ],
-    "power_state": "active",
-    "region": "SkyHiGh",
-    "security_groups": [
-      "port22_exposed"
-    ],
-    "tags": [],
-    "updated": "2024-05-11 16:44:26 +0000 UTC",
-    "user_data": None
-  },
-  "server_info_2": {
-    "access_ip_v4": "192.168.110.250",
-    "access_ip_v6": "",
-    "availability_zone": "nova",
-    "created": "2024-02-19 11:20:07 +0000 UTC",
-    "flavor_id": "8879a5d9-398c-458a-8be9-d2abcb8bd7dc",
-    "flavor_name": "sx3.16c32r",
-    "id": "9733b23b-26d6-4078-8666-5e65da9e3cea",
-    "image_id": "db1bc18e-81e3-477e-9067-eecaa459ec33",
-    "image_name": "Ubuntu Server 22.04 LTS (Jammy Jellyfish amd64",
-    "key_pair": "MySecondKey",
-    "metadata": {},
-    "name": "MyThirdServer",
-    "network": [
-      {
-        "fixed_ip_v4": "192.168.110.250",
-        "fixed_ip_v6": "",
-        "mac": "fa:16:3e:2a:0e:23",
-        "name": "MySecondNetwork",
-        "port": "",
-        "uuid": ""
-      }
-    ],
-    "power_state": "active",
-    "region": "SkyHiGh",
-    "security_groups": [
-      "default"
-    ],
-    "tags": [],
-    "updated": "2024-04-11 09:39:46 +0000 UTC",
-    "user_data": None
-  },
-  "server_instance_ids": [
-    "8d048ffb-6cee-42e9-b71e-b399047a4bcf"
+
+"network_info":{
+  "admin_state_up":True,
+  "all_tags":[],
+  "availability_zone_hints":[],
+  "description":"",
+  "dns_domain":"",
+  "external":False,
+  "id":"b881b3ee-5795-4f8e-b951-19b61a957972",
+  "matching_subnet_cidr":None,
+  "mtu":9000,
+  "name":"MySecondNetwork",
+  "network_id":None,
+  "region":"SkyHiGh",
+  "segments":[],
+  "shared":False,
+  "status":None,
+  "subnets":[
+    "cc518030-1241-4d1a-ba60-ffd73772647c",
   ],
-  "subnet_info": {
-    "all_tags": [],
-    "allocation_pools": [
-      {
-        "end": "192.168.110.254",
-        "start": "192.168.110.2"
-      }
-    ],
-    "cidr": "192.168.110.0/24",
-    "description": "",
-    "dhcp_disabled": None,
-    "dhcp_enabled": None,
-    "dns_nameservers": [],
-    "enable_dhcp": True,
-    "gateway_ip": "192.168.110.1",
-    "host_routes": [],
-    "id": "cc518030-1241-4d1a-ba60-ffd73772647c",
-    "ip_version": 4,
-    "ipv6_address_mode": "",
-    "ipv6_ra_mode": "",
-    "name": "MySecondSubnet-v4",
-    "network_id": "b881b3ee-5795-4f8e-b951-19b61a957972",
-    "region": "SkyHiGh",
-    "service_types": [],
-    "subnet_id": "cc518030-1241-4d1a-ba60-ffd73772647c",
-    "subnetpool_id": "",
-    "tags": None,
-    "tenant_id": "630a1bb146cd455f9dcea286cf2347a6"
-  }
+  "tags":None ,
+  "tenant_id":"630a1bb146cd455f9dcea286cf2347a6",
+  "transparent_vlan":False,
+},
+"security_group_info":{
+  "description":"Expose port 22",
+  "id":"dc7f6c81-5816-41fc-b2a1-dc67286f3a7b",
+  "name":"port22_exposed",
+  "rules":[
+    {
+      "direction":"ingress",
+      "ethertype":"IPv4",
+      "port_range_max":22,
+      "port_range_min":22,
+      "protocol":"tcp",
+      "remote_ip_prefix":"0.0.0.0/0",
+    },
+  ],
+},
+"server_info":{
+  "access_ip_v4":"192.168.110.19",
+  "access_ip_v6":"",
+  "availability_zone":"nova",
+  "created":"2024-05-11 17:15:40 +0000 UTC",
+  "flavor_id":"931a16c5-fa1e-4f51-8298-86364b72eb48",
+  "flavor_name":"gx1.2c4r",
+  "id":"3ce6d565-ebf0-4dca-87cc-8e893a493e58",
+  "image_id":"db1bc18e-81e3-477e-9067-eecaa459ec33",
+  "image_name":"Ubuntu Server 22.04 LTS (Jammy Jellyfish amd64",
+  "key_pair":"MySecondKey",
+  "metadata":{},
+  "name":"web_server",
+  "network":[
+    {
+      "fixed_ip_v4":"192.168.110.19",
+      "fixed_ip_v6":"",
+      "mac":"fa:16:3e:ef:c6:29",
+      "name":"MySecondNetwork",
+      "port":"",
+      "uuid":"",
+    },
+  ],
+  "power_state":"active",
+  "region":"SkyHiGh",
+  "security_groups":[
+    "port22_exposed",
+  ],
+  "tags":[],
+  "updated":"2024-05-11 17:16:43 +0000 UTC",
+  "user_data":None,
+},
+"server_info_2":{
+  "access_ip_v4":"192.168.110.250",
+  "access_ip_v6":"",
+  "availability_zone":"nova",
+  "created":"2024-02-19 11:20:07 +0000 UTC",
+  "flavor_id":"8879a5d9-398c-458a-8be9-d2abcb8bd7dc",
+  "flavor_name":"sx3.16c32r",
+  "id":"9733b23b-26d6-4078-8666-5e65da9e3cea",
+  "image_id":"db1bc18e-81e3-477e-9067-eecaa459ec33",
+  "image_name":"Ubuntu Server 22.04 LTS (Jammy Jellyfish amd64",
+  "key_pair":"MySecondKey",
+  "metadata":{},
+  "name":"MyThirdServer",
+  "network":[
+    {
+      "fixed_ip_v4":"192.168.110.250",
+      "fixed_ip_v6":"",
+      "mac":"fa:16:3e:2a:0e:23",
+      "name":"MySecondNetwork",
+      "port":"",
+      "uuid":"",
+    },
+  ],
+  "power_state":"active",
+  "region":"SkyHiGh",
+  "security_groups":[
+    "default",
+  ],
+  "tags":[],
+  "updated":"2024-04-11 09:39:46 +0000 UTC",
+  "user_data":None,
+},
+"server_instance_ids":[
+  "3ce6d565-ebf0-4dca-87cc-8e893a493e58",
+],
+"subnet_info":{
+  "all_tags":[],
+  "allocation_pools":[
+    {
+      "end":"192.168.110.254",
+      "start":"192.168.110.2",
+    },
+  ],
+  "cidr":"192.168.110.0/24",
+  "description":"",
+  "dhcp_disabled":None,
+  "dhcp_enabled":None,
+  "dns_nameservers":[],
+  "enable_dhcp":True,
+  "gateway_ip":"192.168.110.1",
+  "host_routes":[],
+  "id":"cc518030-1241-4d1a-ba60-ffd73772647c",
+  "ip_version":4,
+  "ipv6_address_mode":"",
+  "ipv6_ra_mode":"",
+  "name":"MySecondSubnet-v4",
+  "network_id":"b881b3ee-5795-4f8e-b951-19b61a957972",
+  "region":"SkyHiGh",
+  "service_types":[],
+  "subnet_id":"cc518030-1241-4d1a-ba60-ffd73772647c",
+  "subnetpool_id":"",
+  "tags":None ,
+  "tenant_id":"630a1bb146cd455f9dcea286cf2347a6",
+},
 }
