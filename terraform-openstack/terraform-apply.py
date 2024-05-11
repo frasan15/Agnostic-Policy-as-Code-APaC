@@ -21,7 +21,8 @@ try:
         print(stderr.decode("utf-8"))
     else:
         print("Terraform command executed successfully:")
-        print(stdout.decode("utf-8"))
+        result = stdout.decode("utf-8")
+        print("this is the result:", result)
 
 except Exception as e:
     print("An error occurred:", e)
