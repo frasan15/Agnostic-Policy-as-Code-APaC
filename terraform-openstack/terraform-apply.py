@@ -101,18 +101,18 @@ try:
     "dns_domain": "",
     "external": False,
     "id": "b881b3ee-5795-4f8e-b951-19b61a957972",
-    "matching_subnet_cidr": null,
+    "matching_subnet_cidr": None,
     "mtu": 9000,
     "name": "MySecondNetwork",
-    "network_id": null,
+    "network_id": None,
     "region": "SkyHiGh",
     "segments": [],
     "shared": False,
-    "status": null,
+    "status": None,
     "subnets": [
       "cc518030-1241-4d1a-ba60-ffd73772647c"
     ],
-    "tags": null,
+    "tags": None,
     "tenant_id": "630a1bb146cd455f9dcea286cf2347a6",
     "transparent_vlan": False
   },
@@ -161,7 +161,7 @@ try:
     ],
     "tags": [],
     "updated": "2024-05-11 16:44:26 +0000 UTC",
-    "user_data": null
+    "user_data": None
   },
   "server_info_2": {
     "access_ip_v4": "192.168.110.250",
@@ -193,7 +193,7 @@ try:
     ],
     "tags": [],
     "updated": "2024-04-11 09:39:46 +0000 UTC",
-    "user_data": null
+    "user_data": None
   },
   "server_instance_ids": [
     "8d048ffb-6cee-42e9-b71e-b399047a4bcf"
@@ -208,8 +208,8 @@ try:
     ],
     "cidr": "192.168.110.0/24",
     "description": "",
-    "dhcp_disabled": null,
-    "dhcp_enabled": null,
+    "dhcp_disabled": None,
+    "dhcp_enabled": None,
     "dns_nameservers": [],
     "enable_dhcp": True,
     "gateway_ip": "192.168.110.1",
@@ -224,7 +224,7 @@ try:
     "service_types": [],
     "subnet_id": "cc518030-1241-4d1a-ba60-ffd73772647c",
     "subnetpool_id": "",
-    "tags": null,
+    "tags": None,
     "tenant_id": "630a1bb146cd455f9dcea286cf2347a6"
   }
 }
