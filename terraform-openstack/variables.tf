@@ -1,6 +1,4 @@
-variable "openstack_password" {
-    
-}
+
 
 variable "server_name_existing" {
     description = "name of already existing server"
