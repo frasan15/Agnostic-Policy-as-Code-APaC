@@ -231,7 +231,7 @@ try:
 '''
 
         # Convert string to dictionary
-        terraform_dict = eval(modified_data)
+        terraform_dict = eval(prov)
 
         # Print the dictionary
         print("DICTIONARY: ", terraform_dict)
