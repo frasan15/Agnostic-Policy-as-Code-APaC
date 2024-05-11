@@ -33,11 +33,11 @@ try:
 
         # Remove unnecessary characters
         terraform_output = mine.replace(" = ", ":")
-        terraform_output = terraform_output.replace("toset([])", "")
-        terraform_output = terraform_output.replace("tolist([])", "")
-        terraform_output = terraform_output.replace("tomap({})", "")
-        terraform_output = terraform_output.replace("tostring(null)", "")
-        terraform_output = terraform_output.replace("tobool(null)", "")
+        terraform_output = terraform_output.replace("toset([])", "[]")
+        terraform_output = terraform_output.replace("tolist([])", "[]")
+        terraform_output = terraform_output.replace("tomap({})", "{}")
+        terraform_output = terraform_output.replace("tostring(null)", "null")
+        terraform_output = terraform_output.replace("tobool(null)", "null")
         terraform_output = terraform_output.replace("/* of string */", "")
         terraform_output = terraform_output.replace("false", "False")
         terraform_output = terraform_output.replace("true", "True")
