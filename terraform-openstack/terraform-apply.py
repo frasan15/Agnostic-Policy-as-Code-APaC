@@ -41,6 +41,12 @@ try:
         terraform_output = terraform_output.replace("/* of string */", "")
         terraform_output = terraform_output.replace("false", "False")
         terraform_output = terraform_output.replace("true", "True")
+        terraform_output = terraform_output.replace("network_info", "'network_info'")
+        terraform_output = terraform_output.replace("security_group_info", "'security_group_info'")
+        terraform_output = terraform_output.replace("server_info", "'server_info'")
+        terraform_output = terraform_output.replace("server_info_2", "'server_info_2'")
+        terraform_output = terraform_output.replace("server_instance_ids", "'server_instance_ids'")
+        terraform_output = terraform_output.replace("subnet_info", "'subnet_info'")
 
         # Replace '=' with ':' and wrap keys in double quotes
         terraform_output = terraform_output.replace("\n", ",\n").replace(" = ", ":")
@@ -59,20 +65,8 @@ try:
 
         #print("MODIFIED: ", modified_data)
 
-        # Transformation
-        transformed_variable = {
-            "network_info": terraform_output["network_info"],
-            "security_group_info": terraform_output["security_group_info"],
-            "server_info": terraform_output["server_info"],
-            "server_info_2": terraform_output["server_info_2"],
-            "server_instance_ids": terraform_output["server_instance_ids"],
-            "subnet_info": terraform_output["subnet_info"]
-        }
-
-        print("PAPAPAPAP: ", transformed_variable)
-
         # Convert string to dictionary
-        terraform_dict = eval(transformed_variable)
+        terraform_dict = eval(terraform_output)
 
         # Print the dictionary
         print("DICTIONARY: ", terraform_dict)
