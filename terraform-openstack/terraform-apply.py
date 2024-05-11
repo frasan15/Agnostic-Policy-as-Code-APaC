@@ -25,9 +25,11 @@ try:
         # Split the string by "Outputs:" and get the content after it
         outputs_section = result.split("Outputs:")[0]
         second_o = result.split("Outputs:")[1]
+        mine = result.split("Outputs:")[2]
         print("RESULT: ", result)
         print("FIRST: ", outputs_section)
         print("SECOND: ", second_o)
+        print("MINE: ", mine)
 
 except Exception as e:
     print("An error occurred:", e)
