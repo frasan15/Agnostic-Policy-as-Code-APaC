@@ -17,11 +17,6 @@ resource "openstack_networking_floatingip_v2" "myip"{
   pool = "ntnu-internal"
 }
 
-locals {
-  depends_on = [openstack_networking_floatingip_v2.myip]
-  address = openstack_networking_floatingip_v2.myip.address
-}
-
 # Define a security group which exposes port 22
 resource "openstack_networking_secgroup_v2" "secgroup_1" {
   name        = var.security_groups
@@ -44,7 +39,7 @@ resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_1" {
 # This is needed since Terraform-OpenStack registry does not provide any function to retrieve such info
 # about subnets
 locals {
-  depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1 ]
+  depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1, openstack_networking_floatingip_v2.myip ]
   secgroup_info = {
     name        = openstack_networking_secgroup_v2.secgroup_1.name
     description = openstack_networking_secgroup_v2.secgroup_1.description
@@ -60,6 +55,7 @@ locals {
       }
     ]
   }
+  address = openstack_networking_floatingip_v2.myip.address
 }
 
 # Create a web server instance
