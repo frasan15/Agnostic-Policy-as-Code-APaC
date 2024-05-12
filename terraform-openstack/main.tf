@@ -14,7 +14,7 @@ terraform {
 
 # Generate a floating ip
 resource "openstack_networking_floatingip_v2" "myip"{
-  pool = "ntnu-internal"
+#  pool = "ntnu-internal"
 }
 
 # Define a security group which exposes port 22
