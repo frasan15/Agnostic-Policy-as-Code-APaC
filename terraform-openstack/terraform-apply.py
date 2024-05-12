@@ -1,5 +1,6 @@
 import subprocess
 import json
+import os
 
 # Define the Terraform command to execute
 terraform_command = ["sudo", "terraform", "apply"]
@@ -121,6 +122,18 @@ try:
             final_results['subnets'].append(result_object_2)
 
         print(json.dumps(final_results, indent=4))
+
+        # Get the directory of the current Python script
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # Define the path for the JSON file
+        json_file_path = os.path.join(current_dir, "result_object.json")
+
+        # Write data to the JSON file
+        with open(json_file_path, 'w') as json_file:
+            json.dump(final_results, json_file, indent=4)
+
+        print("JSON file has been generated and saved at:", json_file_path)
 
         
 
