@@ -23,7 +23,7 @@ output "security_groups" {
 }
 
 output "floatingip" {
-  value = local.address
+  value = local.float_ip
 }
 
 output "subnets" {
