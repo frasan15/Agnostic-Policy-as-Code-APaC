@@ -22,6 +22,10 @@ output "security_groups" {
   ]
 }
 
+output "floatingip" {
+  value = local.address
+}
+
 output "subnets" {
   value = [
     data.openstack_networking_subnet_v2.subnet_1
@@ -30,8 +34,4 @@ output "subnets" {
 
 output "router" {
   value = data.openstack_networking_router_v2.router
-}
-
-output "floating_ip" {
-  value = data.openstack_networking_floatingip_v2.myip
 }

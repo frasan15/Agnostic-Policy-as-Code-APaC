@@ -17,6 +17,11 @@ resource "openstack_networking_floatingip_v2" "myip"{
   pool = "ntnu-internal"
 }
 
+locals {
+  depends_on = [openstack_networking_floatingip_v2.myip]
+  address = openstack_networking_floatingip_v2.myip.address
+}
+
 # Define a security group which exposes port 22
 resource "openstack_networking_secgroup_v2" "secgroup_1" {
   name        = var.security_groups
@@ -131,8 +136,4 @@ data "openstack_networking_subnet_v2" "subnet_1" {
 
 data "openstack_networking_router_v2" "router" {
   name = "MySecondRouter"
-}
-
-data "openstack_networking_floatingip_v2" "myip" {
-  address = data.openstack_compute_instance_v2.server_info_2.access_ip_v4
 }
