@@ -39,7 +39,7 @@ resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_1" {
 # This is needed since Terraform-OpenStack registry does not provide any function to retrieve such info
 # about subnets
 locals {
-  depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1, openstack_networking_floatingip_v2.myip ]
+  depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1, openstack_networking_floatingip_v2.myip, openstack_compute_floatingip_associate_v2.myip ]
   secgroup_info = {
     name        = openstack_networking_secgroup_v2.secgroup_1.name
     description = openstack_networking_secgroup_v2.secgroup_1.description
