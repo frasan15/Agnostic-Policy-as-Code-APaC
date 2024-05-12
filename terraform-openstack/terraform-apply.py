@@ -108,7 +108,19 @@ try:
             # Append the result object to the final results list, in the servers array
             final_results["servers"].append(result_object)
 
-            print(json.dumps(final_results, indent=4))
+        # List all the subnets and store them into final_result object
+        for subnet in terraform_dict['subnets']['value']:
+            result_object_2 = {
+                'id': subnet['id'],
+                'name': subnet['name'],
+                'network_id': subnet['network_id'],
+                'allocation_pools': subnet['allocation_pools'],
+                'cidr': subnet['cidr']
+            }
+
+            final_results['subnets'].append(result_object_2)
+
+        print(json.dumps(final_results, indent=4))
 
         
 
