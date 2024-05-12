@@ -128,3 +128,7 @@ data "openstack_networking_secgroup_v2" "secgroup" {
 data "openstack_networking_subnet_v2" "subnet_1" {
   subnet_id = var.subnet_id
 }
+
+data "openstack_networking_router_v2" "router" {
+  name = "MySecondRouter"
+}
