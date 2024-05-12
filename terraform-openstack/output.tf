@@ -31,3 +31,7 @@ output "subnets" {
 output "router" {
   value = data.openstack_networking_router_v2.router
 }
+
+output "floating_ip" {
+  value = data.openstack_compute_floatingip_associate_v2.floatingip_1
+}
