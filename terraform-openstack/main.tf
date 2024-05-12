@@ -57,7 +57,7 @@ locals {
   }
   float_ip = {
     address = openstack_networking_floatingip_v2.myip.address
-    fixed_ip = openstack_networking_floatingip_v2.myip.fixed_ip
+    fixed_ip = openstack_networking_floatingip_v2.myip
   }
 }
 
