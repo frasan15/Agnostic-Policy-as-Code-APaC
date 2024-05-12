@@ -43,6 +43,7 @@ try:
         terraform_output = terraform_output.replace('"True"', "True")
         terraform_output = terraform_output.replace('"False"', "False")
         terraform_output = terraform_output.replace("])", "]")
+        terraform_output = terraform_output.replace('",', '"')
 
         # You need to change the following everytime you change the infrastructure
         terraform_output = terraform_output.replace("network_info", '"network_info"')
