@@ -42,11 +42,13 @@ try:
     else:
         print("Terraform command executed successfully:")
         result = stdout.decode("utf-8")
-        #print("RESULT: ", result)
+        print("RESULT: ", result)
         terraform_dict = json.loads(result) # convert the result from json into a python format
 
         # Print the dictionary
         print("DICTIONARY: ", terraform_dict)
+
+        
 
         
 
