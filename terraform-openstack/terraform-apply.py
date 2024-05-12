@@ -73,6 +73,10 @@ try:
                  line = line.replace("])", "]")
                  line = line.replace(")", "")
 
+            if line.strip().endswith('",'):
+                 line = line.replace('",', '"')
+                 comma_needed = False
+
             # If the line contains one of these characters then it does not need a comma
             if line.strip().endswith('{') or line == "" or line.strip().endswith(',') or line.strip().endswith("["):     
                 comma_needed = False
