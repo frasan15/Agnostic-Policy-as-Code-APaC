@@ -25,13 +25,8 @@ try:
         print("Terraform command executed successfully:")
         result = stdout.decode("utf-8")
         # Split the string by "Outputs:" and get the content after it
-        #outputs_section = result.split("Outputs:")[0]
-        #second_o = result.split("Outputs:")[1]
-        mine = result.split("Outputs:")[2]
-        #print("RESULT: ", result)
-        #print("FIRST: ", outputs_section)
-        #print("SECOND: ", second_o)
-        print("MINE: ", mine)
+        output_needed = result.split("Outputs:")[2]
+        print("OUTPUT NEEDED: ", output_needed)
 
 
     # Execute the Terraform command, redirecting stdout and stderr to pipes
@@ -47,24 +42,12 @@ try:
     else:
         print("Terraform command executed successfully:")
         result = stdout.decode("utf-8")
-        # Split the string by "Outputs:" and get the content after it
-        #outputs_section = result.split("Outputs:")[0]
-        #second_o = result.split("Outputs:")[1]
-        #mine = result.split("Outputs:")[2]
         #print("RESULT: ", result)
-        #print("FIRST: ", outputs_section)
-        #print("SECOND: ", second_o)
-        print("RESULT: ", result)
-
-        terraform_dict = json.loads(result)
-        #print("CONVERTED: ", converted)
-        # Convert string to dictionary
-        #terraform_dict = eval(modified_data)
+        terraform_dict = json.loads(result) # convert the result from json into a python format
 
         # Print the dictionary
         print("DICTIONARY: ", terraform_dict)
 
-        # Remove unnecessary (and problematic) characters
         
 
 except Exception as e:
