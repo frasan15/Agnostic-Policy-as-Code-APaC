@@ -1,4 +1,5 @@
 import subprocess
+import json
 
 # Define the Terraform command to execute
 terraform_command = ["sudo", "terraform", "apply"]
@@ -54,6 +55,14 @@ try:
         #print("FIRST: ", outputs_section)
         #print("SECOND: ", second_o)
         print("RESULT: ", result)
+
+        terraform_dict = json.loads(result)
+        #print("CONVERTED: ", converted)
+        # Convert string to dictionary
+        #terraform_dict = eval(modified_data)
+
+        # Print the dictionary
+        print("DICTIONARY: ", terraform_dict)
 
         # Remove unnecessary (and problematic) characters
         
