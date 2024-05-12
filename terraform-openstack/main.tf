@@ -35,32 +35,6 @@ resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_1" {
   security_group_id = openstack_networking_secgroup_v2.secgroup_1.id
 }
 
-# Define all the information needed for the subnet here below
-# This is needed since Terraform-OpenStack registry does not provide any function to retrieve such info
-# about subnets
-locals {
-  depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1, openstack_networking_floatingip_v2.myip, openstack_compute_floatingip_associate_v2.myip ]
-  secgroup_info = {
-    name        = openstack_networking_secgroup_v2.secgroup_1.name
-    description = openstack_networking_secgroup_v2.secgroup_1.description
-    id = openstack_networking_secgroup_v2.secgroup_1.id
-    rules = [
-      {
-        direction       = openstack_networking_secgroup_rule_v2.secgroup_rule_1.direction
-        ethertype       = openstack_networking_secgroup_rule_v2.secgroup_rule_1.ethertype
-        protocol        = openstack_networking_secgroup_rule_v2.secgroup_rule_1.protocol
-        port_range_min  = openstack_networking_secgroup_rule_v2.secgroup_rule_1.port_range_min
-        port_range_max  = openstack_networking_secgroup_rule_v2.secgroup_rule_1.port_range_max
-        remote_ip_prefix = openstack_networking_secgroup_rule_v2.secgroup_rule_1.remote_ip_prefix
-      }
-    ]
-  }
-  float_ip = {
-    address = openstack_networking_floatingip_v2.myip.address
-    fixed_ip = openstack_networking_floatingip_v2.myip
-  }
-}
-
 # Create a web server instance
 resource "openstack_compute_instance_v2" "web_server" {
   depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1 ]
@@ -87,6 +61,32 @@ resource "openstack_compute_floatingip_associate_v2" "myip" {
   floating_ip = openstack_networking_floatingip_v2.myip.address
   instance_id = openstack_compute_instance_v2.web_server.id # this is the id of the instance to associate the floating ip with
   fixed_ip = openstack_compute_instance_v2.web_server.network.0.fixed_ip_v4 # the fixed ip address of the instance. This ensures that the floating IP is associated with the correct interface on the instance
+}
+
+# Define all the information needed for the subnet here below
+# This is needed since Terraform-OpenStack registry does not provide any function to retrieve such info
+# about subnets
+locals {
+  depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1, openstack_networking_floatingip_v2.myip, openstack_compute_floatingip_associate_v2.myip ]
+  secgroup_info = {
+    name        = openstack_networking_secgroup_v2.secgroup_1.name
+    description = openstack_networking_secgroup_v2.secgroup_1.description
+    id = openstack_networking_secgroup_v2.secgroup_1.id
+    rules = [
+      {
+        direction       = openstack_networking_secgroup_rule_v2.secgroup_rule_1.direction
+        ethertype       = openstack_networking_secgroup_rule_v2.secgroup_rule_1.ethertype
+        protocol        = openstack_networking_secgroup_rule_v2.secgroup_rule_1.protocol
+        port_range_min  = openstack_networking_secgroup_rule_v2.secgroup_rule_1.port_range_min
+        port_range_max  = openstack_networking_secgroup_rule_v2.secgroup_rule_1.port_range_max
+        remote_ip_prefix = openstack_networking_secgroup_rule_v2.secgroup_rule_1.remote_ip_prefix
+      }
+    ]
+  }
+  float_ip = {
+    address = openstack_networking_floatingip_v2.myip.address
+    fixed_ip = openstack_networking_floatingip_v2.myip
+  }
 }
 
 # Read server instance IDs from the file
