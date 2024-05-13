@@ -22,7 +22,7 @@ output "security_groups" {
   ]
 }
 
-output "floatingip" {
+output "heree" {
   value = local.float_ip
   sensitive = false
 }
