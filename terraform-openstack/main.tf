@@ -164,7 +164,7 @@ data "openstack_compute_instance_v2" "server_info_2" {
 }
 
 data "openstack_networking_network_v2" "network" {
-  name = var.network_name
+  name = var.network1
 }
 
 data "openstack_networking_secgroup_v2" "secgroup" {
@@ -173,7 +173,7 @@ data "openstack_networking_secgroup_v2" "secgroup" {
 }
 
 data "openstack_networking_subnet_v2" "subnet_1" {
-  subnet_id = var.subnet_id
+  subnet_id = var.subnet1
 }
 
 data "openstack_networking_router_v2" "router" {
