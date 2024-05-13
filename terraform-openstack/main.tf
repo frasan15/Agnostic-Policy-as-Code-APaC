@@ -124,12 +124,9 @@ locals {
       }
     ]
   }
-  #float_ip = {
-  #  de = openstack_compute_instance_v2.web_server
-    #fixed_ip = openstack_networking_floatingip_v2.myip.fixed_ip
-    #floating_ip = openstack_networking_floatingip_v2.myip.address
-    #entire = openstack_networking_floatingip_v2.myip
-  #}
+  float_ip = {
+    entire = openstack_networking_floatingip_v2.myip
+  }
 }
 
 # Read server instance IDs from the file
@@ -183,7 +180,9 @@ data "openstack_networking_router_v2" "router" {
   name = var.router1
 }
 
-data "openstack_networking_floatingip_v2" "floatingip_1" {
-  depends_on = [ openstack_networking_floatingip_v2.myip ]
-  address = "192.168.111.10"
-}
+# ERROR: The following module is shown in the documentation but it's not found once terraform apply is executed
+
+#data "openstack_networking_floatingip_v2" "floatingip_1" {
+#  depends_on = [ openstack_networking_floatingip_v2.myip ]
+#  address = "192.168.111.10"
+#}

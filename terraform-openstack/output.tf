@@ -23,7 +23,7 @@ output "security_groups" {
 }
 
 output "floatingip" {
-  value = data.openstack_networking_floatingip_v2.floatingip_1
+  value = local.float_ip
 }
 
 output "subnets" {
