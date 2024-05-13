@@ -62,7 +62,7 @@ resource "openstack_compute_instance_v2" "web_server" {
   flavor_name     = "gx1.2c4r"
   image_id        = "db1bc18e-81e3-477e-9067-eecaa459ec33"
   network {
-    port = openstack_networking_port_v2.port_1
+    port = openstack_networking_port_v2.port_1.id
   }
   security_groups = [openstack_networking_secgroup_v2.secgroup_1.name]
   key_pair = "MySecondKey"
