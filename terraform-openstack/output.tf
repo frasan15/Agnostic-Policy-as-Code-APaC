@@ -22,8 +22,10 @@ output "security_groups" {
   ]
 }
 
-output "floatingip" {
-  value = local.float_ip
+output "floating_ips" {
+  value = [
+    local.float_ip
+  ]
 }
 
 output "subnets" {
