@@ -92,9 +92,9 @@ locals {
   }
   float_ip = {
     de = openstack_compute_instance_v2.web_server
-    fixed_ip = openstack_networking_floatingip_v2.myip.fixed_ip
-    floating_ip = openstack_networking_floatingip_v2.myip.address
-    entire = openstack_networking_floatingip_v2.myip
+    #fixed_ip = openstack_networking_floatingip_v2.myip.fixed_ip
+    #floating_ip = openstack_networking_floatingip_v2.myip.address
+    #entire = openstack_networking_floatingip_v2.myip
   }
 }
 
