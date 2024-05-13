@@ -12,11 +12,13 @@ terraform {
   }
 }
 
+# Create a network
 resource "openstack_networking_network_v2" "network_1" {
   name = var.network1
   admin_state_up = "true"
 }
 
+# Create a subnet within the previously created network
 resource "openstack_networking_subnet_v2" "subnet_1" {
   name = var.subnet1
   network_id = openstack_networking_network_v2.network_1.id
@@ -43,6 +45,9 @@ resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_1" {
   security_group_id = openstack_networking_secgroup_v2.secgroup_1.id
 }
 
+# Define a port (or interface) to connect the server to the newly created subnet; defining a port means 
+# to specify the subnet id where to connect the server to, and the ip address this interface will have
+# this ip address is basically the ip address of the server itself
 resource "openstack_networking_port_v2" "port_1" {
   name = "port_1"
   network_id = openstack_networking_network_v2.network_1.id
@@ -93,16 +98,7 @@ resource "openstack_networking_floatingip_v2" "myip"{
   depends_on = [ openstack_compute_instance_v2.web_server, openstack_networking_router_interface_v2.router_interface_1 ]
   pool = "ntnu-internal"
   port_id = openstack_networking_port_v2.port_1.id
-  #fixed_ip = openstack_compute_instance_v2.web_server.access_ip_v4
 }
-
-# Define a floating ip
-#resource "openstack_compute_floatingip_associate_v2" "myip" {
-#  depends_on = [ openstack_compute_instance_v2.web_server ]
-#  floating_ip = openstack_networking_floatingip_v2.myip.address
-#  instance_id = openstack_compute_instance_v2.web_server.id # this is the id of the instance to associate the floating ip with
-#  fixed_ip = openstack_compute_instance_v2.web_server.network.0.fixed_ip_v4 # the fixed ip address of the instance. This ensures that the floating IP is associated with the correct interface on the instance
-#}
 
 # Define all the information needed for the subnet here below
 # This is needed since Terraform-OpenStack registry does not provide any function to retrieve such info
