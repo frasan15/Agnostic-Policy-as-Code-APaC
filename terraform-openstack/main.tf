@@ -124,9 +124,8 @@ locals {
       }
     ]
   }
-  float_ip = {
-    entire = openstack_networking_floatingip_v2.myip
-  }
+  # the following is needed to see which fixed ip address the newly created floating ip address corresponds to 
+  float_ip = openstack_networking_floatingip_v2.myip
 }
 
 # Read server instance IDs from the file
