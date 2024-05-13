@@ -12,6 +12,18 @@ terraform {
   }
 }
 
+resource "openstack_networking_network_v2" "network_1" {
+  name = var.network1
+  admin_state_up = "true"
+}
+
+resource "openstack_networking_subnet_v2" "subnet_1" {
+  name = var.subnet1
+  network_id = openstack_networking_network_v2.network_1.id
+  cidr = "192.168.111.0/24"
+  ip_version = 4
+}
+
 # Define a security group which exposes port 22
 resource "openstack_networking_secgroup_v2" "secgroup_1" {
   name        = var.security_groups
@@ -20,6 +32,7 @@ resource "openstack_networking_secgroup_v2" "secgroup_1" {
 
 # Specifically, you define the rules hereby
 # If you want to define other rules, then you have the define other resources like the one below
+# N.B. the parameter security_group_id below refers to the previous created security group
 resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_1" {
   direction         = "ingress"
   ethertype         = "IPv4"
@@ -30,6 +43,18 @@ resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_1" {
   security_group_id = openstack_networking_secgroup_v2.secgroup_1.id
 }
 
+resource "openstack_networking_port_v2" "port_1" {
+  name = "port_1"
+  network_id = openstack_networking_network_v2.network_1.id
+  admin_state_up = "true"
+  security_group_ids = [openstack_networking_secgroup_v2.secgroup_1.id]
+
+  fixed_ip {
+    subnet_id = openstack_networking_subnet_v2.subnet_1
+    ip_address = "192.168.111.10"
+  }
+}
+
 # Create a web server instance
 resource "openstack_compute_instance_v2" "web_server" {
   depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1 ]
@@ -37,9 +62,9 @@ resource "openstack_compute_instance_v2" "web_server" {
   flavor_name     = "gx1.2c4r"
   image_id        = "db1bc18e-81e3-477e-9067-eecaa459ec33"
   network {
-    name = var.network_name
+    port = openstack_networking_port_v2.port_1
   }
-  security_groups = [var.security_groups]
+  security_groups = [openstack_networking_secgroup_v2.secgroup_1.name]
   key_pair = "MySecondKey"
 
 # The following provisioner writes into the file server_ids.txt the id of the newly created server (N.B. I will use this file as a list of all the server's ids created)

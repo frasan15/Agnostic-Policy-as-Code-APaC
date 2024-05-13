@@ -30,6 +30,18 @@ variable "subnet_id" {
     default = "cc518030-1241-4d1a-ba60-ffd73772647c"
 }
 
+variable "network1" {
+    description = "network name of a new network"
+    type = string
+    default = "network1"
+}
+
+variable "subnet1" {
+    description = "subnet name"
+    type = string
+    default = "subnet1"
+}
+
 
 # write all the needed network name, server name, etc. in general all the information needed to retrieve the data you need
 # create a variable as an array containing all these parameters
