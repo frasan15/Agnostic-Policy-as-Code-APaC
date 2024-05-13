@@ -73,7 +73,7 @@ resource "openstack_networking_floatingip_v2" "myip"{
 #       find a nice way of exporting the information whether a server has a floating ip or not; since you can use this to determine whether is connected to Internet or not -> ASK TO PALMA MAYBE
 
 locals {
-  depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1, openstack_networking_floatingip_v2.myip, openstack_compute_floatingip_associate_v2.myip ]
+  depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1, openstack_networking_floatingip_v2.myip ]
   secgroup_info = {
     name        = openstack_networking_secgroup_v2.secgroup_1.name
     description = openstack_networking_secgroup_v2.secgroup_1.description
@@ -91,8 +91,8 @@ locals {
   }
   float_ip = {
     fixed_ip = openstack_networking_floatingip_v2.myip.fixed_ip
-    floating_ip = openstack_compute_floatingip_v2.myip.address
-    entire = openstack_compute_floatingip_v2.myip
+    floating_ip = openstack_networking_floatingip_v2.myip.address
+    entire = openstack_networking_floatingip_v2.myip
   }
 }
 
