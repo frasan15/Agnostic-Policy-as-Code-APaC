@@ -164,6 +164,7 @@ data "openstack_compute_instance_v2" "server_info_2" {
 }
 
 data "openstack_networking_network_v2" "network" {
+  depends_on = [ openstack_networking_network_v2.network_1 ]
   name = var.network1
 }
 
@@ -173,13 +174,16 @@ data "openstack_networking_secgroup_v2" "secgroup" {
 }
 
 data "openstack_networking_subnet_v2" "subnet_1" {
+  depends_on = [ openstack_networking_subnet_v2.subnet_1 ]
   subnet_id = var.subnet1
 }
 
 data "openstack_networking_router_v2" "router" {
+  depends_on = [ openstack_networking_router_v2.router_1 ]
   name = var.router1
 }
 
 data "openstack_networking_floatingip_v2" "floatingip_1" {
+  depends_on = [ openstack_networking_floatingip_v2.myip ]
   address = "192.168.111.10"
 }
