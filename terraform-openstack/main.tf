@@ -175,7 +175,7 @@ data "openstack_networking_secgroup_v2" "secgroup" {
 
 data "openstack_networking_subnet_v2" "subnet_1" {
   depends_on = [ openstack_networking_subnet_v2.subnet_1 ]
-  subnet_id = var.subnet1
+  subnet_id = openstack_networking_subnet_v2.subnet_1.id
 }
 
 data "openstack_networking_router_v2" "router" {
