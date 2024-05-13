@@ -24,7 +24,7 @@ output "security_groups" {
 
 output "floatingip" {
   value = local.float_ip
-  sensitive = true
+  sensitive = false
 }
 
 output "subnets" {
