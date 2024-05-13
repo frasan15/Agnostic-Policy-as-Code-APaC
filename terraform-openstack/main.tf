@@ -79,7 +79,7 @@ resource "openstack_compute_instance_v2" "web_server" {
 resource "openstack_networking_floatingip_v2" "myip"{
   depends_on = [ openstack_compute_instance_v2.web_server ]
   pool = "ntnu-internal"
-  #port_id = openstack_compute_instance_v2.web_server
+  port_id = openstack_networking_port_v2.port_1.id
   #fixed_ip = openstack_compute_instance_v2.web_server.access_ip_v4
 }
 
