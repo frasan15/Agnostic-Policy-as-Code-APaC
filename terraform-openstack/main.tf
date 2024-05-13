@@ -75,9 +75,22 @@ resource "openstack_compute_instance_v2" "web_server" {
 
 }
 
+# Define a router -> among the other things, this is needed to generate a floating ip from the right pool, since the router will be connected to ntnu-internal network
+resource "openstack_networking_router_v2" "router_1" {
+  name = "router_1"
+  admin_state_up = "true"
+  external_network_id = "730cb16e-a460-4a87-8c73-50a2cb2293f9"
+}
+
+# Define a router interface to connect the newly created router with the previously created network
+resource "openstack_networking_router_interface_v2" "router_interface_1" {
+  router_id = openstack_networking_router_v2.router_1.id
+  subnet_id = openstack_networking_subnet_v2.subnet_1.id
+}
+
 # Generate a floating ip
 resource "openstack_networking_floatingip_v2" "myip"{
-  depends_on = [ openstack_compute_instance_v2.web_server, openstack_networking_port_v2.port_1 ]
+  depends_on = [ openstack_compute_instance_v2.web_server, openstack_networking_router_interface_v2.router_interface_1 ]
   pool = "ntnu-internal"
   port_id = openstack_networking_port_v2.port_1.id
   #fixed_ip = openstack_compute_instance_v2.web_server.access_ip_v4
