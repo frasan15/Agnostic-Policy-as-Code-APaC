@@ -22,10 +22,9 @@ output "security_groups" {
   ]
 }
 
-#output "floatingip" {
-#  value = local.float_ip
-#  sensitive = false
-#}
+output "floatingip" {
+  value = data.openstack_networking_floatingip_v2.floatingip_1
+}
 
 output "subnets" {
   value = [

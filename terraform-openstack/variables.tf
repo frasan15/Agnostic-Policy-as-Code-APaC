@@ -40,6 +40,12 @@ variable "subnet1" {
     default = "subnet1"
 }
 
+variable "router1" {
+    description = "router name"
+    type = string
+    default = "router1"
+}
+
 
 # write all the needed network name, server name, etc. in general all the information needed to retrieve the data you need
 # create a variable as an array containing all these parameters
