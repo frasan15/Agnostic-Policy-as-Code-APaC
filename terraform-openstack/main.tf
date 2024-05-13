@@ -12,11 +12,6 @@ terraform {
   }
 }
 
-# Generate a floating ip
-resource "openstack_networking_floatingip_v2" "myip"{
-  pool = "ntnu-internal"
-}
-
 # Define a security group which exposes port 22
 resource "openstack_networking_secgroup_v2" "secgroup_1" {
   name        = var.security_groups
@@ -55,17 +50,28 @@ resource "openstack_compute_instance_v2" "web_server" {
 
 }
 
-# Define a floating ip
-resource "openstack_compute_floatingip_associate_v2" "myip" {
+# Generate a floating ip
+resource "openstack_networking_floatingip_v2" "myip"{
   depends_on = [ openstack_compute_instance_v2.web_server ]
-  floating_ip = openstack_networking_floatingip_v2.myip.address
-  instance_id = openstack_compute_instance_v2.web_server.id # this is the id of the instance to associate the floating ip with
-  fixed_ip = openstack_compute_instance_v2.web_server.network.0.fixed_ip_v4 # the fixed ip address of the instance. This ensures that the floating IP is associated with the correct interface on the instance
+  pool = "ntnu-internal"
+  fixed_ip = openstack_compute_instance_v2.web_server.access_ip_v4
 }
+
+# Define a floating ip
+#resource "openstack_compute_floatingip_associate_v2" "myip" {
+#  depends_on = [ openstack_compute_instance_v2.web_server ]
+#  floating_ip = openstack_networking_floatingip_v2.myip.address
+#  instance_id = openstack_compute_instance_v2.web_server.id # this is the id of the instance to associate the floating ip with
+#  fixed_ip = openstack_compute_instance_v2.web_server.network.0.fixed_ip_v4 # the fixed ip address of the instance. This ensures that the floating IP is associated with the correct interface on the instance
+#}
 
 # Define all the information needed for the subnet here below
 # This is needed since Terraform-OpenStack registry does not provide any function to retrieve such info
 # about subnets
+
+# TODO: look at the dependencies below, try to associate floating ip to fixed ip with another resource (the one above is deprecated)
+#       find a nice way of exporting the information whether a server has a floating ip or not; since you can use this to determine whether is connected to Internet or not -> ASK TO PALMA MAYBE
+
 locals {
   depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1, openstack_networking_floatingip_v2.myip, openstack_compute_floatingip_associate_v2.myip ]
   secgroup_info = {
@@ -84,9 +90,9 @@ locals {
     ]
   }
   float_ip = {
-    address = openstack_networking_floatingip_v2.myip.address
-    fixed_ip = openstack_networking_floatingip_v2.myip
-    fixed = openstack_compute_floatingip_associate_v2.myip
+    fixed_ip = openstack_networking_floatingip_v2.myip.fixed_ip
+    floating_ip = openstack_compute_floatingip_v2.myip.address
+    entire = openstack_compute_floatingip_v2.myip
   }
 }
 
