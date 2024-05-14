@@ -88,7 +88,7 @@ resource "openstack_networking_port_v2" "port_server_2" {
 }
 
 # Create the first server instance which exposes port 80
-resource "openstack_compute_instance_v2" "web_server" {
+resource "openstack_compute_instance_v2" "server_1" {
   depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_1 ]
   name            = "server1"
   flavor_name     = "gx1.2c4r"
@@ -107,7 +107,7 @@ resource "openstack_compute_instance_v2" "web_server" {
 }
 
 # Create the second server instance which exposes port 22
-resource "openstack_compute_instance_v2" "web_server" {
+resource "openstack_compute_instance_v2" "server_2" {
   depends_on = [ openstack_networking_secgroup_rule_v2.secgroup_rule_2 ]
   name            = "server2"
   flavor_name     = "gx1.2c4r"
@@ -135,7 +135,7 @@ resource "openstack_networking_router_interface_v2" "router_interface_1" {
 
 # Generate a floating ip
 resource "openstack_networking_floatingip_v2" "myip"{
-  depends_on = [ openstack_compute_instance_v2.web_server, openstack_networking_router_interface_v2.router_interface_1 ]
+  depends_on = [ openstack_compute_instance_v2.server_1, openstack_networking_router_interface_v2.router_interface_1 ]
   pool = "ntnu-internal"
   port_id = openstack_networking_port_v2.port_server_1.id
 }
@@ -170,7 +170,7 @@ locals {
 
 # Read server instance IDs from the file
 data "local_file" "server_ids_file" {
-  depends_on = [openstack_compute_instance_v2.web_server]
+  depends_on = [openstack_compute_instance_v2.server_1]
   filename   = "server_ids.txt"
 }
 
@@ -192,7 +192,7 @@ resource "null_resource" "delete_file" {
 # N.B. If you need to fetch information from other server as well, you need to use the same code asking for the
 # corresponding server's id
 data "openstack_compute_instance_v2" "server_info" {
-  id = openstack_compute_instance_v2.web_server.id
+  id = openstack_compute_instance_v2.server_1.id
 }
 
 data "openstack_compute_instance_v2" "server_info_2" {
