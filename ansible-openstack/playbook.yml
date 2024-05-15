@@ -121,10 +121,15 @@
   hosts: localhost
   tags: ['destroy']
   tasks: 
-    - name: Destroy an instance
+    - name: Destroy server1
       openstack.cloud.server:
         state: absent
         name: server1
+
+    - name: Destroy server2
+      openstack.cloud.server:
+        state: absent
+        name: server2
 
     - name: Destroy port
       openstack.cloud.port:
