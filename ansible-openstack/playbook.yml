@@ -149,7 +149,7 @@
     - name: Destroy an instance
       openstack.cloud.server:
         state: absent
-        name: webserver
+        name: server1
 
     - name: Destroy a security group with security group rules
       openstack.cloud.security_group:
