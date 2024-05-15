@@ -93,7 +93,7 @@
       nics:
         - port-name: port_server_2
       security_groups: 
-        - name: "{{ opa.name }}"
+        - id: "{{ opa.id }}"
 
 # Creates a router attached to ext_network1 on an IPv4 subnet and with one
 # internal subnet interface.
