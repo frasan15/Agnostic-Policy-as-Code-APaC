@@ -126,6 +126,11 @@
         state: absent 
         name: port_server_1
 
+    - name: Destroy port
+      openstack.cloud.port:
+        state: absent 
+        name: port_server_2
+
     - name: Destroy router
       openstack.cloud.router:
         state: absent
