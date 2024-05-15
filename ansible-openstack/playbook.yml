@@ -1,4 +1,4 @@
-- name: Provision an instance on OpenStack # for some reason the floating ip is assigned automatically with this task
+- name: Provision an infrastructure on OpenStack # for some reason the floating ip is assigned automatically with this task
   hosts: localhost
   tags: ['deploy']
   tasks:
@@ -44,7 +44,7 @@
           port_range_max: 22
           remote_ip_prefix: 0.0.0.0/0
   
-# Create a port with a static IP 
+# Create a port with a static IP for server1
   - name: Create a network inteface for server1
     openstack.cloud.port:
       state: present
@@ -52,6 +52,16 @@
       network: network1
       fixed_ips:
         - ip_address: 192.168.111.10
+          subnet_id: "{{ subnet_info.id }}"
+
+# Create a port with a static IP for server2
+  - name: Create a network inteface for server2
+    openstack.cloud.port:
+      state: present
+      name: port_server_2
+      network: network1
+      fixed_ips:
+        - ip_address: 192.168.111.11
           subnet_id: "{{ subnet_info.id }}"
 
 # Creates a router attached to ext_network1 on an IPv4 subnet and with one
@@ -65,6 +75,19 @@
         - net: network1
           subnet: subnet1
           portip: 192.168.111.15 
+
+  # Assign a new floating IP to the server fixed ip `192.0.2.3` of
+# `cattle001`. If a free floating IP is already allocated to the project, it is
+# reused; if not, a new one is created.
+  - name: Assign a floating ip
+    openstack.cloud.floating_ip:
+      state: present
+      reuse: true
+      server: server1
+      network: 730cb16e-a460-4a87-8c73-50a2cb2293f9
+      fixed_address: 192.168.111.10
+      wait: true
+      timeout: 180
 
 # Remember to restart the vm if you change any environment variables
   - name: Deploy an instance
@@ -81,6 +104,55 @@
     register: instance
 
 # to run this: ansible-playbook playbook.yml --tags "deploy"
+
+- name: Destroy the infrastructure on OpenStack
+  hosts: localhost
+  tags: ['destroy']
+  tasks: 
+    - name: Destroy an instance
+      openstack.cloud.server:
+        state: absent
+        name: server1
+
+    - name: Destroy a security group with security group rules
+      openstack.cloud.security_group:
+        state: absent
+        name: secgroup_1
+
+    - name: Destroy a security group with security group rules
+      openstack.cloud.security_group:
+        state: absent
+        name: secgroup_2
+
+    - name: Destroy router
+      openstack.cloud.router:
+        state: absent
+        name: router1
+
+    - name: Destroy port
+      openstack.cloud.port:
+        state: absent 
+        name: port_server_1
+
+    - name: Destroy subnet
+      openstack.cloud.subnet:
+        state: absent
+        network_name: network1
+        name: subnet1
+
+    - name: Destroy network
+      openstack.cloud.network:
+        state: absent
+        name: network1
+
+    # when: global_instance is defined and not global_instance.failed
+     # The above line is needed to check whether the instance exists before trying to delete it, however as said
+     # below the global instance variable is not defined, thus this should be fixed. Without this line this play
+     # fullfils his tasks and successfully deletes the vm
+
+# to run this: ansible-playbook playbook.yml --tags "destroy" 
+# The global_instance variable is not defined within this playbook, so I'm not able to automate the destruction
+# of the vm
 
 - name: Retrieve network and security group information
   hosts: localhost
@@ -140,56 +212,6 @@
     # If it does, it means the "Deploy an instance" task has been executed.
     # The instance|success condition checks whether the "Deploy an instance" task was successful. 
     # It's a shorthand way of checking if the task completed successfully (i.e., instance.failed is false).
-
-
-- name: Destroy the instance on OpenStack
-  hosts: localhost
-  tags: ['destroy']
-  tasks: 
-    - name: Destroy an instance
-      openstack.cloud.server:
-        state: absent
-        name: server1
-
-    - name: Destroy a security group with security group rules
-      openstack.cloud.security_group:
-        state: absent
-        name: secgroup_1
-
-    - name: Destroy a security group with security group rules
-      openstack.cloud.security_group:
-        state: absent
-        name: secgroup_2
-
-    - name: Destroy router
-      openstack.cloud.router:
-        state: absent
-        name: router1
-
-    - name: Destroy port
-      openstack.cloud.port:
-        state: absent 
-        name: port_server_1
-
-    - name: Destroy subnet
-      openstack.cloud.subnet:
-        state: absent
-        network_name: network1
-        name: subnet1
-
-    - name: Destroy network
-      openstack.cloud.network:
-        state: absent
-        name: network1
-
-    # when: global_instance is defined and not global_instance.failed
-     # The above line is needed to check whether the instance exists before trying to delete it, however as said
-     # below the global instance variable is not defined, thus this should be fixed. Without this line this play
-     # fullfils his tasks and successfully deletes the vm
-
-# to run this: ansible-playbook playbook.yml --tags "destroy" 
-# The global_instance variable is not defined within this playbook, so I'm not able to automate the destruction
-# of the vm
 
 
   
