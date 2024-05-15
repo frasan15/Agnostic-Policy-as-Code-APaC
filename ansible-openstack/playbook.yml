@@ -64,18 +64,6 @@
         - ip_address: 192.168.111.11
           subnet_id: "{{ subnet_info.id }}"
 
-# Creates a router attached to ext_network1 on an IPv4 subnet and with one
-# internal subnet interface.
-  - name: Create a router
-    openstack.cloud.router:
-      state: present
-      name: router1
-      network: 730cb16e-a460-4a87-8c73-50a2cb2293f9
-      interfaces:
-        - net: network1
-          subnet: subnet1
-          portip: 192.168.111.15 
-
 # Remember to restart the vm if you change any environment variables
   - name: Deploy an instance
     openstack.cloud.server:
@@ -89,6 +77,18 @@
         - port-name: port_server_1
       security_groups: secgroup_1
     register: instance
+
+  # Creates a router attached to ext_network1 on an IPv4 subnet and with one
+# internal subnet interface.
+  - name: Create a router
+    openstack.cloud.router:
+      state: present
+      name: router1
+      network: 730cb16e-a460-4a87-8c73-50a2cb2293f9
+      interfaces:
+        - net: network1
+          subnet: subnet1
+          portip: 192.168.111.15 
 
   - name: Assign a floating ip
     openstack.cloud.floating_ip:
