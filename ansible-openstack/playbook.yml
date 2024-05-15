@@ -76,18 +76,6 @@
           subnet: subnet1
           portip: 192.168.111.15 
 
-  # Assign a new floating IP to the server fixed ip `192.0.2.3` of
-# `cattle001`. If a free floating IP is already allocated to the project, it is
-# reused; if not, a new one is created.
-  - name: Assign a floating ip
-    openstack.cloud.floating_ip:
-      state: present
-      reuse: true
-      network: 730cb16e-a460-4a87-8c73-50a2cb2293f9
-      fixed_address: 192.168.111.10
-      wait: true
-      timeout: 180
-
 # Remember to restart the vm if you change any environment variables
   - name: Deploy an instance
     openstack.cloud.server:
@@ -101,6 +89,16 @@
         - port-name: port_server_1
       security_groups: secgroup_1
     register: instance
+
+  - name: Assign a floating ip
+    openstack.cloud.floating_ip:
+      state: present
+      reuse: true
+      server: server1
+      network: 730cb16e-a460-4a87-8c73-50a2cb2293f9
+      fixed_address: 192.168.111.10
+      wait: true
+      timeout: 180
 
 # to run this: ansible-playbook playbook.yml --tags "deploy"
 
