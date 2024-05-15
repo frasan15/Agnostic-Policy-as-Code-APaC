@@ -61,9 +61,9 @@
       state: present
       name: router1
       network: 730cb16e-a460-4a87-8c73-50a2cb2293f9
-      external_fixed_ips:
+      interfaces:
         - subnet: subnet1
-          ip_address: 192.168.111.15
+          portip: 192.168.111.15 
 
 # Remember to restart the vm if you change any environment variables
   - name: Deploy an instance
