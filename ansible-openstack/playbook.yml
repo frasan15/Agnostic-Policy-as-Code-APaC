@@ -151,11 +151,6 @@
         state: absent
         name: webserver
 
-    - name: Destroy network
-      openstack.cloud.network:
-        state: absent
-        name: network1
-
     - name: Destroy subnet
       openstack.cloud.subnet:
         state: absent
@@ -181,6 +176,11 @@
       openstack.cloud.port:
         state: absent 
         name: port_server_1
+
+    - name: Destroy network
+      openstack.cloud.network:
+        state: absent
+        name: network1
 
     # when: global_instance is defined and not global_instance.failed
      # The above line is needed to check whether the instance exists before trying to delete it, however as said
