@@ -2,30 +2,58 @@
   hosts: localhost
   tags: ['deploy']
   tasks:
+  - name: Create a network
+    # Create an externally accessible network named 'ext_network'.
+    openstack.cloud.network:
+      state: present
+      name: network1
+      external: true
+
+  - name: Create a subnet
+  # Create a new (or update an existing) subnet on the specified network
+    openstack.cloud.subnet:
+      state: present
+      network_name: network1
+      name: subnet1
+      cidr: 192.168.111.0/24
+
+  - name: Create (or update) a security group with security group rules
+    openstack.cloud.security_group:
+      state: present
+      name: secgroup_1
+      security_group_rules:
+        - ether_type: IPv4
+          direction: ingress
+          description: Expose port 80
+          port_range_min: 80
+          port_range_max: 80
+          remote_ip_prefix: 0.0.0.0/0
+
+  - name: Create (or update) a security group with security group rules
+    openstack.cloud.security_group:
+      state: present
+      name: secgroup_2
+      security_group_rules:
+        - ether_type: IPv4
+          direction: ingress
+          description: Expose port 22
+          port_range_min: 22
+          port_range_max: 22
+          remote_ip_prefix: 0.0.0.0/0
+
 # Remember to restart the vm if you change any environment variables
   - name: Deploy an instance
     openstack.cloud.server:
       state: present
       #cloud: mycloud
-      name: webserver
+      name: server1
       image: db1bc18e-81e3-477e-9067-eecaa459ec33
       key_name: MySecondKey
       timeout: 200
       flavor: gx1.2c4r
-      network: MySecondNetwork
-      security_groups: port80_exposed
+      network: network1
+      security_groups: secgroup_1
     register: instance
-  #- include_vars: instance-vars.yml
-  #- name: Debug global_instance
-  #  debug:
-  #    var: global_instance
-  #- name: Set instance fact
-  #  set_fact:
-  #    global_instance: "{{ instance }}"
-  #  when: instance is defined and not instance.failed
-  #- name: Debug global_instance again
-  #  debug:
-  #    var: global_instance#
 
 # to run this: ansible-playbook playbook.yml --tags "deploy"
 
@@ -89,22 +117,44 @@
     # It's a shorthand way of checking if the task completed successfully (i.e., instance.failed is false).
 
 
-#- name: Destroy the instance on OpenStack
-#  hosts: localhost
-#  tags: ['destroy']
-#  tasks: 
-#    - include_vars: instance-vars.yml
-#    - name: Debug global_instance
-#      debug:
-#        var: global_instance
-#    - name: Destroy an instance
-#      openstack.cloud.server:
-#        state: absent
-#        name: webserver
-#      # when: global_instance is defined and not global_instance.failed
-      # The above line is needed to check whether the instance exists before trying to delete it, however as said
-      # below the global instance variable is not defined, thus this should be fixed. Without this line this play
-      # fullfils his tasks and successfully deletes the vm
+- name: Destroy the instance on OpenStack
+  hosts: localhost
+  tags: ['destroy']
+  tasks: 
+    - include_vars: instance-vars.yml
+    - name: Debug global_instance
+      debug:
+        var: global_instance
+    - name: Destroy an instance
+      openstack.cloud.server:
+        state: absent
+        name: webserver
+
+    - name: Destroy network
+      openstack.cloud.network:
+        state: absent
+        name: network1
+
+    - name: Destroy subnet
+      openstack.cloud.subnet:
+        state: absent
+        network_name: network1
+        name: subnet1
+
+    - name: Create (or update) a security group with security group rules
+      openstack.cloud.security_group:
+        state: absent
+        name: secgroup_1
+
+    - name: Create (or update) a security group with security group rules
+      openstack.cloud.security_group:
+        state: absent
+        name: secgroup_2
+
+    # when: global_instance is defined and not global_instance.failed
+     # The above line is needed to check whether the instance exists before trying to delete it, however as said
+     # below the global instance variable is not defined, thus this should be fixed. Without this line this play
+     # fullfils his tasks and successfully deletes the vm
 
 # to run this: ansible-playbook playbook.yml --tags "destroy" 
 # The global_instance variable is not defined within this playbook, so I'm not able to automate the destruction
