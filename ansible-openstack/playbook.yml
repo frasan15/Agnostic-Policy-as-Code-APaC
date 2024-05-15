@@ -77,7 +77,8 @@
       flavor: gx1.2c4r
       nics:
         - port-name: port_server_1
-      security_groups: secgroup_1
+      security_groups: 
+        - secgroup_1
     register: instance
 
 
