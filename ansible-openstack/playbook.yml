@@ -52,7 +52,7 @@
       network: network1
       fixed_ips:
         - ip_address: 192.168.111.10
-          subnet_id: subnet_info.id
+          subnet_id: "{{ subnet_info.id }}"
 
 # Creates a router attached to ext_network1 on an IPv4 subnet and with one
 # internal subnet interface.
