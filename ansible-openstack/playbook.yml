@@ -43,6 +43,7 @@
           port_range_min: 22
           port_range_max: 22
           remote_ip_prefix: 0.0.0.0/0
+    register: opa
   
 # Create a port with a static IP for server1
   - name: Create a network inteface for server1
@@ -92,7 +93,7 @@
       nics:
         - port-name: port_server_2
       security_groups: 
-        - name: secgroup_2
+        - name: "{{ opa.name }}"
 
 # Creates a router attached to ext_network1 on an IPv4 subnet and with one
 # internal subnet interface.
