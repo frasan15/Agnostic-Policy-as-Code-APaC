@@ -7,7 +7,7 @@
     openstack.cloud.network:
       state: present
       name: network1
-      external: true
+      external: false
 
   - name: Create a subnet
   # Create a new (or update an existing) subnet on the specified network
