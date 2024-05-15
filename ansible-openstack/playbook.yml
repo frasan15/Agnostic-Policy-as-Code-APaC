@@ -151,12 +151,6 @@
         state: absent
         name: webserver
 
-    - name: Destroy subnet
-      openstack.cloud.subnet:
-        state: absent
-        network_name: network1
-        name: subnet1
-
     - name: Destroy a security group with security group rules
       openstack.cloud.security_group:
         state: absent
@@ -176,6 +170,12 @@
       openstack.cloud.port:
         state: absent 
         name: port_server_1
+
+    - name: Destroy subnet
+      openstack.cloud.subnet:
+        state: absent
+        network_name: network1
+        name: subnet1
 
     - name: Destroy network
       openstack.cloud.network:
