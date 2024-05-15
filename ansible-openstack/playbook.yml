@@ -62,7 +62,8 @@
       name: router1
       network: 730cb16e-a460-4a87-8c73-50a2cb2293f9
       interfaces:
-        - subnet: subnet1
+        - net: network1
+          subnet: subnet1
           portip: 192.168.111.15 
 
 # Remember to restart the vm if you change any environment variables
