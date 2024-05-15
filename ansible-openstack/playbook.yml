@@ -146,10 +146,6 @@
   hosts: localhost
   tags: ['destroy']
   tasks: 
-    - include_vars: instance-vars.yml
-    - name: Debug global_instance
-      debug:
-        var: global_instance
     - name: Destroy an instance
       openstack.cloud.server:
         state: absent
@@ -166,15 +162,25 @@
         network_name: network1
         name: subnet1
 
-    - name: Create (or update) a security group with security group rules
+    - name: Destroy a security group with security group rules
       openstack.cloud.security_group:
         state: absent
         name: secgroup_1
 
-    - name: Create (or update) a security group with security group rules
+    - name: Destroy a security group with security group rules
       openstack.cloud.security_group:
         state: absent
         name: secgroup_2
+
+    - name: Destroy router
+      openstack.cloud.router:
+        state: absent
+        name: router1
+
+    - name: Destroy port
+      openstack.cloud.port:
+        state: absent 
+        name: port_server_1
 
     # when: global_instance is defined and not global_instance.failed
      # The above line is needed to check whether the instance exists before trying to delete it, however as said
