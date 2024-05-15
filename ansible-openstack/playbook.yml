@@ -16,6 +16,7 @@
       network_name: network1
       name: subnet1
       cidr: 192.168.111.0/24
+    register: subnet_info
 
   - name: Create (or update) a security group with security group rules
     openstack.cloud.security_group:
@@ -51,7 +52,7 @@
       network: network1
       fixed_ips:
         - ip_address: 192.168.111.10
-          subnet_id: subnet1
+          subnet_id: subnet_info.id
 
 # Creates a router attached to ext_network1 on an IPv4 subnet and with one
 # internal subnet interface.
