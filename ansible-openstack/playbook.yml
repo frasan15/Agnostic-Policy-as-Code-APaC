@@ -69,6 +69,7 @@
     openstack.cloud.server:
       state: present
       name: server1
+      auto_ip: false
       image: db1bc18e-81e3-477e-9067-eecaa459ec33
       key_name: MySecondKey
       timeout: 200
