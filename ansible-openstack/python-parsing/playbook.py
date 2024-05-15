@@ -86,7 +86,7 @@ for server in result_dict['servers']:
     exposed_ports = sorted(list(set(exposed_ports)))
 
     # Fetch network name which the server belongs to
-    keys = server['addresses'].keys()
+    keys = server['addresses'].keys() # the keys() function retrieves the keys corresponding to the object currently being analysed
     network_name = list(keys)[0] # name of the network, I need it to retrieve information about the corresponding subnet
     print("keys: ", network_name)
     subnets_list_ids = [] # initialize list of server's subnets
