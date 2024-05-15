@@ -83,7 +83,6 @@
     openstack.cloud.floating_ip:
       state: present
       reuse: true
-      server: server1
       network: 730cb16e-a460-4a87-8c73-50a2cb2293f9
       fixed_address: 192.168.111.10
       wait: true
