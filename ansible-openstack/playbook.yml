@@ -42,18 +42,39 @@
           port_range_min: 22
           port_range_max: 22
           remote_ip_prefix: 0.0.0.0/0
+  
+# Create a port with a static IP 
+  - name: Create a network inteface for server1
+    openstack.cloud.port:
+      state: present
+      name: port_server_1
+      network: network1
+      fixed_ips:
+        - ip_address: 192.168.111.10
+          subnet_id: subnet1
+
+# Creates a router attached to ext_network1 on an IPv4 subnet and with one
+# internal subnet interface.
+  - name: Create a router
+    openstack.cloud.router:
+      state: present
+      name: router1
+      network: 730cb16e-a460-4a87-8c73-50a2cb2293f9
+      external_fixed_ips:
+        - subnet: subnet1
+          ip_address: 192.168.111.15
 
 # Remember to restart the vm if you change any environment variables
   - name: Deploy an instance
     openstack.cloud.server:
       state: present
-      #cloud: mycloud
       name: server1
       image: db1bc18e-81e3-477e-9067-eecaa459ec33
       key_name: MySecondKey
       timeout: 200
       flavor: gx1.2c4r
-      network: network1
+      nics:
+        - port-name: port_server_1
       security_groups: secgroup_1
     register: instance
 
