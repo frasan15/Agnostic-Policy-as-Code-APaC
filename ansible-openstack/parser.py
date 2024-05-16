@@ -88,8 +88,31 @@ with open('playbook.yml', 'r') as stream:
                 # Remove duplicates and sort the exposed ports list
                 exposed_ports = sorted(list(set(exposed_ports)))
 
+                # Iterate through each network interface of the current server, and for each of them fetches the name
+                # and the info whether it has a floating ip attached to it -> you do this by scanning the floating ip
+                # array, looking for a match between the server_name associated to the current floating ip and the current
+                # server being analysed -> if there's a match, then the nic attached to such a server has also a floating ip 
                 for nic in server['nics']:
-                      network_interfaces.append(nic['port-name'])
+                        nic_name = nic['port-name']
+                        nic_network = nic['network']
+                        network_interfaces.append(nic_name)
+
+                        is_nic_public = False
+
+                        for floating_ip in ansible_dictionary['floating_ip']:
+                                if floating_ip['server'] == server_name:
+                                        is_nic_public = True
+
+                        nic_object = {
+                               'name': nic_name,
+                               'is_public': is_nic_public,
+                               'network': nic_network
+                        }
+
+                        final_results['network_interfaces'].append(nic_object)
+
+
+
                 
                         # Create the result object for the current server, storing name, exposed ports and list of subnets ids
                 server_object = {
@@ -100,7 +123,7 @@ with open('playbook.yml', 'r') as stream:
 
                 final_results["servers"].append(server_object)
 
-                print("FINAL JSON: ", json.dumps(final_results, indent=4))
+        print("FINAL JSON: ", json.dumps(final_results, indent=4))
 
 
         
