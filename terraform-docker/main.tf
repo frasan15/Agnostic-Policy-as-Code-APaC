@@ -23,6 +23,15 @@ resource "docker_network" "network1" {
   }
 }
 
+# Define a Docker network
+resource "docker_network" "network2" {
+  name   = "network2"
+  driver = "bridge"
+  ipam_config {
+    subnet = "192.168.112.0/24"
+  }
+}
+
 resource "docker_container" "server1" {
   image = docker_image.nginx.image_id
   name  = "server1"
@@ -31,6 +40,10 @@ resource "docker_container" "server1" {
   networks_advanced {
     name = docker_network.network1.name
     ipv4_address = "192.168.111.10"
+  }
+  networks_advanced {
+    name = docker_network.network1.name
+    ipv4_address = "192.168.112.10"
   }
 
    ports {
