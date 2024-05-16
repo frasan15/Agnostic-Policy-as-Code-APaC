@@ -33,10 +33,10 @@ resource "docker_container" "server1" {
     ipv4_address = "192.168.111.10"
   }
 
-  ports {
-    internal = 80
-    external = 80
-  }
+  #ports {
+  #  internal = 80
+  #  external = 80
+  #}
 }
 
 resource "docker_container" "server2" {
@@ -49,8 +49,8 @@ resource "docker_container" "server2" {
     ipv4_address = "192.168.111.11"
   }
 
-  ports {
-    internal = 22
-    external = 22
-  }
+  #ports {
+  #  internal = 22
+  #  external = 22
+  #}
 }
