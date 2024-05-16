@@ -28,15 +28,17 @@ resource "docker_container" "server1" {
   name  = "server1"
 
   #network_mode = "none"  # Disable default networking
-  networks_advanced {
-    name = docker_network.network1.name
-    ipv4_address = "192.168.111.10"
-  }
-
-  #ports {
-  #  internal = 80
-  #  external = 80
+  #networks_advanced {
+  #  name = docker_network.network1.name
+  #  ipv4_address = "192.168.111.10"
   #}
+
+   ports = [{
+    internal = 80
+    external = 80
+    protocol = tcp
+    ip = "192.168.111.0/24"
+  }]
 }
 
 resource "docker_container" "server2" {
@@ -44,13 +46,15 @@ resource "docker_container" "server2" {
   name  = "server2"
 
   #network_mode = "none"  # Disable default networking
-  networks_advanced {
-    name = docker_network.network1.name
-    ipv4_address = "192.168.111.11"
-  }
-
-  #ports {
-  #  internal = 22
-  #  external = 22
+  #networks_advanced {
+  #  name = docker_network.network1.name
+  #  ipv4_address = "192.168.111.11"
   #}
+
+  ports = [{
+    internal = 22
+    external = 22
+    protocol = tcp
+    ip = "192.168.111.0/24"
+  }]
 }
