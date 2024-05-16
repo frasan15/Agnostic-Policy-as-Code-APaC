@@ -1,6 +1,7 @@
 import hcl2 # type: ignore
 import json
 import re
+import os
 
 # The following function is needed to remove the regular expression ${} from each value in the dictionary
 def process_value(value):
@@ -12,153 +13,141 @@ def process_value(value):
         return re.sub(r'\${|}', '', value)
     else:
         return value
-    
-# Given a key, this function retrieves the indexes where json_data[index] = "key":{...}
-# It's needed to get the indexes where json_data[index] = "openstack_networking_secgroup_v2" or json_data[index] = "openstack_networking_secgroup_rule_v2"
-# Or the index where json_data[index] = "openstack_networking_port_v2"
-def get_indexes(json_data, key):
-    for index, obj in enumerate(json_data):
-        if key in obj and key == security_group_keyword:
-            indexes_sg.append(index)
-        elif key in obj and key == security_group_rules_keyword:
-            indexes_sg_rules.append(index)
-        elif key in obj and key == networking_port_keyword:
-            indexes_networking_port.append(index)
-
-# It checks whether a key exists before attempting to access to its value
-# In particular, this is needed to correctly access to terraform_dictionary['resource'][index][security_group_keyword][security_group_keyword_2] and retrieve the name of the security group
-def check_key_exists(json_data, key):
-    for index, obj in enumerate(json_data):
-        if key in obj:
-            return True
-    return False
-
-# The following are well-known keywords from Terraform and are needed to access the various resources
-server_keyword = "openstack_compute_instance_v2"
-security_group_keyword = "openstack_networking_secgroup_v2"
-security_group_rules_keyword = "openstack_networking_secgroup_rule_v2"
-networking_port_keyword = "openstack_networking_port_v2"
-floating_ip_keyword = "openstack_networking_floatingip_v2"
-inner_floating_ip_keyword = "myip"
-
-servers_info = [] # array of objects, where each object will be representing a different server
-
-indexes_sg = [] # array containing the indexes where terraform_dictionary['resource'][index] == "openstack_networking_secgroup_v2"
-indexes_sg_rules = [] # array containing the indexes where terraform_dictionary['resource'][index] == "openstack_networking_secgroup_rule_v2"
-indexes_networking_port = [] # array containing the indexes where terraform_dictionary['resource'][index] == "openstack_networking_port_v2"
-
-# It reads the terraform file and it parses it onto a json file
-with open('main.tf', 'r') as file:
-    terraform_dictionary = hcl2.load(file)
-
-terraform_dictionary = {key: process_value(value) for key, value in terraform_dictionary.items()}
-
-json_string = json.dumps(terraform_dictionary, indent=4)
-print(json_string)
 
 try:
-    # Create the generic JSON object and initialize the servers array, which will be containing all the information
-    # needed for each server: name of the server, number of exposed ports and network where 
+    # It reads the terraform file and it parses it onto a json file
+    with open('main.tf', 'r') as file:
+        first = hcl2.load(file)
+
+        first = {key: process_value(value) for key, value in first.items()}
+
+    #terraform_dictionary = {key: process_value(value) for key, value in terraform_dictionary.items()}
+
+    first = first['resource']
+
+    network = "openstack_networking_network_v2"
+    subnet = "openstack_networking_subnet_v2"
+    security_group = "openstack_networking_secgroup_v2"
+    port = "openstack_networking_port_v2" # network interfaces
+    server = "openstack_compute_instance_v2"
+    router = "openstack_networking_router_v2"
+    router_interface = "openstack_networking_router_interface_v2"
+    floating_ip = "openstack_networking_floatingip_v2"
+
+    terraform_dictionary = {}
+    terraform_dictionary[network] = []
+    terraform_dictionary[subnet] = []
+    terraform_dictionary[security_group] = [] # here there's both resources from openstack_networking_secgroup_v2 and openstack_networking_secgroup_rule_v2
+    terraform_dictionary[port] = []
+    terraform_dictionary[server] = []
+    terraform_dictionary[router] = []
+    terraform_dictionary[router_interface] = []
+    terraform_dictionary[floating_ip] = []
+
+
+    # Temporary storage for secgroup rules -> this step is needed to store the resources from openstack_networking_secgroup_rule_v2 into openstack_networking_secgroup_v2
+    secgroup_rules = {}
+
+    for item in first:
+        key = list(item.keys())[0]
+        if key == "openstack_networking_secgroup_rule_v2":
+            nested_key = list(item[key].keys())[0]
+            secgroup_id = (item[key][nested_key]["security_group_id"]).split('.', 2)[1]
+            if secgroup_id not in secgroup_rules:
+                secgroup_rules[secgroup_id] = []
+            secgroup_rules[secgroup_id].append(item[key][nested_key])
+        else:
+            nested_dict = item[key]
+            terraform_dictionary[key].append(list(nested_dict.values())[0])
+
+    # Append secgroup rules to corresponding secgroup objects
+    for secgroup_name, rules in secgroup_rules.items():
+        for secgroup in terraform_dictionary[security_group]:
+            if secgroup['name'] == secgroup_name:
+                if 'rules' not in secgroup:
+                    secgroup['rules'] = []
+                secgroup['rules'].extend(rules)
+
+    json_string = json.dumps(terraform_dictionary, indent=4)
+    #print(json_string)
+
     final_results = {}
     final_results["servers"] = []
     final_results["network_interfaces"] = []
 
-    # Fetching server info
-    for index, resource in enumerate(terraform_dictionary['resource']): # terraform_dictionary['resource'] contains each resource info
-        if server_keyword in resource:
-            servers_info.append(resource[server_keyword])
+    for server in terraform_dictionary[server]:
+            server_name = server['name']
+            server_security_groups = server['security_groups']
 
-    for server in servers_info:
-        for s in server:
-            key_current_server = s # the key wrapping the current server info (e.g., server_1, server_2)
-        #print("CURRENT SERVER: ", server[key_current_server])
-        server_name = server[key_current_server]['name']
-        server_security_groups = server[key_current_server]['security_groups'] # get the name of the security groups implemented in the current server
-        
-        # Initialize a list to store the exposed ports
-        exposed_ports = []
-        #print("NAME: ", server_name)
-        #print("SECGROUPS: ", server_security_groups)
+            for item in server_security_groups: # every server_security_groups is stored as "openstack_networking_secgroup_v2.secgroup_2.name" so we need to extract the name
+                item = (item).split('.', 2)[1]
 
-        # Initialize a list to store the network interfaces of the current server
-        network_interfaces = []
-
-        # Iterate over each security group of the server
-        for security_group in server_security_groups: # security_group already represent the security group name
-
-            # Split the string by the first '.' character, since here it's placed the keywords through which we can access the current security group; 
-            # We would need to combine such a keyword with the generic security group keyword
-            # For instance, from openstack_networking_secgroup_v2.secgroup_2.name this fetches secgroup_2
-            parts = security_group.split('.', 2)
-            security_group_keyword_2 = parts[1]
-
-            get_indexes(terraform_dictionary['resource'], security_group_keyword) # get the indexes where terraform_dictionary['resource'][index] == security_group_keyword
-            # For each index we check whether terraform_dictionary['resource'][index][security_group_keyword][security_group_keyword_2] exists
-            # This is needed since terraform_dictionary['resource'][index][security_group_keyword] contains also another key which refers to the other security group
-            for index in indexes_sg:
-                index_exists = check_key_exists(terraform_dictionary['resource'][index][security_group_keyword], security_group_keyword_2)
-                if index_exists:
-                    security_group_name = terraform_dictionary['resource'][index][security_group_keyword][security_group_keyword_2]['name']
-                    #print("FIRST: ", next(iter(terraform_dictionary['resource'][index][security_group_keyword].keys()), None)) # read the key refering to the key name of the security group rule
-                    sg_keyname = next(iter(terraform_dictionary['resource'][index][security_group_keyword].keys()), None) # this is either secgroup_1 or secgroup_2
-
-            get_indexes(terraform_dictionary['resource'], security_group_rules_keyword) # get the indexes where terraform_dictionary['resource'][index] == security_group_rules_keyword
-            for index1 in indexes_sg_rules:
-                for item in terraform_dictionary['resource'][index1][security_group_rules_keyword]:
-                    #print("ITEM: ", item)
-                    # The following line finds the security group id which is refered to into the current security group rule
-                    # Once it is found, it extracts the ports exposed 
-                    if terraform_dictionary['resource'][index1][security_group_rules_keyword][item]['security_group_id'] == f'{security_group_keyword}.{sg_keyname}.id':
-                        # Iterate over each security group rule and port range min and max
-                        port_range_min = terraform_dictionary['resource'][index1][security_group_rules_keyword][item]['port_range_min']
-                        port_range_max = terraform_dictionary['resource'][index1][security_group_rules_keyword][item]['port_range_max']
-                        
-                        # Add each port in the range to the exposed ports list; only if the port range is not None
-                        if port_range_max is not None and port_range_min is not None:
-                            exposed_ports.extend(range(port_range_min, port_range_max + 1))
-
-        get_indexes(terraform_dictionary['resource'], networking_port_keyword)
-        server_port_keyword = ((server[key_current_server]['network'][0]['port']).split('.', 2))[1] # I get the server port keyword, such as port_server_1 or port_server_2
-
-        # I store inside the server object all the network interfaces which the it is reachable through
-        for index in indexes_networking_port:
-            index_exists = check_key_exists(terraform_dictionary['resource'][index][networking_port_keyword], server_port_keyword)
-            if index_exists:
-                network_interfaces.append(terraform_dictionary['resource'][index][networking_port_keyword][server_port_keyword]['name'])
+            # Initialize a list to store the exposed ports and the network interfaces of the current server
+            exposed_ports = []
+            network_interfaces = []
             
-        # It evaluates whether the network interface is public or not, i.e., whether it has a floating ip connected to it 
-        is_network_interface_public = False
-        for index, obj in enumerate(terraform_dictionary['resource']):
-            if floating_ip_keyword in obj:
-                if obj[floating_ip_keyword][inner_floating_ip_keyword]['port_id'] == server[key_current_server]['network'][0]['port']:
-                    is_network_interface_public = True
+            # Iterate over each security group of the server
+            for security_group_name in server_security_groups: # each item already represents the security group name
+                    # Find the corresponding security group in the list of security groups
+                    for sg in terraform_dictionary[security_group]:
+                            if sg['name'] == (security_group_name).split('.', 2)[1]:
+                                    security_group_rules = sg['rules'] # get the security group rules of the current security group
+                                    # Iterate over each security group rule and port range min and max
+                                    for rule in security_group_rules:
+                                            port_range_min = rule['port_range_min']
+                                            port_range_max = rule['port_range_max']
+                                            
+                                            # Add each port in the range to the exposed ports list; only if the port range is not None
+                                            if port_range_max is not None and port_range_min is not None:
+                                                    exposed_ports.extend(range(port_range_min, port_range_max + 1))
 
-        # Reset indexes arrays for the next server
-        indexes_sg = []
-        indexes_sg_rules = []
-        indexes_networking_port = []
-        
-        # Remove duplicates and sort the exposed ports list
-        exposed_ports = sorted(list(set(exposed_ports)))
+            # Remove duplicates and sort the exposed ports list
+            exposed_ports = sorted(list(set(exposed_ports)))
 
-        # Create the result object for the current server, storing name, exposed ports and list of subnets ids
-        server_object = {
-                'name': server_name,
-                'exposed_ports': exposed_ports,
-                'network_interfaces': network_interfaces
-        }
+            # Iterate through each network interface of the current server, and for each of them fetches the name
+            # and the info whether it has a floating ip attached to it -> you do this by scanning the floating ip
+            # array, looking for a match between the server_name associated to the current floating ip and the current
+            # server being analysed -> if there's a match, then the nic attached to such a server has also a floating ip 
+            for nic in server['network']:
+                    nic_name = nic['port']
+                    nic_name = (nic_name).split('.', 2)[1]
+                    network_interfaces.append(nic_name)
 
-        network_interfaces_object = {
-            'network_interface_name': server_port_keyword,
-            'public': is_network_interface_public
-        }
+                    is_nic_public = False
 
-        final_results['servers'].append(server_object)
-        final_results['network_interfaces'].append(network_interfaces_object)
+                    for item in terraform_dictionary[floating_ip]:
+                            
+                            if (item['port_id']).split('.', 2)[1] == nic_name:
+                                    is_nic_public = True
 
-        print("RESSS: ", json.dumps(final_results, indent=4))
+                    nic_object = {
+                            'name': nic_name,
+                            'is_public': is_nic_public
+                    }
 
+                    final_results['network_interfaces'].append(nic_object)
             
+            # Create the result object for the current server, storing name, exposed ports and list of subnets ids
+            server_object = {
+                    'name': server_name,
+                    'exposed_ports': exposed_ports,
+                    'network_interfaces': network_interfaces
+            }
+            final_results["servers"].append(server_object)            
+
+    print("FINAL JSON: ", json.dumps(final_results, indent=4))
+
+    # Get the directory of the current Python script
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Define the path for the JSON file
+    json_file_path = os.path.join(current_dir, "result_object.json")
+
+    # Write data to the JSON file
+    with open(json_file_path, 'w') as json_file:
+        json.dump(final_results, json_file, indent=4)
+
+    print("JSON file has been generated and saved at:", json_file_path)
 
 except Exception as e:
     print("An error occurred:", e)

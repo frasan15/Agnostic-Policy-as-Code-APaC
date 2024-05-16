@@ -2,6 +2,7 @@
 import yaml
 import json
 import re
+import os
 
 # The following function is needed to remove the regular expression ${} from each value in the dictionary
 def process_value(value):
@@ -25,16 +26,16 @@ indexes_security_groups = []
 
 
 # opening a file
-with open('playbook.yml', 'r') as stream:
-    try:
-        # Converts yaml document to python object
-        first = yaml.safe_load(stream)
+try:
+        with open('playbook.yml', 'r') as stream:
+                # Converts yaml document to python object
+                first = yaml.safe_load(stream)
         first = first[0]['tasks']
         second = []
         for item in first:
              second.append(process_value(item))
 
-        print("RESSS: ", json.dumps(second, indent=4))
+        #print("RESULT: ", json.dumps(second, indent=4))
 
         # Convert array of objects into an object of objects
         ansible_dictionary = {}
@@ -51,10 +52,7 @@ with open('playbook.yml', 'r') as stream:
                 pre_key = list(obj.keys())[1]
                 key = pre_key.split('.', 2)[2]
 
-
                 ansible_dictionary[key].append(obj[pre_key])
-
-        print("NEWWWWWW: ", json.dumps(ansible_dictionary, indent=4))
 
         final_results = {}
         final_results["servers"] = []
@@ -94,7 +92,6 @@ with open('playbook.yml', 'r') as stream:
                 # server being analysed -> if there's a match, then the nic attached to such a server has also a floating ip 
                 for nic in server['nics']:
                         nic_name = nic['port-name']
-                        nic_network = nic['network']
                         network_interfaces.append(nic_name)
 
                         is_nic_public = False
@@ -106,15 +103,11 @@ with open('playbook.yml', 'r') as stream:
                         nic_object = {
                                'name': nic_name,
                                'is_public': is_nic_public,
-                               'network': nic_network
                         }
 
                         final_results['network_interfaces'].append(nic_object)
-
-
-
                 
-                        # Create the result object for the current server, storing name, exposed ports and list of subnets ids
+                # Create the result object for the current server, storing name, exposed ports and list of subnets ids
                 server_object = {
                         'name': server_name,
                         'exposed_ports': exposed_ports,
@@ -125,9 +118,17 @@ with open('playbook.yml', 'r') as stream:
 
         print("FINAL JSON: ", json.dumps(final_results, indent=4))
 
+        # Get the directory of the current Python script
+        current_dir = os.path.dirname(os.path.abspath(__file__))
 
-        
+        # Define the path for the JSON file
+        json_file_path = os.path.join(current_dir, "result_object.json")
 
+        # Write data to the JSON file
+        with open(json_file_path, 'w') as json_file:
+            json.dump(final_results, json_file, indent=4)
 
-    except yaml.YAMLError as e:
-            print(e)
+        print("JSON file has been generated and saved at:", json_file_path)
+
+except yaml.YAMLError as e:
+        print(e)
