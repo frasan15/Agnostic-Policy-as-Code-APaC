@@ -124,7 +124,7 @@ resource "openstack_compute_instance_v2" "server_2" {
 resource "openstack_networking_router_v2" "router_1" {
   name = "router1"
   admin_state_up = "true"
-  external_network_id = "730cb16e-a460-4a87-8c73-50a2cb2293f9"
+  external_network_id = "730cb16e-a460-4a87-8c73-50a2cb2293f9" # ntnu-internal
 }
 
 # Define a router interface to connect the newly created router with the previously created network
@@ -178,14 +178,6 @@ data "local_file" "server_ids_file" {
 # Filter out values == ""
 locals {
   server_instance_ids = [for id in split("\n", data.local_file.server_ids_file.content) : id if id != ""]
-}
-
-# After catching all the ids, the file server_ids.txt is resetted
-resource "null_resource" "delete_file" {
-  depends_on = [ local.server_instance_ids ]
-  provisioner "local-exec" {
-    command = "echo '' > server_ids.txt"
-  }
 }
 
 # I fetch information about web server newly created
