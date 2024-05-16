@@ -37,7 +37,7 @@ resource "docker_container" "server1" {
     internal = 80
     external = 80
     ip = "192.168.111.0/24"
-    protocol = tcp
+    protocol = "tcp"
   }
 }
 
@@ -55,6 +55,6 @@ resource "docker_container" "server2" {
     internal = 22
     external = 22
     ip = "192.168.111.0/24"
-    protocol = tcp
+    protocol = "tcp"
   }
 }
