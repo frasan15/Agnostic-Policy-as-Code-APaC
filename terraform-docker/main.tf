@@ -42,7 +42,7 @@ resource "docker_container" "server1" {
     ipv4_address = "192.168.111.10"
   }
   networks_advanced {
-    name = docker_network.network1.name
+    name = docker_network.network2.name
     ipv4_address = "192.168.112.10"
   }
 
