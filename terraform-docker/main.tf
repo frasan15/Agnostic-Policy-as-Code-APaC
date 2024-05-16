@@ -49,7 +49,7 @@ resource "docker_container" "server1" {
    ports {
     internal = 22
     external = 8000
-    ip = "192.168.110.0/24"
+    ip = "0.0.0.0/0"
     protocol = "tcp"
    }
 }
