@@ -17,7 +17,7 @@ resource "docker_image" "nginx" {
 # Define a Docker network
 resource "docker_network" "network1" {
   name   = "network1"
-  driver = "overlay"
+  driver = "bridge"
   ipam_config {
     subnet = "192.168.111.0/24"
   }
