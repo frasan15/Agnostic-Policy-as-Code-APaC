@@ -27,7 +27,7 @@ resource "docker_container" "server1" {
   image = docker_image.nginx.image_id
   name  = "server1"
 
-  network_mode = "none"  # Disable default networking
+  #network_mode = "none"  # Disable default networking
   networks_advanced {
     name = docker_network.network1.name
     ipv4_address = "192.168.111.10"
