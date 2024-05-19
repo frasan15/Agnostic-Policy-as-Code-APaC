@@ -71,7 +71,6 @@ resource "docker_container" "server2" {
   }
 
   ports {
-    name = "myport"
     internal = 80
     external = 8000
     ip = "0.0.0.0/0" # default value for this is 0.0.0.0/0
