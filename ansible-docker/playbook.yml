@@ -44,12 +44,14 @@
         name: server1
         comparisons:
           networks: strict
+        state: absent
 
     - name: Remove container from all networks
       community.docker.docker_container:
         name: server2
         comparisons:
           networks: strict
+        state: absent
 
     - name: Delete a network, disconnecting all containers
       community.docker.docker_network:
