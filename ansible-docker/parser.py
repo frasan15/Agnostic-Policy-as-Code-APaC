@@ -44,7 +44,7 @@ try:
                 final_results['network_interfaces'].append(nic_object)
 
                 port = port.split(':', 1)[1]
-                exposed_ports.append(port) # here we only need the container exposed port
+                exposed_ports.append(int(port)) # here we only need the container exposed port
         
         for network in ansible_dictionary['docker_network']:
              network_name = network['name']
