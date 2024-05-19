@@ -3,6 +3,9 @@ import json
 import re
 import os
 
+# Implement the Docker Parsing here, use the terraform/required providers to fetch the info of what Cloud Provider
+# we are parsing; we can do a similar thing with Ansible
+
 # The following function is needed to remove the regular expression ${} from each value in the dictionary
 def process_value(value):
     if isinstance(value, list):
