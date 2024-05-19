@@ -1,3 +1,5 @@
+# This Rego file checks if any server exposes port 80
+
 package example
 
 import rego.v1
