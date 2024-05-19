@@ -49,8 +49,14 @@ try:
             
             exposed_ports = sorted(list(set(exposed_ports)))
 
-            for network in server['networks_advanced']:
-                network_interfaces.append(network['name'].split('.', 2)[1])
+            for port in server['ports']:
+                network_interface_id = str(port['internal']) + ':' + str(port['external'])
+                network_interfaces.append(network_interface_id)
+                nic_object = {
+                    'name': network_interface_id,
+                    'is_public': None
+                }
+                final_results['network_interfaces'].append(nic_object)
 
             # Create the result object for the current server, storing name, exposed ports and list of subnets ids
             server_object = {
@@ -60,19 +66,19 @@ try:
             }
             final_results["servers"].append(server_object) 
 
-
-    for network in terraform_dictionary['docker_network']:
-        network_name = network['name'] 
-        nic_object = {
-        'name': network_name,
-        'is_public': None
-        }
-
-        final_results['network_interfaces'].append(nic_object)
-
-
-
     print("FINAL JSON: ", json.dumps(final_results, indent=4))
+
+    # Get the directory of the current Python script
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Define the path for the JSON file
+    json_file_path = os.path.join(current_dir, "result_object.json")
+
+    # Write data to the JSON file
+    with open(json_file_path, 'w') as json_file:
+        json.dump(final_results, json_file, indent=4)
+
+    print("JSON file has been generated and saved at:", json_file_path)
 
 except Exception as e:
     print("An error occurred:", e)
