@@ -36,12 +36,20 @@ try:
 
         # Iterate over each security group of the server
         for port in ports_mapping: # each item already represents the security group name
+                network_interfaces.append(port) # we use host_port:container_port as key for the network interface
+                nic_object = {
+                    'name': port,
+                    'is_public': None
+                }
+                final_results['network_interfaces'].append(nic_object)
+
                 port = port.split(':', 1)[1]
-                exposed_ports.append(port)
+                exposed_ports.append(port) # here we only need the container exposed port
         
         for network in ansible_dictionary['docker_network']:
              network_name = network['name']
              network_interfaces.append(network_name)
+
 
         # Create the result object for the current server, storing name, exposed ports and list of subnets ids
         server_object = {
@@ -52,13 +60,6 @@ try:
 
         final_results["servers"].append(server_object)
 
-    for network in ansible_dictionary['docker_network']:
-            network_name = network['name']
-            nic_object = {
-                'name': network_name,
-                'is_public': None
-            }
-            final_results['network_interfaces'].append(nic_object)
 
     print("FINAL JSON: ", json.dumps(final_results, indent=4))
 
