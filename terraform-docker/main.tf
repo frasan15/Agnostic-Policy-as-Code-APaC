@@ -7,8 +7,6 @@ terraform {
   }
 }
 
-provider "docker" {}
-
 resource "docker_image" "nginx" {
   name         = "nginx"
   keep_locally = false
@@ -40,16 +38,16 @@ resource "docker_container" "server1" {
   networks_advanced {
     name = docker_network.network1.name
     ipv4_address = "192.168.111.10"
-  }
+  }/*
   networks_advanced {
     name = docker_network.network2.name
     ipv4_address = "192.168.112.10"
-  }
+  }*/
 
    ports {
-    internal = 22
+    internal = 80
     external = 8000
-    ip = "0.0.0.0/0"
+    ip = "0.0.0.0/0" # default value for this is 0.0.0.0/0
     protocol = "tcp"
    }
 }
