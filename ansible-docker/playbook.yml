@@ -39,14 +39,14 @@
   tags: ['destroy']
   become: true
   tasks:
-    - name: Remove container from all networks
+    - name: Remove container from all networks and destroy it
       community.docker.docker_container:
         name: server1
         comparisons:
           networks: strict
         state: absent
 
-    - name: Remove container from all networks
+    - name: Remove container from all networks and destroy it
       community.docker.docker_container:
         name: server2
         comparisons:
