@@ -24,7 +24,7 @@
           - name: network1
             ipv4_address: "192.168.111.10"
         ports:
-          - "8001:22"
+          - "8000:22"
 
     - name: Run server2 container
       community.docker.docker_container:
@@ -34,7 +34,7 @@
           - name: network1
             ipv4_address: "192.168.111.11"
         ports:
-          - "8000:80"
+          - "8001:80"
 
     - name: Run server3 container
       community.docker.docker_container:
@@ -44,7 +44,7 @@
           - name: network1
             ipv4_address: "192.168.111.12"
         ports:
-          - "8000:443"
+          - "8002:443"
 
 - name: "Destroy infrastructure previously created on Docker"
   hosts: localhost
