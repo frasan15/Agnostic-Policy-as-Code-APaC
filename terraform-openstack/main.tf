@@ -177,7 +177,7 @@ resource "openstack_networking_floatingip_v2" "myip"{
 }
 
 # Generate a floating ip for server3
-resource "openstack_networking_floatingip_v2" "myip"{
+resource "openstack_networking_floatingip_v2" "myip1"{
   depends_on = [ openstack_compute_instance_v2.server_3, openstack_networking_router_interface_v2.router_interface_1 ]
   pool = "ntnu-internal"
   port_id = openstack_networking_port_v2.port_server_3.id
