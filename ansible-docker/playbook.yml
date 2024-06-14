@@ -40,6 +40,8 @@
         networks:
           - name: network1
             ipv4_address: "192.168.111.12"
+        ports:
+          - "8000:443"
 
 - name: "Destroy infrastructure previously created on Docker"
   hosts: localhost
