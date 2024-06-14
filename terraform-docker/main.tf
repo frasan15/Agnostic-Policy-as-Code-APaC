@@ -21,20 +21,10 @@ resource "docker_network" "network1" {
   }
 }
 
-# Define a Docker network
-resource "docker_network" "network2" {
-  name   = "network2"
-  driver = "bridge"
-  ipam_config {
-    subnet = "192.168.112.0/24"
-  }
-}
-
 resource "docker_container" "server1" {
   image = docker_image.nginx.image_id
   name  = "server1"
 
-  #network_mode = "none"  # Disable default networking
   networks_advanced {
     name = docker_network.network1.name
     ipv4_address = "192.168.111.10"
@@ -53,9 +43,9 @@ resource "docker_container" "server1" {
    }
 */
     ports {
-      internal = 22
-      external = 8001
-      ip = "192.168.111.0/24" # default value for this is 0.0.0.0/0
+      internal = 80
+      external = 8000
+      ip = "0.0.0.0/0" # default value for this is 0.0.0.0/0
       protocol = "tcp"
     }
 }
@@ -64,16 +54,32 @@ resource "docker_container" "server2" {
   image = docker_image.nginx.image_id
   name  = "server2"
 
-  #network_mode = "none"  # Disable default networking
   networks_advanced {
     name = docker_network.network1.name
     ipv4_address = "192.168.111.11"
   }
 
   ports {
-    internal = 80
-    external = 8000
-    ip = "0.0.0.0/0" # default value for this is 0.0.0.0/0
+    internal = 22
+    external = 8001
+    ip = "192.168.111.0/24" # can I say "if this ip == 0.0.0.0/0 then it is reachable from outside? Or maybe if ip !== 192.168.111.0/24"
+    protocol = "tcp"
+   }
+}
+
+resource "docker_container" "server3" {
+  image = docker_image.nginx.image_id
+  name  = "server3"
+
+  networks_advanced {
+    name = docker_network.network1.name
+    ipv4_address = "192.168.111.12"
+  }
+
+  ports {
+    internal = 443
+    external = 8002
+    ip = "0.0.0.0/0" # can I say "if this ip == 0.0.0.0/0 AND internal == 80 then it is reachable from outside? Or maybe if ip !== 192.168.111.0/24"
     protocol = "tcp"
    }
 }

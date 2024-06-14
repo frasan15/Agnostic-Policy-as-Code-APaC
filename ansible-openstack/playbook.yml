@@ -44,6 +44,19 @@
           port_range_max: 22
           remote_ip_prefix: 0.0.0.0/0
     register: opa
+
+  - name: Create (or update) a security group with security group rules
+    openstack.cloud.security_group:
+      state: present
+      name: secgroup_3
+      security_group_rules:
+        - ether_type: IPv4
+          direction: ingress
+          description: Expose port 443 (HTTPS)
+          protocol: tcp
+          port_range_min: 443
+          port_range_max: 443
+          remote_ip_prefix: 0.0.0.0/0
   
 # Create a port with a static IP for server1
   - name: Create a network inteface for server1
@@ -63,6 +76,16 @@
       network: network1
       fixed_ips:
         - ip_address: 192.168.111.11 # fixed ip address of the network interface attached to server2
+          subnet_id: "{{ subnet_info.id }}"
+
+# Create a port with a static IP for server3
+  - name: Create a network inteface for server3
+    openstack.cloud.port:
+      state: present
+      name: port_server_3
+      network: network1
+      fixed_ips:
+        - ip_address: 192.168.111.12 # fixed ip address of the network interface attached to server2
           subnet_id: "{{ subnet_info.id }}"
 
 # Remember to restart the vm if you change any environment variables
@@ -96,6 +119,20 @@
       security_groups: 
         - secgroup_2
 
+  - name: Deploy another server instance
+    openstack.cloud.server:
+      state: present
+      name: server3
+      auto_ip: false
+      image: db1bc18e-81e3-477e-9067-eecaa459ec33
+      key_name: MySecondKey
+      timeout: 200
+      flavor: gx1.2c4r
+      nics:
+        - port-name: port_server_3
+      security_groups: 
+        - secgroup_3
+
 # Creates a router attached to ext_network1 on an IPv4 subnet and with one
 # internal subnet interface.
   - name: Create a router
@@ -108,13 +145,23 @@
           subnet: subnet1
           portip: 192.168.111.15 
 
-  - name: Assign a floating ip
+  - name: Assign a floating ip to server1
     openstack.cloud.floating_ip:
       state: present
       reuse: true # if a free floating IP is already allocated to the project, it is reused; if not, a new one is created
       server: server1
       network: 730cb16e-a460-4a87-8c73-50a2cb2293f9
       fixed_address: 192.168.111.10
+      wait: true
+      timeout: 180
+
+  - name: Assign a floating ip to server3
+    openstack.cloud.floating_ip:
+      state: present
+      reuse: true # if a free floating IP is already allocated to the project, it is reused; if not, a new one is created
+      server: server3
+      network: 730cb16e-a460-4a87-8c73-50a2cb2293f9
+      fixed_address: 192.168.111.12
       wait: true
       timeout: 180
 
@@ -134,6 +181,11 @@
         state: absent
         name: server2
 
+    - name: Destroy server3
+      openstack.cloud.server:
+        state: absent
+        name: server3
+
     - name: Destroy port
       openstack.cloud.port:
         state: absent 
@@ -144,6 +196,11 @@
         state: absent 
         name: port_server_2
 
+    - name: Destroy port
+      openstack.cloud.port:
+        state: absent 
+        name: port_server_3
+
     - name: Destroy a security group with security group rules
       openstack.cloud.security_group:
         state: absent
@@ -153,6 +210,11 @@
       openstack.cloud.security_group:
         state: absent
         name: secgroup_2
+
+    - name: Destroy a security group with security group rules
+      openstack.cloud.security_group:
+        state: absent
+        name: secgroup_3
 
     - name: Destroy router
       openstack.cloud.router:

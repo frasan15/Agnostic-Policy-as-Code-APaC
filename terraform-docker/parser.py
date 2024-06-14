@@ -52,9 +52,15 @@ try:
             for port in server['ports']:
                 network_interface_id = str(port['internal']) + ':' + str(port['external'])
                 network_interfaces.append(network_interface_id)
+
+                if port['ip'] == "0.0.0.0/0":
+                    is_nic_public = True
+                else:
+                    is_nic_public = False
+
                 nic_object = {
                     'name': network_interface_id,
-                    'is_public': None
+                    'is_public': is_nic_public
                 }
                 final_results['network_interfaces'].append(nic_object)
 

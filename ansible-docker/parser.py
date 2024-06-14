@@ -37,13 +37,20 @@ try:
         # Iterate over each security group of the server
         for port in ports_mapping: # each item already represents the security group name
                 network_interfaces.append(port) # we use host_port:container_port as key for the network interface
+
+                port_host_interface = port.split(':', 2)[0]
+                if port_host_interface == "0.0.0.0":
+                     is_nic_public = True
+                else:
+                     is_nic_public= False
+
                 nic_object = {
                     'name': port,
-                    'is_public': None
+                    'is_public': is_nic_public
                 }
                 final_results['network_interfaces'].append(nic_object)
 
-                port = port.split(':', 1)[1]
+                port = port.split(':', 2)[2]
                 exposed_ports.append(int(port)) # here we only need the container exposed port
         
         for network in ansible_dictionary['docker_network']:
