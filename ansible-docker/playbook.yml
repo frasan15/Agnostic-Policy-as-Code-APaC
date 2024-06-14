@@ -34,6 +34,13 @@
         ports:
           - "8000:80"
 
+    - name: Run server3 container
+      community.docker.docker_container:
+        name: server3
+        networks:
+          - name: network1
+            ipv4_address: "192.168.111.12"
+
 - name: "Destroy infrastructure previously created on Docker"
   hosts: localhost
   tags: ['destroy']
@@ -49,6 +56,13 @@
     - name: Remove container from all networks and destroy it
       community.docker.docker_container:
         name: server2
+        comparisons:
+          networks: strict
+        state: absent
+
+    - name: Remove container from all networks and destroy it
+      community.docker.docker_container:
+        name: server3
         comparisons:
           networks: strict
         state: absent
