@@ -19,6 +19,7 @@
     - name: Run server1 container
       community.docker.docker_container:
         name: server1
+        image: nginx
         networks:
           - name: network1
             ipv4_address: "192.168.111.10"
@@ -28,6 +29,7 @@
     - name: Run server2 container
       community.docker.docker_container:
         name: server2
+        image: nginx
         networks:
           - name: network1
             ipv4_address: "192.168.111.11"
@@ -37,6 +39,7 @@
     - name: Run server3 container
       community.docker.docker_container:
         name: server3
+        image: nginx
         networks:
           - name: network1
             ipv4_address: "192.168.111.12"
