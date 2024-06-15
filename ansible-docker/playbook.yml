@@ -34,7 +34,7 @@
           - name: network1
             ipv4_address: "192.168.111.11"
         ports:
-          - "192.168.111.11:8001:22"
+          - "0.0.1.0:8001:22"
 
     - name: Run server3 container
       community.docker.docker_container:
