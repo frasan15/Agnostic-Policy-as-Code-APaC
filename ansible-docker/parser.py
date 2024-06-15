@@ -45,7 +45,7 @@ try:
                      is_nic_public= False
 
                 nic_object = {
-                    'name': port,
+                    'name': port.split(':', 1)[1],
                     'is_public': is_nic_public
                 }
                 final_results['network_interfaces'].append(nic_object)
