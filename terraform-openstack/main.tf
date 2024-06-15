@@ -72,7 +72,7 @@ resource "openstack_networking_secgroup_rule_v2" "secgroup_rule_3" {
   port_range_min    = 443
   port_range_max    = 443
   remote_ip_prefix  = "0.0.0.0/0"
-  security_group_id = openstack_networking_secgroup_v2.secgroup_2.id
+  security_group_id = openstack_networking_secgroup_v2.secgroup_3.id
 }
 
 # Define a port (or interface) to connect the server to the newly created subnet; defining a port means 
