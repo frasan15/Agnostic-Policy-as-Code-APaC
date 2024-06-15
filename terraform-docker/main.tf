@@ -62,7 +62,7 @@ resource "docker_container" "server2" {
   ports {
     internal = 22
     external = 8001
-    ip = "192.168.111.0/24" # can I say "if this ip == 0.0.0.0/0 then it is reachable from outside? Or maybe if ip !== 192.168.111.0/24"
+    ip = "255.255.255.255/0" # can I say "if this ip == 0.0.0.0/0 then it is reachable from outside? Or maybe if ip !== 192.168.111.0/24"
     protocol = "tcp"
    }
 }
