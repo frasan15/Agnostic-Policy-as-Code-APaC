@@ -68,7 +68,7 @@ try:
             server_object = {
                     'name': server_name,
                     'exposed_ports': exposed_ports,
-                    'network_interfaces': network_interfaces
+                    'server_network_interfaces': network_interfaces
             }
             final_results["servers"].append(server_object) 
 
