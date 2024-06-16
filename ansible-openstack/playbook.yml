@@ -89,7 +89,7 @@
           subnet_id: "{{ subnet_info.id }}"
 
 # Remember to restart the vm if you change any environment variables
-  - name: Deploy a server instance
+  - name: Deploy server1
     openstack.cloud.server:
       state: present
       name: server1
@@ -105,7 +105,7 @@
     register: instance
 
 
-  - name: Deploy another server instance
+  - name: Deploy server2
     openstack.cloud.server:
       state: present
       name: server2
@@ -119,7 +119,7 @@
       security_groups: 
         - secgroup_2
 
-  - name: Deploy another server instance
+  - name: Deploy server3
     openstack.cloud.server:
       state: present
       name: server3
