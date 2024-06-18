@@ -27,3 +27,16 @@ public_servers contains server if {                 # a server exists in the 'pu
     input.servers[i].server_network_interfaces[_] == input.network_interfaces[j].name  # the port references a network in the input.networks collection and...
     input.network_interfaces[j].is_public                        # the network is public.
 }
+
+# METADATA
+# title: Exposure of vulnerable ports 22 and 80
+# description: Port 22 must not be exposed. Port 80 must not be exposed if the server is accessible from outside its own network
+output := decision if {
+    count(violation) > 0
+
+    annotation := rego.metadata.rule()
+    decision := {
+        "title": annotation.title,
+        "message": annotation.description
+    }
+}
