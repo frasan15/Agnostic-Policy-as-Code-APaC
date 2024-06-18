@@ -381,7 +381,7 @@ try:
         elif args.tool == "terraform" and args.provider == "docker":
                 terraform_docker()
         else:
-                print("Infrastructure as Code tool or Infrastructure Provider not supported")
+                raise Exception("Infrastructure as Code tool or Infrastructure Provider not supported")
 
         print("FINAL JSON: ", json.dumps(final_results, indent=4))
         # The following are the operations needed to write the json file on the current folder
