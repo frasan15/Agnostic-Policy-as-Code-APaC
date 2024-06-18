@@ -21,10 +21,10 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 
 # Paths for the infrastructure code for each of the four configurations
-ansible_openstack_example = os.path.join(parent_dir, "ansible-openstack/playbook.yml")
-ansible_docker_example = os.path.join(parent_dir, "ansible-docker/playbook.yml")
-terraform_openstack_example = os.path.join(parent_dir, "terraform-openstack/main.tf")
-terraform_docker_example = os.path.join(parent_dir, "terraform-docker/main.tf")
+ansible_openstack_example = os.path.join(parent_dir, "infrastructure-provisioning-and-deployment-examples/ansible-openstack/playbook.yml")
+ansible_docker_example = os.path.join(parent_dir, "infrastructure-provisioning-and-deployment-examples/ansible-docker/playbook.yml")
+terraform_openstack_example = os.path.join(parent_dir, "infrastructure-provisioning-and-deployment-examples/terraform-openstack/main.tf")
+terraform_docker_example = os.path.join(parent_dir, "infrastructure-provisioning-and-deployment-examples/terraform-docker/main.tf")
 
 # The following will be the json object representing the infrastructure using high-level keywords
 final_results = {}
