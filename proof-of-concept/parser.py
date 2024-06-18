@@ -386,7 +386,7 @@ try:
         print("FINAL JSON: ", json.dumps(final_results, indent=4))
         # The following are the operations needed to write the json file on the current folder
         # Define the path for the JSON file
-        json_file_path = os.path.join(current_dir, "result_object.json")
+        json_file_path = os.path.join(current_dir, "network_infrastructure.json")
         # Write data to the JSON file
         with open(json_file_path, 'w') as json_file:
                 json.dump(final_results, json_file, indent=4)
