@@ -232,14 +232,7 @@
         state: absent
         name: network1
 
-    # when: global_instance is defined and not global_instance.failed
-     # The above line is needed to check whether the instance exists before trying to delete it, however as said
-     # below the global instance variable is not defined, thus this should be fixed. Without this line this play
-     # fullfils his tasks and successfully deletes the vm
-
 # to run this: ansible-playbook playbook.yml --tags "destroy" 
-# The global_instance variable is not defined within this playbook, so I'm not able to automate the destruction
-# of the vm
 
 - name: Retrieve network and security group information
   hosts: localhost
@@ -253,12 +246,11 @@
 # security_group and security_group_info modules handle security groups
 # whereas security_group_rule and security_group_rule_info modules handle security groups' rules (thus, in this case the security group should already be existing)
   - name: Get security group details
-    openstack.cloud.security_group_info: # print each security group
+    openstack.cloud.security_group_info: 
     register: security_group_details
 
   - name: Get information about server
     openstack.cloud.server_info:
-      #name: MyThirdServer #print each server
     register: server_details
   
   - name: Get information about subnet
@@ -280,25 +272,4 @@
 
   - name: Print subnet details
     debug:
-      msg: "{{ subnet_details }}"
-
-
-    # When you register the result of a task using the register keyword, you create a variable that holds 
-    # information about the task's execution, including its output. In your playbook, the register: instance 
-    # line in the "Deploy an instance" task stores the result of that task in a variable named instance.
-
-    # When you use register, you create a variable that contains various attributes, including:
-    # instance.stdout: Standard output of the task.
-    # instance.stderr: Standard error of the task.
-    # instance.rc: Return code of the task.
-    # instance.changed: Whether the task made any changes.
-    # instance.failed: Whether the task failed.
-
-    # The instance variable is defined only after the task "Deploy an instance" has been executed. 
-    # So, in the subsequent task "Destroy the instance", instance is defined checks if the instance variable exists.
-    # If it does, it means the "Deploy an instance" task has been executed.
-    # The instance|success condition checks whether the "Deploy an instance" task was successful. 
-    # It's a shorthand way of checking if the task completed successfully (i.e., instance.failed is false).
-
-
-  
+      msg: "{{ subnet_details }}" 

@@ -1,6 +1,3 @@
-# The following Terraform code provisions an OpenStack compute instance (called web server) and associates a 
-# floating IP address with it to make it accessible from the Internet
-
 # Define required providers
 terraform {
   required_version = ">= 0.14.0"
@@ -29,7 +26,7 @@ resource "openstack_networking_subnet_v2" "subnet_1" {
 # Define a security group which exposes port 80
 resource "openstack_networking_secgroup_v2" "secgroup_1" {
   name        = "secgroup_1"
-  description = "Expose port 80" # remember to change this if you modify the rules
+  description = "Expose port 80" 
 }
 
 # Specifically, you define the rules hereby
@@ -182,11 +179,3 @@ resource "openstack_networking_floatingip_v2" "myip1"{
   pool = "ntnu-internal"
   port_id = openstack_networking_port_v2.port_server_3.id
 }
-
-
-# ERROR: The following module is shown in the documentation but it's not found once terraform apply is executed
-
-#data "openstack_networking_floatingip_v2" "floatingip_1" {
-#  depends_on = [ openstack_networking_floatingip_v2.myip ]
-#  address = "192.168.111.10"
-#}
