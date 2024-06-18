@@ -37,6 +37,7 @@ output := decision if {
     annotation := rego.metadata.rule()
     decision := {
         "title": annotation.title,
-        "message": annotation.description
+        "message": annotation.description,
+        "violations": violation
     }
 }
