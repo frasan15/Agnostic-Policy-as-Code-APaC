@@ -15,16 +15,8 @@ parser = argparse.ArgumentParser(description="Proof of Concept's Parser")
 # Add arguments
 parser.add_argument('--tool', type=str, help='Infrastructure as Code tool')
 parser.add_argument('--provider', type=str, help='Infrastructure Provider')
-
-# The following lines of code are needed to specify the right path where each infrastructure code file is located
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-
-# Paths for the infrastructure code for each of the four configurations
-ansible_openstack_example = os.path.join(parent_dir, "infrastructure-provisioning-and-deployment-examples/ansible-openstack/playbook.yml")
-ansible_docker_example = os.path.join(parent_dir, "infrastructure-provisioning-and-deployment-examples/ansible-docker/playbook.yml")
-terraform_openstack_example = os.path.join(parent_dir, "infrastructure-provisioning-and-deployment-examples/terraform-openstack/main.tf")
-terraform_docker_example = os.path.join(parent_dir, "infrastructure-provisioning-and-deployment-examples/terraform-docker/main.tf")
+parser.add_argument('--i', type=str, help='Path of the input infrastructure code file')
+parser.add_argument('--o', type=str, help='Path of the output JSON file')
 
 # The following will be the json object representing the infrastructure using high-level keywords
 final_results = {}
@@ -56,9 +48,9 @@ def process_value_terraform(value):
                 return value
 
 try:
-        def ansible_openstack():
+        def ansible_openstack(path):
                 # opening a file
-                with open(ansible_openstack_example, 'r') as stream:
+                with open(path, 'r') as stream:
                         # Converts yaml document to python object
                         first = yaml.safe_load(stream)
                 first = first[0]['tasks']
@@ -143,8 +135,8 @@ try:
                         final_results["servers"].append(server_object)
 
         
-        def ansible_docker():
-                with open(ansible_docker_example, 'r') as stream:
+        def ansible_docker(path):
+                with open(path, 'r') as stream:
                         first = yaml.safe_load(stream)
                 first = first[0]['tasks']
 
@@ -200,9 +192,9 @@ try:
                         final_results["servers"].append(server_object)
 
         
-        def terraform_openstack():
+        def terraform_openstack(path):
                 # It reads the terraform file and it parses it into a json file
-                with open(terraform_openstack_example, 'r') as file:
+                with open(path, 'r') as file:
                         first = hcl2.load(file)
                         first = {key: process_value_terraform(value) for key, value in first.items()}
 
@@ -314,9 +306,9 @@ try:
                         final_results["servers"].append(server_object)            
 
 
-        def terraform_docker():
+        def terraform_docker(path):
                 # It reads the terraform file and it parses it onto a json file
-                with open(terraform_docker_example, 'r') as file:
+                with open(path, 'r') as file:
                         first = hcl2.load(file)
                 first = {key: process_value_terraform(value) for key, value in first.items()}
                 first = first['resource']
@@ -369,28 +361,29 @@ try:
                         final_results["servers"].append(server_object) 
 
 
-        # Parse the arguments. The arguments can be retrieve by args.tool or args.provider
+        # Parse the arguments. The arguments can be retrieve by args.ARGUMENT
         args = parser.parse_args()
+        input_path = args.i
+        output_path = args.o
+        
         # run the proper parser according to the IaC tool and the infrastructure provider
         if args.tool == "ansible" and args.provider == "openstack":
-                ansible_openstack()
+                ansible_openstack(input_path)
         elif args.tool == "ansible" and args.provider == "docker":
-                ansible_docker()
+                ansible_docker(input_path)
         elif args.tool == "terraform" and args.provider == "openstack":
-                terraform_openstack()
+                terraform_openstack(input_path)
         elif args.tool == "terraform" and args.provider == "docker":
-                terraform_docker()
+                terraform_docker(input_path)
         else:
                 raise Exception("Infrastructure as Code tool or Infrastructure Provider not supported")
 
         print("FINAL JSON: ", json.dumps(final_results, indent=4))
-        # The following are the operations needed to write the json file on the current folder
-        # Define the path for the JSON file
-        json_file_path = os.path.join(current_dir, "network_infrastructure.json")
+        # The following are the operations needed to write the json file on the specified folder
         # Write data to the JSON file
-        with open(json_file_path, 'w') as json_file:
+        with open(output_path, 'w') as json_file:
                 json.dump(final_results, json_file, indent=4)
-        print("JSON file has been generated and saved at:", json_file_path)
+        print("JSON file has been generated and saved at:", output_path)
 
 except Exception as e:
         print(e)
