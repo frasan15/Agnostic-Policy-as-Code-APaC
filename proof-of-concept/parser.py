@@ -3,7 +3,6 @@ import hcl2 # type: ignore
 import yaml
 import json
 import re
-import os
 import argparse
 
 # The following lines are needed to handle the CLI parameters, which will be used (at the end of this file) 
